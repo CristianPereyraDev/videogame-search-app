@@ -1,23 +1,13 @@
-const axios = require("axios");
-// Obtengo el apyKey que esta en el archivo .env
-const { API_KEY } = process.env;
-
-/**
- *
- * @returns {Array} Array of genres
- */
-async function getGenresFromApi() {
-  try {
-    const genres = await axios(`https://api.rawg.io/api/genres?key=${API_KEY}`);
-    return genres;
-  } catch (error) {
-    throw new Error(error.message);
-  }
-}
+const { Genre } = require("../db");
 
 async function getGenres(req, res) {
   try {
-  } catch (error) {}
+    // Busco los genres en la base de datos
+    let genres = await Genre.findAll();
+    res.status(200).json(genres);
+  } catch (error) {
+    res.status(400).json({ message: error.message });
+  }
 }
 
 module.exports = getGenres;
