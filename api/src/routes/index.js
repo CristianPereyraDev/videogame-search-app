@@ -3,14 +3,28 @@ const { Router } = require("express");
 // Ejemplo: const authRouter = require('./auth.js');
 
 // Controllers
-const { getGenres, getVideogames, postVideogames } = require("../controllers");
+const {
+  getVideogames,
+  getVideogameById,
+  getVideogamesByName,
+  postVideogames,
+  getGenres,
+} = require("../controllers");
 
 const router = Router();
 
 // Configurar los routers
 // Ejemplo: router.use('/auth', authRouter);
-router.get("/genres", getGenres);
+
+/**
+ * El orden de las rutas es importante. Si llega una request
+ * de la forma .../videogames/name... express podria ejecutar
+ * .../videogames/:idVideogame si estuviera antes.
+ */
 router.get("/videogames", getVideogames);
+router.get("/videogames/name", getVideogamesByName);
+router.get("/videogames/:idVideogame", getVideogameById);
 router.post("/videogames", postVideogames);
+router.get("/genres", getGenres);
 
 module.exports = router;

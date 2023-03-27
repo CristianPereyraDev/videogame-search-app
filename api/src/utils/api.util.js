@@ -25,10 +25,13 @@ async function getGenresFromApi() {
  * @param {*} pageSize Page size
  * @returns Array of games
  */
-async function getGamesFromApi(page, pageSize) {
+async function getGamesFromApi(page, pageSize, search) {
   try {
+    const pageQuery = page ? `&page=${page}` : "";
+    const pageSizeQuery = pageSize ? `&page_size=${pageSize}` : "";
+    const searchQuery = search ? `&search=${search}` : "";
     const response = await axios.get(
-      `https://api.rawg.io/api/games?key=${API_KEY}&page=${page}&page_size=${pageSize}`
+      `https://api.rawg.io/api/games?key=${API_KEY}${pageQuery}${pageSizeQuery}${searchQuery}`
     );
     return response.data.results;
   } catch (error) {
@@ -36,4 +39,15 @@ async function getGamesFromApi(page, pageSize) {
   }
 }
 
-module.exports = { getGenresFromApi, getGamesFromApi };
+async function getGameByIdFromApi(gameId) {
+  try {
+    const response = await axios.get(
+      `https://api.rawg.io/api/games/${gameId}?key=${API_KEY}`
+    );
+    return response.data;
+  } catch (error) {
+    throw new Error(error.message);
+  }
+}
+
+module.exports = { getGenresFromApi, getGamesFromApi, getGameByIdFromApi };

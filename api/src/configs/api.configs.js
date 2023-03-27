@@ -1,4 +1,4 @@
-/**
- * Número de resultados por página en la peticíon de juegos.
- */
 const GAMES_PAGE_SIZE = 20;
+const SEARCH_PAGE_SIZE = 15;
+
+module.exports = { GAMES_PAGE_SIZE, SEARCH_PAGE_SIZE };
