@@ -1,9 +1,22 @@
-import './App.css';
+import "./App.css";
+import { Routes, Route, useLocation, useNavigate } from "react-router-dom";
+import NavBar from "./components/NavBar/NavBar";
+import Landing from "./components/Landing/Landing";
+import GameForm from "./components/GameForm/GameForm";
+import Detail from "./components/Detail/Detail";
+import Cards from "./components/Cards/Cards";
 
 function App() {
+  const location = useLocation();
   return (
     <div className="App">
-      <h1>Henry Videogames</h1>
+      {location.pathname !== "/" ? <NavBar /> : null}
+      <Routes>
+        <Route path="/" element={<Landing />} />
+        <Route path="/home" element={<Cards />} />
+        <Route path="/detail/:gameId" element={<Detail />} />
+        <Route path="/add" element={<GameForm />} />
+      </Routes>
     </div>
   );
 }
