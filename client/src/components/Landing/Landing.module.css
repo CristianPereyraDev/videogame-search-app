@@ -1,0 +1,6 @@
+.landingContainer {
+  height: 100%;
+  background-image: url("/src/assets/img/landing_background.jpg");
+  background-position: center;
+  background-size: cover;
+}

@@ -1,0 +1,16 @@
+.Navbar {
+  display: flex;
+  justify-content: space-between;
+  background-color: #66a3f2;
+  padding: 10px;
+}
+.NavbarLinkContainer {
+  display: flex;
+  flex: 2;
+}
+.NavbarLinkContainer > div {
+  margin-right: 5px;
+}
+.SearchBarContainer {
+  flex: 1;
+}
