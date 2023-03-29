@@ -4,7 +4,7 @@ import NavBar from "./components/NavBar/NavBar";
 import Landing from "./components/Landing/Landing";
 import GameForm from "./components/GameForm/GameForm";
 import Detail from "./components/Detail/Detail";
-import Cards from "./components/Cards/Cards";
+import Home from "./components/Home/Home";
 
 function App() {
   const location = useLocation();
@@ -13,7 +13,7 @@ function App() {
       {location.pathname !== "/" ? <NavBar /> : null}
       <Routes>
         <Route path="/" element={<Landing />} />
-        <Route path="/home" element={<Cards />} />
+        <Route path="/home" element={<Home />} />
         <Route path="/detail/:gameId" element={<Detail />} />
         <Route path="/add" element={<GameForm />} />
       </Routes>

@@ -1,4 +1,4 @@
-const Order = {
+export const Order = {
   Ascendent: Symbol("Ascendent"),
   Descendent: Symbol("Descendent"),
 };
@@ -32,8 +32,8 @@ export function filterAndOrder(videogames, filter, order) {
   if (order.hasOwnProperty("by") && order.hasOwnProperty("method")) {
     result =
       order.by === "name"
-        ? orderVideogamesByName(filtered, order.method)
-        : orderVideogamesByRating(filtered, order.method);
+        ? orderVideogamesByName(result, order.method)
+        : orderVideogamesByRating(result, order.method);
   }
   return result;
 }

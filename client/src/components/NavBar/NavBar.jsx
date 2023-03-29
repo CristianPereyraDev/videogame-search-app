@@ -16,10 +16,6 @@ export default function NavBar(props) {
           </NavLink>
         </div>
       </div>
-      <div className={styles.SearchBarContainer}>
-        <input type="search" />
-        <button>Search</button>
-      </div>
     </div>
   );
 }

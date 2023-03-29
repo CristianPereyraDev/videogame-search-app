@@ -30,7 +30,7 @@ function rootReducer(state = initialState, { type, payload }) {
       return {
         ...state,
         videogames: results,
-        filteredAndOrdered: filterAndOrder(results),
+        filteredAndOrdered: filterAndOrder(results, state.filter, state.order),
         prevPage: prevPage,
         nextPage: nextPage,
       };

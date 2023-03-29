@@ -1,0 +1,25 @@
+.card {
+  display: grid;
+  background-color: #496e8c;
+  border-radius: 3%;
+  max-width: 200px;
+  margin: auto;
+  padding: 0;
+  overflow: hidden;
+  position: relative;
+  box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.9);
+}
+.cardImage img {
+  max-width: 100%;
+  height: auto;
+}
+.card button {
+  position: absolute;
+  left: 0;
+  margin: 5px 0px auto;
+}
+.card h3,
+h4 {
+  color: #fff;
+  margin: 5px;
+}

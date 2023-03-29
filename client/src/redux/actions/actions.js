@@ -1,10 +1,4 @@
-import {
-  CHANGE_PAGE,
-  CHANGE_SEARCH_PAGE,
-  SEARCH_BY_NAME,
-  FILTER,
-  ORDER,
-} from "./types";
+import { CHANGE_PAGE, SEARCH_BY_NAME, FILTER, ORDER } from "./types";
 import axios from "axios";
 import { MAX_SEARCH_COUNT, PAGE_SIZE } from "../../configs/pagination.config";
 
