@@ -1,4 +1,3 @@
-const GAMES_PAGE_SIZE = 20;
-const SEARCH_PAGE_SIZE = 15;
+const GAMES_PAGE_SIZE = 100;
 
-module.exports = { GAMES_PAGE_SIZE, SEARCH_PAGE_SIZE };
+module.exports = { GAMES_PAGE_SIZE };

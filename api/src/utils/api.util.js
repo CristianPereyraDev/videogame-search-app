@@ -25,15 +25,22 @@ async function getGenresFromApi() {
  * @param {*} pageSize Page size
  * @returns Array of games
  */
-async function getGamesFromApi(page, pageSize, search) {
+async function getGamesFromApi(pageSize, search) {
   try {
-    const pageQuery = page ? `&page=${page}` : "";
-    const pageSizeQuery = pageSize ? `&page_size=${pageSize}` : "";
     const searchQuery = search ? `&search=${search}` : "";
-    const response = await axios.get(
-      `https://api.rawg.io/api/games?key=${API_KEY}${pageQuery}${pageSizeQuery}${searchQuery}`
-    );
-    return response.data.results;
+    let results = [];
+    // Por defecto la api me devuelve 20 videogames por página.
+    for (
+      let pageQuery = 1;
+      pageQuery <= Math.ceil(pageSize / 20);
+      pageQuery++
+    ) {
+      const response = await axios.get(
+        `https://api.rawg.io/api/games?key=${API_KEY}&page=${pageQuery}${searchQuery}`
+      );
+      results = [...results, ...response.data.results];
+    }
+    return results;
   } catch (error) {
     throw new Error(error.message);
   }

@@ -1,25 +1,26 @@
 const { Op } = require("sequelize");
 const { Videogame, Genre } = require("../db");
 const { getGamesFromApi } = require("../utils/api.util");
-const { SEARCH_PAGE_SIZE } = require("../configs/api.configs");
 
 async function getVideogamesByName(req, res) {
   try {
-    console.log("getVideogamesByName");
-    const { name } = req.query;
+    const { name, page, pageSize } = req.query;
     // Get from db with a limit.
     const gamesFromDB = await Videogame.findAll({
       where: { name: { [Op.like]: `%${name}%` } },
-      limit: SEARCH_PAGE_SIZE,
+      limit: pageSize,
     });
     // Get from api the remainig instances.
     const gamesFromApi = await getGamesFromApi(
       null,
-      Math.max(0, SEARCH_PAGE_SIZE - gamesFromDB.length),
+      Math.max(0, pageSize - gamesFromDB.length),
       name
     );
-    const result = [...gamesFromDB, ...gamesFromApi];
-    if (result.length > 0) res.status(200).json({ videogames: result });
+    const results = [...gamesFromDB, ...gamesFromApi];
+    // Get next page
+    const nextPage = `videogames/name?name=${name}`;
+    if (result.length > 0)
+      res.status(200).json({ nextPage: nextPage, results: results });
     else
       res
         .status(400)

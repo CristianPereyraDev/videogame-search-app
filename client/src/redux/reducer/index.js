@@ -1,50 +1,63 @@
 import { CHANGE_PAGE, SEARCH_BY_NAME, FILTER, ORDER } from "../actions/types";
-
-const Order = {
-  Ascendent: Symbol("Ascendent"),
-  Descendent: Symbol("Descendent"),
-};
+import { filterAndOrder, Order } from "../../utils/reducer.util";
 
 const initialState = {
-  videogames: [],
-  filtered: [],
-  page: 1,
-  order: Order.Ascendent,
+  videogames: [], // videogames without filtering and ordering
+  filteredAndOrdered: [], // videogames after apply filters
+  filter: (videogame) => true, // a filter is a boolean function
+  currentPage: null,
+  nextPage: null,
+  prevPage: null,
+  order: { by: "name", method: Order.Ascendent },
 };
 
 // Reducers can't contains side effects (api calls, read files, etc).
 function rootReducer(state = initialState, { type, payload }) {
   switch (type) {
-    case CHANGE_PAGE: {
+    case SEARCH_BY_NAME: {
+      const { prevPage, nextPage, results } = payload;
       return {
         ...state,
-        /*myFavorites: [...state.myFavorites, payload],
-        allCharacters: [...state.allCharacters, payload],*/
+        videogames: results,
+        filteredAndOrdered: filterAndOrder(results),
+        prevPage: prevPage,
+        nextPage: nextPage,
       };
     }
 
-    case SEARCH_BY_NAME: {
-      /*const listFiltered = state.myFavorites.filter(
-        (char) => char.id !== payload
-      );*/
-      return { ...state /*myFavorites: listFiltered*/ };
+    case CHANGE_PAGE: {
+      const { prevPage, nextPage, results } = payload;
+      return {
+        ...state,
+        videogames: results,
+        filteredAndOrdered: filterAndOrder(results),
+        prevPage: prevPage,
+        nextPage: nextPage,
+      };
     }
 
     case FILTER: {
-      /*const { allCharacters } = state;
-      const listFiltered = allCharacters.filter(
-        (char) => char.gender === payload
-      );*/
-      return { ...state /*myFavorites: listFiltered*/ };
+      return {
+        ...state,
+        filter: payload,
+        filteredAndOrdered: filterAndOrder(
+          state.videogames,
+          payload,
+          state.order
+        ),
+      };
     }
 
     case ORDER: {
-      /*const unorderedList = [...state.allCharacters];
-      let orderedList = [];
-      if (payload === "Ascendente")
-        orderedList = unorderedList.sort((a, b) => a.id - b.id);
-      else orderedList = unorderedList.sort((a, b) => b.id - a.id);*/
-      return { ...state /*myFavorites: orderedList*/ };
+      return {
+        ...state,
+        order: payload,
+        filteredAndOrdered: filterAndOrder(
+          state.videogames,
+          state.filter,
+          payload
+        ),
+      };
     }
 
     default:
