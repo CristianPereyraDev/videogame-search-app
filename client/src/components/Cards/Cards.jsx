@@ -3,15 +3,17 @@ import Card from "../Card/Card";
 import styles from "./Cards.module.css";
 
 export default function Cards(props) {
-  const { videogames } = useSelector((state) => {
-    console.log("Estado nuevo!", state);
+  // Listens the global store for changes
+  const { videogames, filteredAndOrdered } = useSelector((state) => {
     return state;
   });
+
   return (
     <div className={styles.cardsContainer}>
-      {videogames.map((videogame) => (
+      {filteredAndOrdered.map((videogame) => (
         <Card
           key={videogame.id}
+          id={videogame.id}
           name={videogame.name}
           image={videogame.background_image}
           genres={videogame.genres}

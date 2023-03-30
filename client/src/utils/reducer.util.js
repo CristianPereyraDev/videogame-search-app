@@ -1,6 +1,6 @@
-export const Order = {
-  Ascendent: Symbol("Ascendent"),
-  Descendent: Symbol("Descendent"),
+export const OrderMethod = {
+  Ascendent: "Ascendent",
+  Descendent: "Descendent",
 };
 
 /**
@@ -13,7 +13,7 @@ export function arrayFilter(array, filterFn) {
 
 function orderVideogamesByName(videogames, method) {
   return videogames.sort((v1, v2) =>
-    method === Order.Ascendent
+    method === OrderMethod.Ascendent
       ? v1.name.localeCompare(v2.name)
       : v1.name.localeCompare(v2.name) * -1
   );
@@ -21,7 +21,9 @@ function orderVideogamesByName(videogames, method) {
 
 function orderVideogamesByRating(videogames, method) {
   return videogames.sort((v1, v2) =>
-    method === Order.Ascendent ? v1.rating - v2.rating : v2.rating - v1.rating
+    method === OrderMethod.Ascendent
+      ? v1.rating - v2.rating
+      : v2.rating - v1.rating
   );
 }
 
@@ -29,7 +31,7 @@ export function filterAndOrder(videogames, filter, order) {
   // Apply Filter
   let result = arrayFilter(videogames, filter);
   // Apply Ordering
-  if (order.hasOwnProperty("by") && order.hasOwnProperty("method")) {
+  if (order.by && order.hasOwnProperty("method")) {
     result =
       order.by === "name"
         ? orderVideogamesByName(result, order.method)

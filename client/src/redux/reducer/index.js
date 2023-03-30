@@ -1,14 +1,13 @@
 import { CHANGE_PAGE, SEARCH_BY_NAME, FILTER, ORDER } from "../actions/types";
-import { filterAndOrder, Order } from "../../utils/reducer.util";
+import { filterAndOrder, OrderMethod } from "../../utils/reducer.util";
 
 const initialState = {
   videogames: [], // videogames without filtering and ordering
   filteredAndOrdered: [], // videogames after apply filters
   filter: (videogame) => true, // a filter is a boolean function
-  currentPage: null,
   nextPage: null,
   prevPage: null,
-  order: { by: "name", method: Order.Ascendent },
+  order: { by: null, method: OrderMethod.Ascendent },
 };
 
 // Reducers can't contains side effects (api calls, read files, etc).
@@ -19,7 +18,7 @@ function rootReducer(state = initialState, { type, payload }) {
       return {
         ...state,
         videogames: results,
-        filteredAndOrdered: filterAndOrder(results),
+        filteredAndOrdered: filterAndOrder(results, state.filter, state.order),
         prevPage: prevPage,
         nextPage: nextPage,
       };
@@ -49,6 +48,7 @@ function rootReducer(state = initialState, { type, payload }) {
     }
 
     case ORDER: {
+      console.log("ORDER", payload);
       return {
         ...state,
         order: payload,

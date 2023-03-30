@@ -15,8 +15,8 @@ export default function Card(props) {
           <h3>{props.name}</h3>
         </Link>
         <h4>
-          {props.genres.forEach((genre) => (
-            <Link>{genre}</Link>
+          {props.genres.map((genre) => (
+            <span key={genre.id}>{genre.name}</span>
           ))}
         </h4>
       </div>
