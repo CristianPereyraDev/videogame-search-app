@@ -40,7 +40,7 @@ export function searchByName(name) {
 
 /**
  * Acción que modifica el filtro en el store.
- * @param {*} genre
+ * @param {*} filter callback to filter videogames
  * @returns
  */
 export function filterVideogames(filter) {

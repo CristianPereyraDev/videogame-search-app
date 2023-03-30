@@ -13,6 +13,8 @@ export default function Order(props) {
 
   function handleOrderByChange(e) {
     const newState = { ...order, by: e.target.value };
+    // La funcion setOrder actualiza el estado de manera asíncrona, por lo tanto,
+    // cuando hago el dispath tengo que pasarle la variable newState.
     setOrder(newState);
     dispatch(orderVideogames(newState));
   }

@@ -30,6 +30,7 @@ function orderVideogamesByRating(videogames, method) {
 export function filterAndOrder(videogames, filter, order) {
   // Apply Filter
   let result = arrayFilter(videogames, filter);
+  console.log("filterResult=", result);
   // Apply Ordering
   if (order.by && order.hasOwnProperty("method")) {
     result =

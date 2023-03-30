@@ -10,9 +10,12 @@ import { changePage } from "../../redux/actions/actions";
 
 export default function Home(props) {
   const dispatch = useDispatch();
+
+  // Cuando se monta el componente cargo la primer página de videojuegos.
   useEffect(() => {
     dispatch(changePage("http://localhost:3001/videogames?page=1&pageSize=15"));
-  });
+  }, []);
+
   return (
     <div className={styles.homeContainer}>
       <div className={styles.homeNavbar}>

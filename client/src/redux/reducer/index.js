@@ -36,6 +36,7 @@ function rootReducer(state = initialState, { type, payload }) {
     }
 
     case FILTER: {
+      console.log("Filter", payload);
       return {
         ...state,
         filter: payload,
