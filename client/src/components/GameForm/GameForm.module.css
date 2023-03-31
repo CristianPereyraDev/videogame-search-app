@@ -1,0 +1,10 @@
+.form {
+  background-color: darkgrey;
+  width: 50%;
+  margin: auto;
+  color: beige;
+}
+
+.checkContainer {
+  text-align: start;
+}

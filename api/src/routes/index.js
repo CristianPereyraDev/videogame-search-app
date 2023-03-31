@@ -9,6 +9,7 @@ const {
   getVideogamesByName,
   postVideogames,
   getGenres,
+  getPlatforms,
 } = require("../controllers");
 
 const router = Router();
@@ -26,5 +27,6 @@ router.get("/videogames/name", getVideogamesByName);
 router.get("/videogames/:idVideogame", getVideogameById);
 router.post("/videogames", postVideogames);
 router.get("/genres", getGenres);
+router.get("/platforms", getPlatforms);
 
 module.exports = router;

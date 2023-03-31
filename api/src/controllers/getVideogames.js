@@ -1,12 +1,15 @@
 const { Videogame } = require("../db");
 const { getGamesFromApi } = require("../utils/api.util");
 const { GAMES_PAGE_SIZE } = require("../configs/api.configs");
+const { extractPlatformsFromVideogames } = require("../utils/controllers.util");
 
 async function getVideogames(req, res) {
   try {
     const { page, pageSize } = req.query;
     // Traigo los primeros 100 juegos de la api
     const gamesFromApi = await getGamesFromApi(GAMES_PAGE_SIZE);
+    // Get platforms to add to response
+    const platforms = extractPlatformsFromVideogames(gamesFromApi);
     // Traigo todos los juegos de la base de datos
     const gamesFromDB = await Videogame.findAll();
     // Uno todos los juegos
@@ -34,6 +37,7 @@ async function getVideogames(req, res) {
         prevPage: prevPageUrl,
         nextPage: nextPageUrl,
         results: paginatedVideogames,
+        platforms: platforms,
       });
     } else {
       res.status(400).json({ message: "Error de paginación." });

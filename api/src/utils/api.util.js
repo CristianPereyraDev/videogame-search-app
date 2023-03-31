@@ -46,6 +46,11 @@ async function getGamesFromApi(pageSize, search) {
   }
 }
 
+/**
+ *
+ * @param {*} gameId
+ * @returns
+ */
 async function getGameByIdFromApi(gameId) {
   try {
     const response = await axios.get(
