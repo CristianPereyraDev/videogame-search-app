@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
-import { validateLoginForm } from "./validation";
 import axios from "axios";
 import styles from "./GameForm.module.css";
+import { validateGameForm, validators } from "./validation";
 
 export default function GameForm(props) {
   // States
@@ -40,13 +40,15 @@ export default function GameForm(props) {
     const { name, value } = e.target;
     const newGameData = { ...gameData, [name]: value };
     setGameData(newGameData);
-    //setErrors(validateLoginForm(newGameData));
+    // Validar solo el input que cambió
+    setErrors({ ...errors, [name]: validators[name](newGameData) });
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // La función login viene por props.
-    props.login(gameData);
+    if (validateGameForm(gameData)) {
+      console.log("enviando al server...", gameData);
+    }
   };
 
   // Render
@@ -62,7 +64,7 @@ export default function GameForm(props) {
           name="name"
           value={gameData.name}
           onChange={handleInputChange}
-          placeholder=" "
+          placeholder=""
           className={styles.input}
         />
         <div className={`${styles.cut}`}></div>
@@ -86,23 +88,27 @@ export default function GameForm(props) {
         </p>
       </div>
       {/* platforms input */}
-      <div className={`${styles.inputContainer} ${styles.ic1}`}>
-        {platforms.map((platform) => (
-          <div key={platform.id} className={styles.checkContainer}>
-            <label>
-              <input
-                type="checkbox"
-                name="platforms"
-                value={platform.name}
-                onChange={handleInputChange}
-                className={styles.input}
-              />
-              {platform.name}
-            </label>
-          </div>
-        ))}
-        <div className={`${styles.cut}`}></div>
-        <label className={styles.placeholder}>Platforms</label>
+      <div className={`${styles.inputContainerDropdown} ${styles.ic1}`}>
+        <input type="checkbox" id="platforms_toggle" />
+        <label for="platforms_toggle" className={""}>
+          Platforms
+        </label>
+        <div className={styles.dropdownContent}>
+          {platforms.map((platform) => (
+            <div key={platform.id} className={styles.checkContainer}>
+              <label>
+                <input
+                  type="checkbox"
+                  name="platforms"
+                  value={platform.name}
+                  onChange={handleInputChange}
+                  className={styles.input}
+                />
+                {platform.name}
+              </label>
+            </div>
+          ))}
+        </div>
         <p className={styles.error}>{errors.platforms && errors.platforms}</p>
       </div>
       {/* image input */}
@@ -121,6 +127,9 @@ export default function GameForm(props) {
       </div>
       {/* released input */}
       <div className={`${styles.inputContainer} ${styles.ic1}`}>
+        <div>
+          <label className={""}>Fecha de lanzamiento</label>
+        </div>
         <input
           type="date"
           name="released"
@@ -130,7 +139,6 @@ export default function GameForm(props) {
           className={styles.input}
         />
         <div className={`${styles.cut}`}></div>
-        <label className={styles.placeholder}>Fecha de lanzamiento</label>
         <p className={styles.error}>{errors.released && errors.released}</p>
       </div>
       {/* rating input */}
@@ -149,22 +157,24 @@ export default function GameForm(props) {
       </div>
       {/* Genres input */}
       <div className={`${styles.inputContainer} ${styles.ic1}`}>
-        {genres.map((genre) => (
-          <div key={genre.id} className={styles.checkContainer}>
-            <label>
-              <input
-                type="checkbox"
-                name="platforms"
-                value={genre.name}
-                onChange={handleInputChange}
-                className={styles.input}
-              />
-              {genre.name}
-            </label>
-          </div>
-        ))}
+        <label className={""}>Genres</label>
+        <div className={styles.dropdownContent}>
+          {genres.map((genre) => (
+            <div key={genre.id} className={styles.checkContainer}>
+              <label>
+                <input
+                  type="checkbox"
+                  name="platforms"
+                  value={genre.name}
+                  onChange={handleInputChange}
+                  className={styles.input}
+                />
+                {genre.name}
+              </label>
+            </div>
+          ))}
+        </div>
         <div className={`${styles.cut}`}></div>
-        <label className={styles.placeholder}>Platforms</label>
         <p className={styles.error}>{errors.genres && errors.genres}</p>
       </div>
       <button type="submit" className={`btn ${styles.submit}`}>
