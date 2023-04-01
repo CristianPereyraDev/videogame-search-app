@@ -11,12 +11,14 @@ function App() {
   return (
     <div className="App">
       {location.pathname !== "/" ? <NavBar /> : null}
-      <Routes>
-        <Route path="/" element={<Landing />} />
-        <Route path="/home" element={<Home />} />
-        <Route path="/detail/:gameId" element={<Detail />} />
-        <Route path="/add" element={<GameForm />} />
-      </Routes>
+      <div className="appContent">
+        <Routes>
+          <Route path="/" element={<Landing />} />
+          <Route path="/home" element={<Home />} />
+          <Route path="/detail/:gameId" element={<Detail />} />
+          <Route path="/add" element={<GameForm />} />
+        </Routes>
+      </div>
     </div>
   );
 }

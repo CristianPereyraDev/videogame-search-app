@@ -54,25 +54,22 @@ export default function GameForm(props) {
   // Render
   return (
     <form onSubmit={handleSubmit} className={styles.form}>
-      <div className={styles.title}>
-        <h2>Agregar Videojuego</h2>
-      </div>
+      <div className={styles.title}>Agregar Videojuego</div>
       {/* name input */}
-      <div className={`${styles.inputContainer} ${styles.ic1}`}>
+      <div className={`${styles.inputTextContainer} ${styles.ic1}`}>
         <input
           type="text"
           name="name"
           value={gameData.name}
           onChange={handleInputChange}
-          placeholder=""
+          placeholder=" "
           className={styles.input}
         />
-        <div className={`${styles.cut}`}></div>
         <label className={styles.placeholder}>Name</label>
         <p className={styles.error}>{errors.name && errors.name}</p>
       </div>
       {/* description input */}
-      <div className={`${styles.inputContainer} ${styles.ic1}`}>
+      <div className={`${styles.inputTextContainer} ${styles.ic1}`}>
         <input
           type="text"
           name="description"
@@ -81,18 +78,56 @@ export default function GameForm(props) {
           placeholder=" "
           className={styles.input}
         />
-        <div className={`${styles.cut}`}></div>
         <label className={styles.placeholder}>Description</label>
         <p className={styles.error}>
           {errors.description && errors.description}
         </p>
       </div>
+      {/* image input */}
+      <div className={`${styles.inputTextContainer} ${styles.ic1}`}>
+        <input
+          type="text"
+          name="image"
+          value={gameData.image}
+          onChange={handleInputChange}
+          placeholder=" "
+          className={styles.input}
+        />
+        <label className={styles.placeholder}>Image</label>
+        <p className={styles.error}>{errors.image && errors.image}</p>
+      </div>
+      {/* rating input */}
+      <div className={`${styles.inputTextContainer} ${styles.ic1}`}>
+        <input
+          type="number"
+          name="rating"
+          value={gameData.rating}
+          onChange={handleInputChange}
+          placeholder=" "
+          className={styles.input}
+        />
+        <label className={styles.placeholder}>Rating</label>
+        <p className={styles.error}>{errors.rating && errors.rating}</p>
+      </div>
+      {/* released input */}
+      <div className={`${styles.ic1}`}>
+        <div>
+          <label className={""}>Fecha de lanzamiento</label>
+        </div>
+        <input
+          type="date"
+          name="released"
+          value={gameData.released}
+          onChange={handleInputChange}
+          placeholder=" "
+          className={styles.input}
+        />
+        <p className={styles.error}>{errors.released && errors.released}</p>
+      </div>
       {/* platforms input */}
       <div className={`${styles.inputContainerDropdown} ${styles.ic1}`}>
         <input type="checkbox" id="platforms_toggle" />
-        <label for="platforms_toggle" className={""}>
-          Platforms
-        </label>
+        <label for="platforms_toggle">Elegir Plataformas</label>
         <div className={styles.dropdownContent}>
           {platforms.map((platform) => (
             <div key={platform.id} className={styles.checkContainer}>
@@ -111,53 +146,10 @@ export default function GameForm(props) {
         </div>
         <p className={styles.error}>{errors.platforms && errors.platforms}</p>
       </div>
-      {/* image input */}
-      <div className={`${styles.inputContainer} ${styles.ic1}`}>
-        <input
-          type="text"
-          name="image"
-          value={gameData.image}
-          onChange={handleInputChange}
-          placeholder=" "
-          className={styles.input}
-        />
-        <div className={`${styles.cut}`}></div>
-        <label className={styles.placeholder}>Image</label>
-        <p className={styles.error}>{errors.image && errors.image}</p>
-      </div>
-      {/* released input */}
-      <div className={`${styles.inputContainer} ${styles.ic1}`}>
-        <div>
-          <label className={""}>Fecha de lanzamiento</label>
-        </div>
-        <input
-          type="date"
-          name="released"
-          value={gameData.released}
-          onChange={handleInputChange}
-          placeholder=" "
-          className={styles.input}
-        />
-        <div className={`${styles.cut}`}></div>
-        <p className={styles.error}>{errors.released && errors.released}</p>
-      </div>
-      {/* rating input */}
-      <div className={`${styles.inputContainer} ${styles.ic1}`}>
-        <input
-          type="number"
-          name="rating"
-          value={gameData.rating}
-          onChange={handleInputChange}
-          placeholder=" "
-          className={styles.input}
-        />
-        <div className={`${styles.cut}`}></div>
-        <label className={styles.placeholder}>Rating</label>
-        <p className={styles.error}>{errors.rating && errors.rating}</p>
-      </div>
       {/* Genres input */}
-      <div className={`${styles.inputContainer} ${styles.ic1}`}>
-        <label className={""}>Genres</label>
+      <div className={`${styles.inputContainerDropdown} ${styles.ic1}`}>
+        <input type="checkbox" id="genres_toggle" />
+        <label for="genres_toggle">Elegir Géneros</label>
         <div className={styles.dropdownContent}>
           {genres.map((genre) => (
             <div key={genre.id} className={styles.checkContainer}>
