@@ -6,9 +6,9 @@ const regexDate =
   /[1-9][0-9][0-9]{2}-([0][1-9]|[1][0-2])-([1-2][0-9]|[0][1-9]|[3][0-1])/gm;
 const regexRating = /^[0-5]$|^[0-4].[0-9]$|^[0-4].[0-9][0-9]$/;
 
-export function validateGameForm(errors) {
-  for (const prop in errors) {
-    if (errors[prop] !== "") return false;
+export function validateGameForm(gameData) {
+  for (const prop in gameData) {
+    if (validators[prop](gameData) !== "") return false;
   }
   return true;
 }
@@ -40,14 +40,14 @@ function validateReleased(gameData) {
   return "";
 }
 function validateRating(gameData) {
-  const test = gameData.rating.match(regexRating);
+  const test = gameData.rating.toString().match(regexRating);
   if (!(test && test[0].length === gameData.rating.length))
     return "Rating debe ser un número válido";
   return "";
 }
 function validateGenres(gameData) {
   if (gameData.genres.length === 0)
-    return "Un juego debe tener al menos un género";
+    return "Debes seleccionar al menos un género";
   return "";
 }
 

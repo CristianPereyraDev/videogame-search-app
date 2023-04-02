@@ -18,7 +18,7 @@ export default function GameForm(props) {
     platforms: [], // array of names
     image: "",
     released: formatDate(new Date()),
-    rating: 1,
+    rating: "1",
     genres: [], // array of ids
   });
   const [errors, setErrors] = useState({
@@ -41,10 +41,9 @@ export default function GameForm(props) {
     }
     getPlatformsAndGenres();
   }, []);
-  // Handlers
+  // Handlers. Los grupos de checkbox lo manejan otros handlers (platforms, genres).
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    console.log(name, value);
     const newGameData = { ...gameData, [name]: value };
     setGameData(newGameData);
     // Validar solo el input que cambió
@@ -54,39 +53,45 @@ export default function GameForm(props) {
   const handlePlatformCheckChange = (e) => {
     const { id, checked } = e.target;
     // Actualizo el estado platforms
-    const newState = {
+    const newPlatformsState = {
       ...platforms,
       [id]: { ...platforms[id], checked: checked },
     };
-    setPlatforms(newState);
+    setPlatforms(newPlatformsState);
     // Obtengo la lista de nombres checkeados y solo guardo el nombre.
-    const platformsChecked = Object.values(newState)
+    const platformsChecked = Object.values(newPlatformsState)
       .filter((elem) => elem.checked)
       .map((elem) => elem.data.name);
     // Actualizo el estado gameData. Este estado es el que se va a enviar al servidor.
-    setGameData({ ...gameData, platforms: platformsChecked });
+    const newGameDataState = { ...gameData, platforms: platformsChecked };
+    setGameData(newGameDataState);
+    //
+    setErrors({ ...errors, platforms: validators.platforms(newGameDataState) });
   };
 
   const handleGenreCheckChange = (e) => {
     const { id, checked } = e.target;
     // Actualizo el estado genres
-    const newState = {
+    const newGenresState = {
       ...genres,
       [id]: { ...genres[id], checked: checked },
     };
-    setGenres(newState);
+    setGenres(newGenresState);
     // Obtengo la lista de genres checkeados y guardo solo el id
-    const genresChecked = Object.values(newState)
+    const genresChecked = Object.values(newGenresState)
       .filter((elem) => elem.checked)
       .map((elem) => elem.data.id);
     // Actualizo el estado gameData. Este estado es el que se va a enviar al servidor.
-    setGameData({ ...gameData, genres: genresChecked });
+    const newGameDataState = { ...gameData, genres: genresChecked };
+    setGameData(newGameDataState);
+    //
+    setErrors({ ...errors, genres: validators.genres(newGameDataState) });
   };
 
+  // Este handler hace una última verificación antes de enviar el formulario.
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(errors);
-    if (validateGameForm(errors)) {
+    if (validateGameForm(gameData)) {
       console.log("enviando al server...", gameData);
     } else {
       console.log("No se puede enviar el formulando si hay errores");
