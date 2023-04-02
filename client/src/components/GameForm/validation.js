@@ -4,17 +4,13 @@ const regexDescription = /\b[a-zA-Z][a-zA-Z0-9. ]+/;
 const regexImageUrl = /(http(s?):)([/|.|\w|\s|-])*\.(?:jpg|gif|png)/;
 const regexDate =
   /[1-9][0-9][0-9]{2}-([0][1-9]|[1][0-2])-([1-2][0-9]|[0][1-9]|[3][0-1])/gm;
-const regexRating = /[0-9]+[.][0-9]/;
+const regexRating = /^[0-5]$|^[0-4].[0-9]$|^[0-4].[0-9][0-9]$/;
 
-/**
- * {name: "", description: "", platforms: [], image: "", released: "", rating: 1, genres: [],}
- * @param {*} gameData gameData es un objeto donde cada propiedad corresponde con un input del form.
- * @returns retorna un objeto donde cada propiedad es corresponde a un input y su valor es un string.
- */
-export function validateGameForm(gameData) {
-  const errors = {};
-
-  return errors;
+export function validateGameForm(errors) {
+  for (const prop in errors) {
+    if (errors[prop] !== "") return false;
+  }
+  return true;
 }
 
 function validateName(gameData) {
@@ -43,8 +39,17 @@ function validateReleased(gameData) {
   if (!regexDate.test(gameData.released)) return "Formato de fecha no válido";
   return "";
 }
-function validateRating(gameData) {}
-function validateGenres(gameData) {}
+function validateRating(gameData) {
+  const test = gameData.rating.match(regexRating);
+  if (!(test && test[0].length === gameData.rating.length))
+    return "Rating debe ser un número válido";
+  return "";
+}
+function validateGenres(gameData) {
+  if (gameData.genres.length === 0)
+    return "Un juego debe tener al menos un género";
+  return "";
+}
 
 /**
  * It's a object where each property represents a input name and it's value is a callback

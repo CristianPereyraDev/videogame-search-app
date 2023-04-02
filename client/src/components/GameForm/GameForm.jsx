@@ -2,52 +2,94 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import styles from "./GameForm.module.css";
 import { validateGameForm, validators } from "./validation";
+import { formatDate } from "../../utils/date.util";
+import {
+  makeUncheckedPlatforms,
+  makeUncheckedGenres,
+} from "../../utils/form.util";
 
 export default function GameForm(props) {
   // States
-  const [platforms, setPlatforms] = useState([]);
-  const [genres, setGenres] = useState([]);
+  const [platforms, setPlatforms] = useState({});
+  const [genres, setGenres] = useState({});
   const [gameData, setGameData] = useState({
     name: "",
     description: "",
-    platforms: [],
+    platforms: [], // array of names
     image: "",
-    released: "",
+    released: formatDate(new Date()),
     rating: 1,
-    genres: [],
+    genres: [], // array of ids
   });
   const [errors, setErrors] = useState({
     name: "",
     description: "",
     platforms: "",
     image: "",
-    released: "2018-07-22",
+    released: "",
     rating: "",
     genres: "",
   });
   // Use effets
   useEffect(() => {
     async function getPlatformsAndGenres() {
+      // Get platforms and set platfroms state
       let response = await axios.get("http://localhost:3001/platforms");
-      setPlatforms(response.data.platforms);
+      setPlatforms(makeUncheckedPlatforms(response.data.platforms));
       response = await axios.get("http://localhost:3001/genres");
-      setGenres(response.data);
+      setGenres(makeUncheckedGenres(response.data));
     }
     getPlatformsAndGenres();
   }, []);
   // Handlers
   const handleInputChange = (e) => {
     const { name, value } = e.target;
+    console.log(name, value);
     const newGameData = { ...gameData, [name]: value };
     setGameData(newGameData);
     // Validar solo el input que cambió
     setErrors({ ...errors, [name]: validators[name](newGameData) });
   };
 
+  const handlePlatformCheckChange = (e) => {
+    const { id, checked } = e.target;
+    // Actualizo el estado platforms
+    const newState = {
+      ...platforms,
+      [id]: { ...platforms[id], checked: checked },
+    };
+    setPlatforms(newState);
+    // Obtengo la lista de nombres checkeados y solo guardo el nombre.
+    const platformsChecked = Object.values(newState)
+      .filter((elem) => elem.checked)
+      .map((elem) => elem.data.name);
+    // Actualizo el estado gameData. Este estado es el que se va a enviar al servidor.
+    setGameData({ ...gameData, platforms: platformsChecked });
+  };
+
+  const handleGenreCheckChange = (e) => {
+    const { id, checked } = e.target;
+    // Actualizo el estado genres
+    const newState = {
+      ...genres,
+      [id]: { ...genres[id], checked: checked },
+    };
+    setGenres(newState);
+    // Obtengo la lista de genres checkeados y guardo solo el id
+    const genresChecked = Object.values(newState)
+      .filter((elem) => elem.checked)
+      .map((elem) => elem.data.id);
+    // Actualizo el estado gameData. Este estado es el que se va a enviar al servidor.
+    setGameData({ ...gameData, genres: genresChecked });
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (validateGameForm(gameData)) {
+    console.log(errors);
+    if (validateGameForm(errors)) {
       console.log("enviando al server...", gameData);
+    } else {
+      console.log("No se puede enviar el formulando si hay errores");
     }
   };
 
@@ -99,7 +141,7 @@ export default function GameForm(props) {
       {/* rating input */}
       <div className={`${styles.inputTextContainer} ${styles.ic1}`}>
         <input
-          type="number"
+          type="text"
           name="rating"
           value={gameData.rating}
           onChange={handleInputChange}
@@ -127,19 +169,20 @@ export default function GameForm(props) {
       {/* platforms input */}
       <div className={`${styles.inputContainerDropdown} ${styles.ic1}`}>
         <input type="checkbox" id="platforms_toggle" />
-        <label for="platforms_toggle">Elegir Plataformas</label>
+        <label htmlFor="platforms_toggle">Elegir Plataformas</label>
         <div className={styles.dropdownContent}>
-          {platforms.map((platform) => (
-            <div key={platform.id} className={styles.checkContainer}>
+          {Object.keys(platforms).map((platformId) => (
+            <div key={platformId} className={styles.checkContainer}>
               <label>
                 <input
                   type="checkbox"
-                  name="platforms"
-                  value={platform.name}
-                  onChange={handleInputChange}
+                  id={platformId}
+                  name={platformId}
+                  checked={platforms[platformId].checked}
+                  onChange={handlePlatformCheckChange}
                   className={styles.input}
                 />
-                {platform.name}
+                {platforms[platformId].data.name}
               </label>
             </div>
           ))}
@@ -149,19 +192,20 @@ export default function GameForm(props) {
       {/* Genres input */}
       <div className={`${styles.inputContainerDropdown} ${styles.ic1}`}>
         <input type="checkbox" id="genres_toggle" />
-        <label for="genres_toggle">Elegir Géneros</label>
+        <label htmlFor="genres_toggle">Elegir Géneros</label>
         <div className={styles.dropdownContent}>
-          {genres.map((genre) => (
-            <div key={genre.id} className={styles.checkContainer}>
+          {Object.keys(genres).map((genreId) => (
+            <div key={genreId} className={styles.checkContainer}>
               <label>
                 <input
                   type="checkbox"
-                  name="platforms"
-                  value={genre.name}
-                  onChange={handleInputChange}
+                  id={genreId}
+                  name={genreId}
+                  checked={genres[genreId].checked}
+                  onChange={handleGenreCheckChange}
                   className={styles.input}
                 />
-                {genre.name}
+                {genres[genreId].data.name}
               </label>
             </div>
           ))}
