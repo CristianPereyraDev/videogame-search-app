@@ -89,10 +89,16 @@ export default function GameForm(props) {
   };
 
   // Este handler hace una última verificación antes de enviar el formulario.
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (validateGameForm(gameData)) {
       console.log("enviando al server...", gameData);
+      try {
+        const response = await axios.post(
+          "http://localhost:3001/videogames",
+          gameData
+        );
+      } catch (error) {}
     } else {
       console.log("No se puede enviar el formulando si hay errores");
     }
