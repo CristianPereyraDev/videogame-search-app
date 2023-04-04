@@ -1,0 +1,29 @@
+.search {
+  width: 100;
+  display: flex;
+}
+
+.searchTerm {
+  width: 100%;
+  border: 3px solid #00b4cc;
+  border-right: none;
+  padding: 5px;
+  border-radius: 5px 0 0 5px;
+  outline: none;
+  background: none;
+}
+
+.searchTerm:focus {
+  color: aquamarine;
+}
+
+.searchButton {
+  width: 40px;
+  height: 36px;
+  background-color: transparent;
+  text-align: center;
+  color: black;
+  border-radius: 0 5px 5px 0;
+  cursor: pointer;
+  border: 3px solid #00b4cc;
+}

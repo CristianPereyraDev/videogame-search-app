@@ -1,16 +1,26 @@
-.Navbar {
+.navbar {
   display: flex;
-  justify-content: space-between;
-  background-color: #66a3f2;
+  justify-content: flex-start;
+  align-items: center;
+  height: 50px;
   padding: 10px;
 }
-.NavbarLinkContainer {
+
+a.navbarLink {
+  margin-right: 10px;
+  text-decoration: none;
+}
+
+a.navbarLink img {
+  height: 60px;
+}
+
+.navbarButton {
   display: flex;
-  flex: 2;
-}
-.NavbarLinkContainer > div {
-  margin-right: 5px;
-}
-.SearchBarContainer {
-  flex: 1;
+  align-items: center;
+  text-decoration: none;
+  background: none;
+  color: aliceblue;
+  border: 1px solid salmon;
+  border-radius: 6px;
 }

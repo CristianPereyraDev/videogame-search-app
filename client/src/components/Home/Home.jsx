@@ -32,7 +32,7 @@ export default function Home(props) {
       <div className={styles.cardsContainer}>
         <Cards></Cards>
       </div>
-      <div className={styles.paginationContainer}>
+      <div className={styles.homeFooter}>
         <Pagination></Pagination>
       </div>
     </div>

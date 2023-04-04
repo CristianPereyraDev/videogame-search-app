@@ -21,10 +21,12 @@
   text-align: right;
 }
 .cardsContainer {
-  background-color: burlywood;
   flex: 1 0 auto;
 }
-.paginationContainer {
+.homeFooter {
   background-color: brown;
   flex-shrink: 0;
+  position: fixed;
+  width: 100%;
+  bottom: 0;
 }

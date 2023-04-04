@@ -1,10 +1,13 @@
 .App {
-  text-align: center;
-  height: 100%;
   display: flex;
   flex-direction: column;
+  text-align: center;
+  height: 100%;
 }
 
-.appContent {
+.navbarContainer {
+}
+
+.content {
   margin-top: 8px;
 }

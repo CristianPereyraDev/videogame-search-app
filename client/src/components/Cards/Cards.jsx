@@ -9,7 +9,7 @@ export default function Cards(props) {
   });
 
   return (
-    <div className={styles.cardsContainer}>
+    <div className={styles.container}>
       {filteredAndOrdered.map((videogame) => (
         <Card
           key={videogame.id}

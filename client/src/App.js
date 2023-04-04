@@ -10,15 +10,17 @@ function App() {
   const location = useLocation();
   return (
     <div className="App">
-      {location.pathname !== "/" ? <NavBar /> : null}
-      <div className="appContent">
-        <Routes>
-          <Route path="/" element={<Landing />} />
-          <Route path="/home" element={<Home />} />
-          <Route path="/detail/:gameId" element={<Detail />} />
-          <Route path="/add" element={<GameForm />} />
-        </Routes>
-      </div>
+      {location.pathname !== "/" ? (
+        <div className="navbarContainer">
+          <NavBar />
+        </div>
+      ) : null}
+      <Routes>
+        <Route path="/" element={<Landing />} />
+        <Route path="/home" element={<Home />} />
+        <Route path="/detail/:gameId" element={<Detail />} />
+        <Route path="/add" element={<GameForm />} />
+      </Routes>
     </div>
   );
 }
