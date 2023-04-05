@@ -20,38 +20,31 @@ export default function Order(props) {
   }
 
   function handleOrderChange(e) {
-    const newState = { ...order, method: e.target.value };
+    const orderMethod = e.target.checked
+      ? OrderMethod.Ascendent
+      : OrderMethod.Descendent;
+    const newState = { ...order, method: orderMethod };
     setOrder(newState);
     dispatch(orderVideogames(newState));
   }
 
   return (
-    <div>
+    <div className={styles.orderContainer}>
       <select onChange={handleOrderByChange}>
         <option value="">Order By</option>
         <option value="name">Nombre</option>
         <option value="rating">Rating</option>
       </select>
-      <div>
+      <label className={styles.switch}>
         <input
-          type="radio"
+          type="checkbox"
           name="order"
-          id="asc"
-          value={OrderMethod.Ascendent}
+          id="order"
           checked={order.method === OrderMethod.Ascendent}
           onChange={handleOrderChange}
         />
-        <label htmlFor="asc">{OrderMethod.Ascendent}</label>
-        <input
-          type="radio"
-          name="order"
-          id="desc"
-          value={OrderMethod.Descendent}
-          checked={order.method === OrderMethod.Descendent}
-          onChange={handleOrderChange}
-        />
-        <label htmlFor="desc">{OrderMethod.Descendent}</label>
-      </div>
+        <span className={`${styles.slider} ${styles.round}`}></span>
+      </label>
     </div>
   );
 }

@@ -7,6 +7,7 @@
 .homeNavbar {
   display: flex;
   justify-content: space-between;
+  align-items: center;
   padding: 10px;
 }
 .searchBar {
@@ -15,6 +16,7 @@
 }
 .orderBar {
   flex-grow: 1;
+  text-align: center;
 }
 .filterBar {
   flex-grow: 1;

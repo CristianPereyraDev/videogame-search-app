@@ -11,14 +11,15 @@ export default function Card(props) {
         <img src={props.image} alt="" />
       </div>
       <div className={styles.cardText}>
-        <Link to={`/detail/${props.id}`}>
-          <h3>{props.name}</h3>
-        </Link>
-        <h4>
+        <div className={styles.cardTitle}>
+          <Link to={`/detail/${props.id}`}>{props.name}</Link>
+        </div>
+        <div className={styles.cardGenres}>
+          <label>Géneros:</label>
           {props.genres.map((genre) => (
             <span key={genre.id}>{genre.name}</span>
           ))}
-        </h4>
+        </div>
       </div>
     </div>
   );

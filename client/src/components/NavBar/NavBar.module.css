@@ -1,26 +1,41 @@
 .navbar {
   display: flex;
-  justify-content: flex-start;
+  justify-content: space-between;
   align-items: center;
   height: 50px;
   padding: 10px;
+  border-bottom: 1px solid white;
 }
 
 a.navbarLink {
   margin-right: 10px;
   text-decoration: none;
+  color: coral;
+  font-size: 16px;
+}
+
+a.navbarLink:hover {
+  color: burlywood;
+}
+
+a.active {
+  color: aqua;
 }
 
 a.navbarLink img {
   height: 60px;
 }
 
-.navbarButton {
+button.navbarButton {
   display: flex;
   align-items: center;
   text-decoration: none;
   background: none;
   color: aliceblue;
-  border: 1px solid salmon;
+  border: none;
   border-radius: 6px;
+}
+
+.navbarButton .buttonText {
+  color: coral;
 }

@@ -1,25 +1,37 @@
 .card {
   display: grid;
-  background-color: #496e8c;
+  background-color: #7e7e7e;
   border-radius: 3%;
-  max-width: 200px;
+  max-width: 300px;
   margin: auto;
   padding: 0;
   overflow: hidden;
   position: relative;
   box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.9);
 }
-.cardImage img {
+
+.card a {
+  text-decoration: none;
+  color: #fff;
+}
+
+.card .cardImage img {
   max-width: 100%;
   height: auto;
 }
-.card button {
-  position: absolute;
-  left: 0;
-  margin: 5px 0px auto;
+
+.card .cardText {
+  text-align: left;
+  margin-left: 10px;
 }
-.card h3,
-h4 {
-  color: #fff;
-  margin: 5px;
+
+.card .cardTitle {
+  font-size: 18px;
+  margin-top: 5px;
+}
+
+.card .cardGenres {
+  font-size: 16px;
+  margin-top: 5px;
+  margin-bottom: 5px;
 }
