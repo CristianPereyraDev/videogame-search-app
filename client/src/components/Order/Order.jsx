@@ -30,11 +30,13 @@ export default function Order(props) {
 
   return (
     <div className={styles.orderContainer}>
-      <select onChange={handleOrderByChange}>
-        <option value="">Order By</option>
-        <option value="name">Nombre</option>
-        <option value="rating">Rating</option>
-      </select>
+      <div className={styles.select}>
+        <select onChange={handleOrderByChange}>
+          <option value="">Order By</option>
+          <option value="name">Nombre</option>
+          <option value="rating">Rating</option>
+        </select>
+      </div>
       <label className={styles.switch}>
         <input
           type="checkbox"

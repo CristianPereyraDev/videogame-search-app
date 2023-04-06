@@ -46,19 +46,23 @@ export default function Filters(props) {
   }
 
   return (
-    <div>
-      <select onChange={handleSourceFilterChange}>
-        <option value="">Source filter</option>
-        <option value="api">API</option>
-        <option value="db">Database</option>
-      </select>
-      <select onChange={handleGenreFilterChange}>
-        {genres.map((genre) => (
-          <option value={genre.id} key={genre.id}>
-            {genre.name}
-          </option>
-        ))}
-      </select>
+    <div className={styles.filters}>
+      <div>
+        <select onChange={handleSourceFilterChange}>
+          <option value="">Source filter</option>
+          <option value="api">API</option>
+          <option value="db">Database</option>
+        </select>
+      </div>
+      <div>
+        <select onChange={handleGenreFilterChange}>
+          {genres.map((genre) => (
+            <option value={genre.id} key={genre.id}>
+              {genre.name}
+            </option>
+          ))}
+        </select>
+      </div>
     </div>
   );
 }

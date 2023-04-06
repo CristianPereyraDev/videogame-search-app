@@ -18,19 +18,21 @@ export default function Home(props) {
 
   return (
     <div className={styles.homeContainer}>
-      <div className={styles.homeNavbar}>
+      <div className={styles.topNavbar}>
         <div className={styles.searchBar}>
           <SearchBar></SearchBar>
         </div>
         <div className={styles.orderBar}>
           <Order></Order>
         </div>
-        <div className={styles.filterBar}>
+      </div>
+      <div className={styles.content}>
+        <div className={styles.leftNavbar}>
           <Filters></Filters>
         </div>
-      </div>
-      <div className={styles.cardsContainer}>
-        <Cards></Cards>
+        <div className={styles.cards}>
+          <Cards></Cards>
+        </div>
       </div>
       <div className={styles.homeFooter}>
         <Pagination></Pagination>

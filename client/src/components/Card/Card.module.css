@@ -22,7 +22,9 @@
 
 .card .cardText {
   text-align: left;
-  margin-left: 10px;
+  margin-left: 5px;
+  margin-right: 5px;
+  margin-bottom: 10px;
 }
 
 .card .cardTitle {
@@ -31,7 +33,8 @@
 }
 
 .card .cardGenres {
+  display: flex;
+  justify-content: space-between;
   font-size: 16px;
-  margin-top: 5px;
-  margin-bottom: 5px;
+  margin-top: 10px;
 }

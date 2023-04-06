@@ -16,9 +16,14 @@ export default function Card(props) {
         </div>
         <div className={styles.cardGenres}>
           <label>Géneros:</label>
-          {props.genres.map((genre) => (
-            <span key={genre.id}>{genre.name}</span>
-          ))}
+          <div>
+            {props.genres.map((genre, i) => (
+              <span key={genre.id}>
+                {i !== 0 ? ", " : ""}
+                {genre.name}
+              </span>
+            ))}
+          </div>
         </div>
       </div>
     </div>

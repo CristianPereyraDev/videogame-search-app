@@ -4,26 +4,28 @@
   justify-content: space-between;
   height: 100%;
 }
-.homeNavbar {
+.topNavbar {
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 10px;
 }
-.searchBar {
-  flex-grow: 2;
-  text-align: left;
+.topNavbar .searchBar {
+  flex: 1;
 }
-.orderBar {
-  flex-grow: 1;
-  text-align: center;
+.topNavbar .orderBar {
+  flex: 1;
 }
-.filterBar {
-  flex-grow: 1;
+.content {
+  display: flex;
+  flex: 1 0 auto;
+}
+.content .leftNavbar {
+  flex: 1;
   text-align: right;
 }
-.cardsContainer {
-  flex: 1 0 auto;
+.content .cards {
+  flex: 3;
 }
 .homeFooter {
   background-color: brown;

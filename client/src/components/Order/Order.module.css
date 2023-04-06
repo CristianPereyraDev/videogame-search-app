@@ -1,5 +1,11 @@
 .orderContainer {
   display: flex;
+  justify-content: end;
+  align-items: center;
+}
+
+.orderContainer .select {
+  margin-right: 8px;
 }
 
 /*  */
