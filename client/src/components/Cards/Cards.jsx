@@ -1,24 +1,23 @@
-import { useSelector } from "react-redux";
 import Card from "../Card/Card";
 import styles from "./Cards.module.css";
+import { useSelector } from "react-redux";
 
-export default function Cards(props) {
-  // Listens the global store for changes
-  const { videogames } = useSelector((state) => {
-    return state;
-  });
-
+export default function Cards({ videogames }) {
+  // El estado global "loading" me dice si se estan cargando cards desde el back.
+  const { loading } = useSelector((state) => state);
   return (
     <div className={styles.container}>
-      {videogames.map((videogame) => (
-        <Card
-          key={videogame.id}
-          id={videogame.id}
-          name={videogame.name}
-          image={videogame.background_image}
-          genres={videogame.genres}
-        />
-      ))}
+      <div className={styles.cardsContainer}>
+        {videogames.map((videogame) => (
+          <Card
+            key={videogame.id}
+            id={videogame.id}
+            name={videogame.name}
+            image={videogame.background_image}
+            genres={videogame.genres}
+          />
+        ))}
+      </div>
     </div>
   );
 }

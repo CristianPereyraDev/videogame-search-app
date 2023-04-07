@@ -1,6 +1,21 @@
-import { CHANGE_PAGE, SEARCH_BY_NAME, FILTER, ORDER } from "./types";
+import {
+  CHANGE_PAGE,
+  SEARCH_BY_NAME,
+  FILTER_AND_ORDER,
+  GET_VIDEOGAMES_STARTED,
+  GET_VIDEOGAMES_FAILED,
+} from "./types";
 import axios from "axios";
 import { MAX_SEARCH_COUNT } from "../../configs/pagination.config";
+
+// Actions to manage loading state in async tasks
+export function getVideogamesStarted() {
+  return { type: GET_VIDEOGAMES_STARTED };
+}
+
+export function getVideogamesFailed(error) {
+  return { type: GET_VIDEOGAMES_FAILED, payload: error };
+}
 
 /**
  * Acción que modifica el estado del páginado en el store.
@@ -9,6 +24,7 @@ import { MAX_SEARCH_COUNT } from "../../configs/pagination.config";
  */
 export function changePage(pageUrl) {
   return async function (dispatch) {
+    dispatch(getVideogamesStarted());
     try {
       /**
        * Traigo la página desde el back y le aviso al reducer que hay que hacer cambios
@@ -20,7 +36,7 @@ export function changePage(pageUrl) {
         payload: response.data, // { prevPage:..., nextPage:..., results:... }
       });
     } catch (error) {
-      console.log(error);
+      dispatch(getVideogamesFailed(error));
     }
   };
 }
@@ -28,6 +44,7 @@ export function changePage(pageUrl) {
 /** */
 export function searchByName(name) {
   return async function (dispatch) {
+    dispatch(getVideogamesStarted());
     try {
       const response = await axios.get(
         `http://localhost:3001/videogames/name?name=${name}&page=1&pageSize=${MAX_SEARCH_COUNT}`
@@ -38,7 +55,7 @@ export function searchByName(name) {
         payload: response.data, // { nextPage:..., results:... }
       });
     } catch (error) {
-      console.log(error);
+      dispatch(getVideogamesFailed(error));
     }
   };
 }
@@ -48,28 +65,20 @@ export function searchByName(name) {
  * @param {*} filter callback to filter videogames
  * @returns
  */
-export function filterVideogames(filter) {
+export function filterAndSortVideogames(filter, order) {
   return async function (dispatch) {
+    dispatch(getVideogamesStarted());
     try {
       const response = await axios.get(
-        `http://localhost:3001/videogames?page=1&pageSize=${MAX_SEARCH_COUNT}&filterProp=${filter.prop}&filterValue=${filter.value}`
+        `http://localhost:3001/videogames?page=1&pageSize=${MAX_SEARCH_COUNT}&filterProp=${filter.prop}&filterValue=${filter.value}&orderBy=${order.by}&orderMethod=${order.method}`
       );
       // Dispath the action
       dispatch({
-        type: FILTER,
-        payload: { data: response.data, filter: filter },
+        type: FILTER_AND_ORDER,
+        payload: { data: response.data, filter: filter, order: order },
       });
     } catch (error) {
-      console.log(error);
+      dispatch(getVideogamesFailed(error));
     }
   };
-}
-
-/**
- * Acción cambia el orden de los videojuegos en el store.
- * @param {*} order
- * @returns
- */
-export function orderVideogames(order) {
-  return { type: ORDER, payload: order };
 }

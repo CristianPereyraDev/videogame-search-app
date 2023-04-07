@@ -1,14 +1,12 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import styles from "./Filters.module.css";
-import { useDispatch, useSelector } from "react-redux";
-import { filterVideogames } from "../../redux/actions/actions";
+import { useSelector } from "react-redux";
 
 export default function Filters(props) {
   const [genres, setGenres] = useState([]);
   // Sync with global state
   const { filter } = useSelector((state) => state);
-  const dispath = useDispatch();
 
   // Cuando se monta el componente cargo todos los generos en el estado genres.
   useEffect(() => {
@@ -26,12 +24,12 @@ export default function Filters(props) {
   function handleSourceFilterChange(e) {
     const source = e.target.value;
 
-    if (source) dispath(filterVideogames({ prop: "source", value: source }));
+    if (source) props.handlerChange({ prop: "source", value: source });
   }
 
   function handleGenreFilterChange(e) {
     const genre = e.target.value;
-    if (genre) dispath(filterVideogames({ prop: "genres", value: genre }));
+    if (genre) props.handlerChange({ prop: "genres", value: genre });
   }
 
   return (
@@ -39,37 +37,17 @@ export default function Filters(props) {
       <div>
         <h4>Source</h4>
         <select onChange={handleSourceFilterChange}>
-          <option value="none"></option>
-          <option
-            value="api"
-            selected={
-              filter && filter.prop === "source" && filter.value === "api"
-            }
-          >
-            API
-          </option>
-          <option
-            value="db"
-            selected={
-              filter && filter.prop === "source" && filter.value === "db"
-            }
-          >
-            Database
-          </option>
+          <option value="none">Elije una fuente:</option>
+          <option value="api">API</option>
+          <option value="db">Database</option>
         </select>
       </div>
       <div>
         <h4>Géneros</h4>
         <select onChange={handleGenreFilterChange}>
-          <option value="none"></option>
+          <option value="none">Elije un género:</option>
           {genres.map((genre) => (
-            <option
-              key={genre.id}
-              value={genre.id}
-              selected={
-                filter && filter.prop === "genres" && filter.value === genre.id
-              }
-            >
+            <option key={genre.id} value={genre.id}>
               {genre.name}
             </option>
           ))}

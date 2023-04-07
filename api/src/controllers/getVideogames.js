@@ -1,37 +1,40 @@
 const { Videogame } = require("../db");
 const { getGamesFromApi } = require("../utils/api.util");
-const { GAMES_PAGE_SIZE } = require("../configs/api.configs");
-const { extractPlatformsFromVideogames } = require("../utils/controllers.util");
-const { getFilterCb } = require("../utils/filters.util");
+const { API_PAGE_SIZE, DEFAULT_PAGE_SIZE } = require("../configs/api.configs");
+const { filterAndSort } = require("../utils/filterAndSort.util");
 
 async function getVideogames(req, res) {
   try {
-    const { page, pageSize, filterProp, filterValue, orderBy, orderMethod } =
-      req.query;
+    const { filterProp, filterValue, orderBy, orderMethod } = req.query;
+    const page = req.query.page ? req.query.page : 1;
+    const pageSize = req.query.pageSize
+      ? req.query.pageSize
+      : DEFAULT_PAGE_SIZE;
     // Traigo los primeros 100 juegos de la api
-    const gamesFromApi = await getGamesFromApi(GAMES_PAGE_SIZE);
-    // Get platforms to add to response
-    const platforms = extractPlatformsFromVideogames(gamesFromApi);
+    const gamesFromApi = await getGamesFromApi(API_PAGE_SIZE);
     // Traigo todos los juegos de la base de datos
     const gamesFromDB = await Videogame.findAll();
     // Uno los juegos de la api y la base de datos
     const gamesFromApiAndDB = [...gamesFromDB, ...gamesFromApi];
-    // Aplico el filtro
-    let filterCb = getFilterCb(filterProp, filterValue);
-    const filtered = gamesFromApiAndDB.filter(filterCb);
-    if (filtered.length === 0)
+    // Aplico el filtro y el ordenamiento
+    const filteredAndSorted = filterAndSort(
+      gamesFromApiAndDB,
+      { prop: filterProp, value: filterValue }, // filter object
+      { by: orderBy, method: orderMethod } // order object
+    );
+    // Si no hay juegos que retornar
+    if (filteredAndSorted.length === 0)
       return res.status(200).json({
         prevPage: null,
         nextPage: null,
         results: [],
-        platforms: platforms,
       });
-    // Pagination
-    const maxPages = Math.ceil(filtered.length / pageSize);
+    // Pagination. Se extrae una porción del arreglo que contiene todos los videojuegos.
+    const maxPages = Math.ceil(filteredAndSorted.length / pageSize);
     if (page >= 1 && page <= maxPages) {
       const startPage = pageSize * (page - 1);
       const endPage = pageSize * page;
-      const paginatedVideogames = filtered.slice(startPage, endPage);
+      const paginatedVideogames = filteredAndSorted.slice(startPage, endPage);
       const nextPageUrl =
         page < maxPages
           ? `${req.protocol}://${req.get("host")}/videogames?page=${
@@ -49,10 +52,9 @@ async function getVideogames(req, res) {
         prevPage: prevPageUrl,
         nextPage: nextPageUrl,
         results: paginatedVideogames,
-        platforms: platforms,
       });
     } else {
-      res.status(400).json({ message: "Error de paginación." });
+      res.status(404).json({ message: "Error de paginación." });
     }
   } catch (error) {
     res.status(400).json({ message: error.message });

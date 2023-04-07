@@ -1,6 +1,12 @@
-.container {
+.cardsContainer {
   display: flex;
   flex-wrap: wrap;
   align-items: baseline;
   gap: 10px;
+}
+
+.loading {
+  position: absolute;
+  top: 0;
+  z-index: 2;
 }
