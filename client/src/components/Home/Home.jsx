@@ -11,13 +11,14 @@ import { changePage } from "../../redux/actions/actions";
 export default function Home(props) {
   const dispatch = useDispatch();
 
-  // Cuando se monta el componente cargo la primer página de videojuegos.
+  // Cuando se monta el componente cargo la primer página de videojuegos sin filtros ni ordenamiento.
   useEffect(() => {
     dispatch(changePage("http://localhost:3001/videogames?page=1&pageSize=15"));
   }, []);
 
   return (
     <div className={styles.homeContainer}>
+      {/* Top navbar */}
       <div className={styles.topNavbar}>
         <div className={styles.searchBar}>
           <SearchBar></SearchBar>
@@ -26,6 +27,7 @@ export default function Home(props) {
           <Order></Order>
         </div>
       </div>
+      {/* Cards and filters */}
       <div className={styles.content}>
         <div className={styles.leftNavbar}>
           <Filters></Filters>
@@ -34,6 +36,7 @@ export default function Home(props) {
           <Cards></Cards>
         </div>
       </div>
+      {/* Pagination */}
       <div className={styles.homeFooter}>
         <Pagination></Pagination>
       </div>

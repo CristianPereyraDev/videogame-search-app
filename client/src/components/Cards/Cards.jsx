@@ -1,16 +1,16 @@
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import Card from "../Card/Card";
 import styles from "./Cards.module.css";
 
 export default function Cards(props) {
   // Listens the global store for changes
-  const { videogames, filteredAndOrdered } = useSelector((state) => {
+  const { videogames } = useSelector((state) => {
     return state;
   });
 
   return (
     <div className={styles.container}>
-      {filteredAndOrdered.map((videogame) => (
+      {videogames.map((videogame) => (
         <Card
           key={videogame.id}
           id={videogame.id}

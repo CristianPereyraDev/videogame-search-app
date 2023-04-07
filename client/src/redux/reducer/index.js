@@ -1,10 +1,9 @@
 import { CHANGE_PAGE, SEARCH_BY_NAME, FILTER, ORDER } from "../actions/types";
-import { filterAndOrder, OrderMethod } from "../../utils/reducer.util";
+import { OrderMethod } from "../../utils/reducer.util";
 
 const initialState = {
-  videogames: [], // videogames without filtering and ordering
-  filteredAndOrdered: [], // videogames after apply filters
-  filter: (videogame) => true, // a filter is a boolean function
+  videogames: [],
+  filter: null, // a filter is a object like { prop: "genres", value: 1 }
   nextPage: null,
   prevPage: null,
   order: { by: null, method: OrderMethod.Ascendent },
@@ -18,7 +17,6 @@ function rootReducer(state = initialState, { type, payload }) {
       return {
         ...state,
         videogames: results,
-        filteredAndOrdered: filterAndOrder(results, state.filter, state.order),
         prevPage: prevPage,
         nextPage: nextPage,
       };
@@ -29,22 +27,20 @@ function rootReducer(state = initialState, { type, payload }) {
       return {
         ...state,
         videogames: results,
-        filteredAndOrdered: filterAndOrder(results, state.filter, state.order),
         prevPage: prevPage,
         nextPage: nextPage,
       };
     }
 
     case FILTER: {
-      console.log("Filter", payload);
+      const { data, filter } = payload;
+      console.log("Reducer-FILTER: ", data);
       return {
         ...state,
-        filter: payload,
-        filteredAndOrdered: filterAndOrder(
-          state.videogames,
-          payload,
-          state.order
-        ),
+        videogames: data.results,
+        prevPage: data.prevPage,
+        nextPage: data.nextPage,
+        filter: filter,
       };
     }
 
@@ -53,11 +49,6 @@ function rootReducer(state = initialState, { type, payload }) {
       return {
         ...state,
         order: payload,
-        filteredAndOrdered: filterAndOrder(
-          state.videogames,
-          state.filter,
-          payload
-        ),
       };
     }
 

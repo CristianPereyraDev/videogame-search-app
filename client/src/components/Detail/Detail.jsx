@@ -29,7 +29,7 @@ export default function Detail(props) {
   return (
     <div>
       <Link to="/home">
-        <button>Go Back</button>
+        <button>Home</button>
       </Link>
       <div className={styles.detailContainer}>
         {/* Render name */}
