@@ -4,7 +4,7 @@ import Cards from "../Cards/Cards";
 import Pagination from "../Pagination/Pagination";
 import Order from "../Order/Order";
 import Filters from "../Filters/Filters";
-import Loading from "../Loading/Loading";
+import Loading from "../Utils/Loading";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {

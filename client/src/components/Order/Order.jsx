@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { OrderMethod } from "../../utils/reducer.util";
 import styles from "./Order.module.css";
+import Select from "../Utils/Select";
 
 export default function Order(props) {
   const [order, setOrder] = useState({
@@ -28,11 +29,14 @@ export default function Order(props) {
   return (
     <div className={styles.orderContainer}>
       <div className={styles.select}>
-        <select onChange={handleOrderByChange}>
-          <option value="">Order By</option>
-          <option value="name">Nombre</option>
-          <option value="rating">Rating</option>
-        </select>
+        <Select
+          titleOption={{ value: "none", name: "Order By:" }}
+          options={[
+            { id: 1, value: "name", name: "Nombre" },
+            { id: 2, value: "rating", name: "Rating" },
+          ]}
+          changeHandler={handleOrderByChange}
+        />
       </div>
       <label className={styles.switch}>
         <input

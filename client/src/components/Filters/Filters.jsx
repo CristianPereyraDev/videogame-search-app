@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import styles from "./Filters.module.css";
 import { useSelector } from "react-redux";
+import Select from "../Utils/Select";
 
 export default function Filters(props) {
   const [genres, setGenres] = useState([]);
@@ -36,22 +37,24 @@ export default function Filters(props) {
     <div className={styles.filters}>
       <div>
         <h4>Source</h4>
-        <select onChange={handleSourceFilterChange}>
-          <option value="none">Elije una fuente:</option>
-          <option value="api">API</option>
-          <option value="db">Database</option>
-        </select>
+        <Select
+          titleOption={{ value: "none", name: "Elije una fuente:" }}
+          options={[
+            { id: 1, value: "api", name: "API" },
+            { id: 2, value: "db", name: "Database" },
+          ]}
+          changeHandler={handleSourceFilterChange}
+        ></Select>
       </div>
       <div>
         <h4>Géneros</h4>
-        <select onChange={handleGenreFilterChange}>
-          <option value="none">Elije un género:</option>
-          {genres.map((genre) => (
-            <option key={genre.id} value={genre.id}>
-              {genre.name}
-            </option>
-          ))}
-        </select>
+        <Select
+          titleOption={{ id: 1, value: "none", name: "Elije una género:" }}
+          options={genres.map((genre) => {
+            return { id: genre.id, value: genre.id, name: genre.name };
+          })}
+          changeHandler={handleGenreFilterChange}
+        />
       </div>
     </div>
   );
