@@ -4,7 +4,6 @@ const fs = require("fs");
 
 async function postVideogames(req, res) {
   try {
-    console.log("file:", req.body, req.file);
     // Image path to save in the db
     const image = global.appRoot + "/images/" + req.file.filename;
     // Rename the image path
@@ -12,27 +11,27 @@ async function postVideogames(req, res) {
       if (error) {
         res.status(500).json({ message: error.message });
       } else {
-        const videogame = req.body;
-        const videogameInst = Videogame.build({
-          name: videogame.name,
-          description: videogame.description,
-          platforms: videogame.platforms,
-          image: videogame.image,
-          released: videogame.released,
-          rating: videogame.rating,
-        });
-        // Get associated genres
+        const { name, description, platforms, released, rating, genres } =
+          req.body;
+        // Busco los géneros que tengo que asociar con el nuevo videojuego
         const associatedGenres = await Genre.findAll({
           where: {
-            id: { [Op.in]: videogame.genres },
+            id: { [Op.in]: genres },
           },
         });
-        console.log("associatedGenres=", associatedGenres);
-        // Set genres to Videogame instance before save
-        videogameInst.setGenres(associatedGenres);
-        // Save model in the db
-        await videogameInst.save();
-        res.status(200).json({ message: "videogames guardado en db" });
+        // Creo el videojuego
+        const videogameInst = await Videogame.create({
+          name: name,
+          description: description,
+          platforms: platforms,
+          image: req.file.filename,
+          released: released,
+          rating: rating,
+        });
+        // Asociar los generos con el videojuego recién creado
+        videogameInst.addGenres(associatedGenres);
+
+        res.status(200).json({ message: "Videogame guardado en db." });
       }
     });
   } catch (error) {

@@ -4,6 +4,7 @@ const getVideogamesByName = require("./getVideogamesByName");
 const postVideogames = require("./postVideogames");
 const getGenres = require("./getGenres");
 const getPlatforms = require("./getPlatforms");
+const getImageById = require("./getImageById");
 
 module.exports = {
   getVideogames,
@@ -12,4 +13,5 @@ module.exports = {
   postVideogames,
   getGenres,
   getPlatforms,
+  getImageById,
 };
