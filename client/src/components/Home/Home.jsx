@@ -51,13 +51,14 @@ export default function Home(props) {
           <Filters handlerChange={handleFilterChange}></Filters>
         </div>
         <div className={styles.cards}>
+          {/* Pagination */}
+          <Pagination></Pagination>
           <Cards videogames={videogames}></Cards>
+          {/* Pagination */}
+          <Pagination></Pagination>
         </div>
       </div>
-      {/* Pagination */}
-      <div className={styles.homeFooter}>
-        <Pagination></Pagination>
-      </div>
+      <div className={styles.homeFooter}></div>
     </div>
   );
 }

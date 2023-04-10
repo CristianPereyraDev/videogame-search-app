@@ -32,7 +32,8 @@ function validatePlatforms(gameData) {
   return "";
 }
 function validateImage(gameData) {
-  if (!regexImageUrl.test(gameData.image)) return "Ingresar una url válida";
+  if (!gameData.image) return "Débes elegir una imagen";
+  //if (!regexImageUrl.test(gameData.image)) return "Ingresar una url válida";
   return "";
 }
 function validateReleased(gameData) {

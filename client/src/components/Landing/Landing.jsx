@@ -1,12 +1,13 @@
 import { NavLink } from "react-router-dom";
 import styles from "./Landing.module.css";
+import AnimatedPacman from "./AnimatedPacman";
 
 export default function Landing(props) {
   return (
     <div className={styles.landingContainer}>
-      <h1>Landing Page</h1>
+      <AnimatedPacman />
       <NavLink to="/home">
-        <button className="btn">Home</button>
+        <button className="btn">Ingresar</button>
       </NavLink>
     </div>
   );

@@ -1,8 +1,7 @@
 const { Router } = require("express");
-// Importar todos los routers;
-// Ejemplo: const authRouter = require('./auth.js');
+const multer = require("multer");
 
-// Controllers
+// Import the controllers
 const {
   getVideogames,
   getVideogameById,
@@ -14,8 +13,7 @@ const {
 
 const router = Router();
 
-// Configurar los routers
-// Ejemplo: router.use('/auth', authRouter);
+const upload = multer({ dest: "/tmp/" });
 
 /**
  * El orden de las rutas es importante. Si llega una request
@@ -25,7 +23,8 @@ const router = Router();
 router.get("/videogames", getVideogames);
 router.get("/videogames/name", getVideogamesByName);
 router.get("/videogames/:idVideogame", getVideogameById);
-router.post("/videogames", postVideogames);
+// POST new videogame end point
+router.post("/videogames", upload.single("image"), postVideogames);
 router.get("/genres", getGenres);
 router.get("/platforms", getPlatforms);
 

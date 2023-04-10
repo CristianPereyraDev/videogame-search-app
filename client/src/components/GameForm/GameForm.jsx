@@ -16,7 +16,7 @@ export default function GameForm(props) {
     name: "",
     description: "",
     platforms: [], // array of names
-    image: "",
+    image: null,
     released: formatDate(new Date()),
     rating: "1",
     genres: [], // array of ids
@@ -30,6 +30,7 @@ export default function GameForm(props) {
     rating: "",
     genres: "",
   });
+
   // Use effets
   useEffect(() => {
     async function getPlatformsAndGenres() {
@@ -41,7 +42,33 @@ export default function GameForm(props) {
     }
     getPlatformsAndGenres();
   }, []);
-  // Handlers. Los grupos de checkbox lo manejan otros handlers (platforms, genres).
+
+  // Este handler hace una última verificación antes de enviar el formulario.
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    // Create a FormData instance for send the data as multipart/formdata
+    if (validateGameForm(gameData)) {
+      console.log("enviando al server...", gameData);
+      try {
+        const response = await axios.post(
+          "http://localhost:3001/videogames",
+          {
+            ...gameData,
+          },
+          {
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
+          }
+        );
+      } catch (error) {
+        window.alert(error.message);
+      }
+    } else {
+      console.log("No se puede enviar el formulando si hay errores");
+    }
+  };
+
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     const newGameData = { ...gameData, [name]: value };
@@ -88,21 +115,10 @@ export default function GameForm(props) {
     setErrors({ ...errors, genres: validators.genres(newGameDataState) });
   };
 
-  // Este handler hace una última verificación antes de enviar el formulario.
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    if (validateGameForm(gameData)) {
-      console.log("enviando al server...", gameData);
-      try {
-        const response = await axios.post(
-          "http://localhost:3001/videogames",
-          gameData
-        );
-      } catch (error) {}
-    } else {
-      console.log("No se puede enviar el formulando si hay errores");
-    }
-  };
+  function handleImageChange(e) {
+    const imageFile = e.target.files[0];
+    setGameData({ ...gameData, image: imageFile });
+  }
 
   // Render
   return (
@@ -139,12 +155,10 @@ export default function GameForm(props) {
       {/* image input */}
       <div className={`${styles.inputTextContainer} ${styles.ic1}`}>
         <input
-          type="text"
+          type="file"
           name="image"
-          value={gameData.image}
-          onChange={handleInputChange}
-          placeholder=" "
-          className={styles.input}
+          onChange={handleImageChange}
+          className={styles.inputFile}
         />
         <label className={styles.placeholder}>Image</label>
         <p className={styles.error}>{errors.image && errors.image}</p>

@@ -10,12 +10,14 @@ export default function Pagination(props) {
   return (
     <div className={styles.pagination}>
       <button
+        className={styles.prevButton}
         disabled={!prevPage}
         onClick={() => dispatch(changePage(prevPage))}
       >
         Prev page
       </button>
       <button
+        className={styles.nextButton}
         disabled={!nextPage}
         onClick={() => dispatch(changePage(nextPage))}
       >
