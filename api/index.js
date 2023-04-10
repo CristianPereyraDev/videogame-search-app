@@ -26,7 +26,7 @@ const { removeFilesFromDir } = require("./src/utils/dir.util.js");
 conn.sync({ force: true }).then(async () => {
   try {
     // Elimino las imagenes en caso de reiniciar toda la base de datos
-    removeFilesFromDir(global.appRoot + "/images/");
+    removeFilesFromDir(__dirname + "/public/images/");
     // Syncing database with api
     console.log("Searching genres from api...");
     const genresFromApi = await getGenresFromApi();

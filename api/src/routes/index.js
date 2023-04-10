@@ -14,7 +14,28 @@ const {
 
 const router = Router();
 
-const upload = multer({ dest: "/tmp/" });
+/**
+ * Multer - Middleware para subir archivos.
+ *
+ */
+const multerStorage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, "public");
+  },
+  filename: (req, file, cb) => {
+    const ext = file.mimetype.split("/")[1];
+    cb(null, `images/${file.fieldname}-${Date.now()}.${ext}`);
+  },
+});
+// Multer Filter
+const multerFilter = (req, file, cb) => {
+  if (["jpg", "png", "webp"].includes(file.mimetype.split("/")[1])) {
+    cb(null, true);
+  } else {
+    cb(new Error("El archivo no es un formato de imagen."), false);
+  }
+};
+const upload = multer({ storage: multerStorage, fileFilter: multerFilter });
 
 /**
  * El orden de las rutas es importante. Si llega una request

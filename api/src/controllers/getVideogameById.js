@@ -3,7 +3,6 @@ const { getGameByIdFromApi } = require("../utils/api.util");
 
 async function getVideogameById(req, res) {
   try {
-    // Primero busco en la api
     const { idVideogame } = req.params;
     const { isdb } = req.query;
     console.log("isdb", isdb);

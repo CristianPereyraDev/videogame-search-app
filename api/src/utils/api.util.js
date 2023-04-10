@@ -29,7 +29,7 @@ async function getGamesFromApi(pageSize, search) {
   try {
     const searchQuery = search ? `&search=${search}` : "";
     let results = [];
-    // Por defecto la api me devuelve 20 videogames por página.
+    // Por defecto la api me devuelve 20 videogames por página, entonces hago un loop
     for (
       let pageQuery = 1;
       pageQuery <= Math.ceil(pageSize / 20);
@@ -40,7 +40,21 @@ async function getGamesFromApi(pageSize, search) {
       );
       results = [...results, ...response.data.results];
     }
-    return results;
+
+    return results.map((videogame) => {
+      // De cada videogame devuelvo sólo lo que necesito.
+      return {
+        name: videogame.name,
+        description: videogame.description,
+        platforms: videogame.platforms.map(
+          (platform) => platform.platform.name
+        ),
+        image: videogame.background_image,
+        released: videogame.released,
+        rating: videogame.rating,
+        genres: videogame.genres,
+      };
+    });
   } catch (error) {
     throw new Error(error.message);
   }

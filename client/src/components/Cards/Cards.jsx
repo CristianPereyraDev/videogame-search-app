@@ -13,7 +13,7 @@ export default function Cards({ videogames }) {
             key={videogame.id}
             id={videogame.id}
             name={videogame.name}
-            image={videogame.background_image}
+            image={videogame.image}
             genres={videogame.genres}
           />
         ))}

@@ -1,4 +1,4 @@
-const { Videogame } = require("../db");
+const { Videogame, Genre } = require("../db");
 const { getGamesFromApi } = require("../utils/api.util");
 const { API_PAGE_SIZE, DEFAULT_PAGE_SIZE } = require("../configs/api.configs");
 const { filterAndSort } = require("../utils/filterAndSort.util");
@@ -12,8 +12,23 @@ async function getVideogames(req, res) {
       : DEFAULT_PAGE_SIZE;
     // Traigo los primeros 100 juegos de la api
     const gamesFromApi = await getGamesFromApi(API_PAGE_SIZE);
-    // Traigo todos los juegos de la base de datos
-    const gamesFromDB = await Videogame.findAll();
+    // Traigo todos los juegos de la base de datos, incluyendo los géneros asociados
+    let gamesFromDB = await Videogame.findAll({
+      include: Genre,
+    });
+    gamesFromDB = gamesFromDB.map((gameInst) => {
+      return {
+        name: gameInst.name,
+        description: gameInst.description,
+        platforms: gameInst.platforms,
+        image: gameInst.image,
+        released: gameInst.released,
+        rating: gameInst.rating,
+        genres: gameInst.Genres.map((genreInst) => {
+          return { id: genreInst.id, name: genreInst.name };
+        }),
+      };
+    });
     // Uno los juegos de la api y la base de datos
     const gamesFromApiAndDB = [...gamesFromDB, ...gamesFromApi];
     // Aplico el filtro y el ordenamiento
