@@ -15,6 +15,7 @@ export default function Cards({ videogames }) {
             name={videogame.name}
             image={videogame.image}
             genres={videogame.genres}
+            fromDb={!!videogame.fromDb}
           />
         ))}
       </div>

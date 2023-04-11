@@ -6,8 +6,8 @@ function extractPlatformsFromVideogames(videogames) {
   let platformsSet = [];
   for (const game of videogames) {
     game.platforms.forEach((element) => {
-      if (!platformsSet.some((platform) => platform.id === element.platform.id))
-        platformsSet.push(element.platform);
+      if (!platformsSet.some((platform) => platform.id === element.id))
+        platformsSet.push(element);
     });
   }
   return [...platformsSet];

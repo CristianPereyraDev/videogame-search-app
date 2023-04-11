@@ -1,17 +1,21 @@
-import { Link, useParams } from "react-router-dom";
+import { Link, useParams, useSearchParams } from "react-router-dom";
 import styles from "./Detail.module.css";
 import { useEffect, useState } from "react";
 import axios from "axios";
 
 export default function Detail(props) {
   const { gameId } = useParams();
-  const [videogame, setVideogame] = useState({});
+  let [searchParams, setSearchParams] = useSearchParams();
+  const [videogame, setVideogame] = useState({ platforms: [], genres: [] });
 
   useEffect(() => {
+    console.log("useEfect from detail");
     async function getVideogameDetail() {
       try {
         const response = await axios.get(
-          `http://localhost:3001/videogames/${gameId}`
+          `http://localhost:3001/videogames/${gameId}?fromDb=${searchParams.get(
+            "fromDb"
+          )}`
         );
         if (response.data.name) {
           setVideogame(response.data);
@@ -24,28 +28,44 @@ export default function Detail(props) {
       }
     }
     getVideogameDetail();
-  }, [gameId]);
+  }, [gameId, searchParams]);
 
   return (
     <div>
-      <Link to="/home">
-        <button>Home</button>
-      </Link>
       <div className={styles.detailContainer}>
         {/* Render name */}
-        <h3>{videogame.name}</h3>
+        <div className={styles.title}>{videogame.name}</div>
         {/* Render image */}
-        <img src={videogame.image} alt={videogame.name} />
+        <div className={styles.image}>
+          <img src={videogame.image} alt={videogame.name} />
+        </div>
         {/* Render description, la cual puede venir como texto html("<p>Description text</p>") */}
-        <div dangerouslySetInnerHTML={{ __html: videogame.description }} />
-        {/* Render platforms */}
-        <div>{/*videogame.platforms.map((platform) => "")*/}</div>
+        <div
+          className={styles.description}
+          dangerouslySetInnerHTML={{ __html: videogame.description }}
+        />
         {/* Render rating */}
-        <div>Rating: {videogame.rating}</div>
+        <div className={styles.rating}>
+          <label>Rating:</label> {videogame.rating}
+        </div>
         {/* Render released */}
-        <div>Released: {videogame.released}</div>
+        <div className={styles.released}>
+          <label>Released:</label> {videogame.released}
+        </div>
+        {/* Render platforms */}
+        <div className={styles.platforms}>
+          <label>Platforms:</label>
+          {videogame.platforms.map((platform, i) => (
+            <span key={i}>{`${i !== 0 ? "," : ""} ${platform}`}</span>
+          ))}
+        </div>
         {/* Render genres */}
-        <div>Genres:</div>
+        <div className={styles.genres}>
+          <label>Genres:</label>
+          {videogame.genres.map((genre, i) => (
+            <span key={genre.id}>{`${i !== 0 ? "," : ""} ${genre.name}`}</span>
+          ))}
+        </div>
       </div>
     </div>
   );

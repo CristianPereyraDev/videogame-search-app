@@ -44,6 +44,7 @@ async function getGamesFromApi(pageSize, search) {
     return results.map((videogame) => {
       // De cada videogame devuelvo sólo lo que necesito.
       return {
+        id: videogame.id,
         name: videogame.name,
         description: videogame.description,
         platforms: videogame.platforms.map(
@@ -70,7 +71,17 @@ async function getGameByIdFromApi(gameId) {
     const response = await axios.get(
       `https://api.rawg.io/api/games/${gameId}?key=${API_KEY}`
     );
-    return response.data;
+    const videogame = response.data;
+    return {
+      id: videogame.id,
+      name: videogame.name,
+      description: videogame.description,
+      platforms: videogame.platforms.map((platform) => platform.platform.name),
+      image: videogame.background_image,
+      released: videogame.released,
+      rating: videogame.rating,
+      genres: videogame.genres,
+    };
   } catch (error) {
     throw new Error(error.message);
   }

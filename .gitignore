@@ -108,3 +108,4 @@ dist
 package-lock.json
 
 /api/src/images
+/api/public/images

@@ -12,7 +12,9 @@ export default function Card(props) {
       </div>
       <div className={styles.cardText}>
         <div className={styles.cardTitle}>
-          <Link to={`/detail/${props.id}`}>{props.name}</Link>
+          <Link to={`/detail/${props.id}?fromDb=${props.fromDb}`}>
+            {props.name}
+          </Link>
         </div>
         <div className={styles.cardGenres}>
           <label>Géneros:</label>

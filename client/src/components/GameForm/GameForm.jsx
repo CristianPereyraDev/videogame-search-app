@@ -34,11 +34,14 @@ export default function GameForm(props) {
   // Use effets
   useEffect(() => {
     async function getPlatformsAndGenres() {
-      // Get platforms and set platfroms state
-      let response = await axios.get("http://localhost:3001/platforms");
-      setPlatforms(makeUncheckedPlatforms(response.data.platforms));
-      response = await axios.get("http://localhost:3001/genres");
-      setGenres(makeUncheckedGenres(response.data));
+      // Get platforms and genres in parallel
+      const [platformsRes, genresRes] = await Promise.all([
+        axios.get("http://localhost:3001/platforms"),
+        axios.get("http://localhost:3001/genres"),
+      ]);
+      // Set local states
+      setPlatforms(makeUncheckedPlatforms(platformsRes.data.platforms));
+      setGenres(makeUncheckedGenres(genresRes.data));
     }
     getPlatformsAndGenres();
   }, []);

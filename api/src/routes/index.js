@@ -27,7 +27,6 @@ const multerStorage = multer.diskStorage({
     cb(null, `images/${file.fieldname}-${Date.now()}.${ext}`);
   },
 });
-// Multer Filter
 const multerFilter = (req, file, cb) => {
   if (["jpg", "png", "webp"].includes(file.mimetype.split("/")[1])) {
     cb(null, true);
@@ -46,7 +45,6 @@ router.get("/videogames", getVideogames);
 router.get("/videogames/name", getVideogamesByName);
 router.get("/videogames/:idVideogame", getVideogameById);
 // POST new videogame end point
-router.get("/videogames/images/:filename", getImageById);
 router.post("/videogames", upload.single("image"), postVideogames);
 router.get("/genres", getGenres);
 router.get("/platforms", getPlatforms);
