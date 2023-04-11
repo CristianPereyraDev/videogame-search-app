@@ -1,8 +1,8 @@
 export function makeUncheckedPlatforms(arrayOfPlatforms) {
   const result = {};
   arrayOfPlatforms.forEach((platform) => {
-    if (!result.hasOwnProperty(platform.id))
-      result[platform.id] = { checked: false, data: platform };
+    if (!result.hasOwnProperty(platform))
+      result[platform] = { checked: false, data: platform };
   });
   return result;
 }

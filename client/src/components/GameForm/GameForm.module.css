@@ -21,21 +21,17 @@
   margin-top: 3px;
 }
 .inputTextContainer {
-  display: flex;
-  flex-direction: column-reverse;
-  position: relative;
+  text-align: left;
   padding-top: 10px;
 }
-.placeholder {
+.inputLabel {
   color: #65657b;
   pointer-events: none;
-  position: absolute;
-  transition: all 0.3s;
-  left: 5px;
-  top: 20px;
+  text-align: left;
 }
-.input[type="text"],
-.input[type="number"] {
+input[type="text"],
+input[type="number"],
+input[type="file"] {
   background-color: #feb98f;
   border-radius: 3px;
   border: 0;
@@ -47,23 +43,17 @@
   padding: 4px 10px;
   width: 100%;
 }
-.ic1 {
-  margin-top: 40px;
+input::file-selector-button {
+  font-weight: bold;
+  color: dodgerblue;
+  padding: 0.5em;
+  border: thin solid grey;
+  border-radius: 3px;
 }
-.ic2 {
-  margin-top: 30px;
+input::file-selector-button:hover {
+  background: #0d45a5;
 }
-.cutShort {
-  width: 50px;
-}
-.input:focus ~ .cut,
-.input:not(:placeholder-shown) ~ .cut {
-  transform: translateY(8px);
-}
-.input:focus ~ .placeholder,
-.input:not(:placeholder-shown) ~ .placeholder {
-  transform: translateY(-30px) translateX(10px) scale(0.75);
-}
+
 .input:not(:placeholder-shown) ~ .placeholder {
   color: #808097;
 }
@@ -79,10 +69,18 @@
   margin-top: 38px;
   width: 100%;
 }
-.submit:active {
-  background-color: #06b;
+button.submit:disabled {
+  background-color: gray;
+  cursor: default;
+}
+
+.dateInputContainer {
+  margin-top: 20px;
 }
 /* Dropdown ckeck list */
+.inputContainerDropdown {
+  margin-top: 25px;
+}
 .inputContainerDropdown > input[type="checkbox"] {
   display: none;
 }

@@ -9,9 +9,7 @@ async function getPlatforms(req, res) {
     const gamesFromApi = await getGamesFromApi(API_PAGE_SIZE);
     // Get platforms to add to response
     const platforms = extractPlatformsFromVideogames(gamesFromApi);
-    res.status(200).json({
-      platforms: platforms,
-    });
+    res.status(200).json(platforms);
   } catch (error) {
     res.status(400).json({ message: error.message });
   }

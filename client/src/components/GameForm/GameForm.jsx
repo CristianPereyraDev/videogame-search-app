@@ -30,6 +30,7 @@ export default function GameForm(props) {
     rating: "",
     genres: "",
   });
+  const [isValidate, setIsValidate] = useState(false);
 
   // Use effets
   useEffect(() => {
@@ -40,7 +41,7 @@ export default function GameForm(props) {
         axios.get("http://localhost:3001/genres"),
       ]);
       // Set local states
-      setPlatforms(makeUncheckedPlatforms(platformsRes.data.platforms));
+      setPlatforms(makeUncheckedPlatforms(platformsRes.data));
       setGenres(makeUncheckedGenres(genresRes.data));
     }
     getPlatformsAndGenres();
@@ -78,6 +79,7 @@ export default function GameForm(props) {
     setGameData(newGameData);
     // Validar solo el input que cambió
     setErrors({ ...errors, [name]: validators[name](newGameData) });
+    setIsValidate(validateGameForm(newGameData));
   };
 
   const handlePlatformCheckChange = (e) => {
@@ -93,10 +95,11 @@ export default function GameForm(props) {
       .filter((elem) => elem.checked)
       .map((elem) => elem.data.name);
     // Actualizo el estado gameData. Este estado es el que se va a enviar al servidor.
-    const newGameDataState = { ...gameData, platforms: platformsChecked };
-    setGameData(newGameDataState);
+    const newGameData = { ...gameData, platforms: platformsChecked };
+    setGameData(newGameData);
     //
-    setErrors({ ...errors, platforms: validators.platforms(newGameDataState) });
+    setErrors({ ...errors, platforms: validators.platforms(newGameData) });
+    setIsValidate(validateGameForm(newGameData));
   };
 
   const handleGenreCheckChange = (e) => {
@@ -112,10 +115,11 @@ export default function GameForm(props) {
       .filter((elem) => elem.checked)
       .map((elem) => elem.data.id);
     // Actualizo el estado gameData. Este estado es el que se va a enviar al servidor.
-    const newGameDataState = { ...gameData, genres: genresChecked };
-    setGameData(newGameDataState);
+    const newGameData = { ...gameData, genres: genresChecked };
+    setGameData(newGameData);
     //
-    setErrors({ ...errors, genres: validators.genres(newGameDataState) });
+    setErrors({ ...errors, genres: validators.genres(newGameData) });
+    setIsValidate(validateGameForm(newGameData));
   };
 
   function handleImageChange(e) {
@@ -129,61 +133,56 @@ export default function GameForm(props) {
       <div className={styles.title}>Agregar Videojuego</div>
       {/* name input */}
       <div className={`${styles.inputTextContainer} ${styles.ic1}`}>
+        <label className={styles.inputLabel}>Nombre</label>
         <input
           type="text"
           name="name"
           value={gameData.name}
           onChange={handleInputChange}
-          placeholder=" "
           className={styles.input}
         />
-        <label className={styles.placeholder}>Name</label>
         <p className={styles.error}>{errors.name && errors.name}</p>
       </div>
       {/* description input */}
-      <div className={`${styles.inputTextContainer} ${styles.ic1}`}>
+      <div className={`${styles.inputTextContainer}`}>
+        <label className={styles.inputLabel}>Descripción</label>
         <input
           type="text"
           name="description"
           value={gameData.description}
           onChange={handleInputChange}
-          placeholder=" "
           className={styles.input}
         />
-        <label className={styles.placeholder}>Description</label>
         <p className={styles.error}>
           {errors.description && errors.description}
         </p>
       </div>
       {/* image input */}
       <div className={`${styles.inputTextContainer} ${styles.ic1}`}>
+        <label className={styles.inputLabel}>Imagen</label>
         <input
           type="file"
           name="image"
           onChange={handleImageChange}
-          className={styles.inputFile}
+          className={styles.input}
         />
-        <label className={styles.placeholder}>Image</label>
         <p className={styles.error}>{errors.image && errors.image}</p>
       </div>
       {/* rating input */}
       <div className={`${styles.inputTextContainer} ${styles.ic1}`}>
+        <label className={styles.inputLabel}>Rating</label>
         <input
           type="text"
           name="rating"
           value={gameData.rating}
           onChange={handleInputChange}
-          placeholder=" "
           className={styles.input}
         />
-        <label className={styles.placeholder}>Rating</label>
         <p className={styles.error}>{errors.rating && errors.rating}</p>
       </div>
       {/* released input */}
-      <div className={`${styles.ic1}`}>
-        <div>
-          <label className={""}>Fecha de lanzamiento</label>
-        </div>
+      <div className={styles.dateInputContainer}>
+        <label className={styles.inputLabel}>Fecha de lanzamiento</label>
         <input
           type="date"
           name="released"
@@ -210,7 +209,7 @@ export default function GameForm(props) {
                   onChange={handlePlatformCheckChange}
                   className={styles.input}
                 />
-                {platforms[platformId].data.name}
+                {platforms[platformId].data}
               </label>
             </div>
           ))}
@@ -241,7 +240,11 @@ export default function GameForm(props) {
         <div className={`${styles.cut}`}></div>
         <p className={styles.error}>{errors.genres && errors.genres}</p>
       </div>
-      <button type="submit" className={`btn ${styles.submit}`}>
+      <button
+        type="submit"
+        className={`btn ${styles.submit}`}
+        disabled={!isValidate}
+      >
         Agregar Juego
       </button>
     </form>
