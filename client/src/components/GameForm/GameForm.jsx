@@ -22,15 +22,17 @@ export default function GameForm(props) {
     genres: [], // array of ids
   });
   const [errors, setErrors] = useState({
-    name: "",
-    description: "",
-    platforms: "",
-    image: "",
-    released: "",
-    rating: "",
-    genres: "",
+    messages: {
+      name: "",
+      description: "",
+      platforms: "",
+      image: "",
+      released: "",
+      rating: "",
+      genres: "",
+    },
+    isValidate: false,
   });
-  const [isValidate, setIsValidate] = useState(false);
 
   // Use effets
   useEffect(() => {
@@ -76,10 +78,18 @@ export default function GameForm(props) {
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     const newGameData = { ...gameData, [name]: value };
+
+    console.log("handleInputChange", name, value);
+
     setGameData(newGameData);
     // Validar solo el input que cambió
-    setErrors({ ...errors, [name]: validators[name](newGameData) });
-    setIsValidate(validateGameForm(newGameData));
+    setErrors({
+      messages: {
+        ...errors.messages,
+        [name]: validators[name](newGameData[name]),
+      },
+      isValidate: validateGameForm(newGameData),
+    });
   };
 
   const handlePlatformCheckChange = (e) => {
@@ -93,13 +103,18 @@ export default function GameForm(props) {
     // Obtengo la lista de nombres checkeados y solo guardo el nombre.
     const platformsChecked = Object.values(newPlatformsState)
       .filter((elem) => elem.checked)
-      .map((elem) => elem.data.name);
+      .map((elem) => elem.data);
     // Actualizo el estado gameData. Este estado es el que se va a enviar al servidor.
     const newGameData = { ...gameData, platforms: platformsChecked };
     setGameData(newGameData);
     //
-    setErrors({ ...errors, platforms: validators.platforms(newGameData) });
-    setIsValidate(validateGameForm(newGameData));
+    setErrors({
+      messages: {
+        ...errors.messages,
+        platforms: validators.platforms(newGameData.platforms),
+      },
+      isValidate: validateGameForm(newGameData),
+    });
   };
 
   const handleGenreCheckChange = (e) => {
@@ -118,13 +133,27 @@ export default function GameForm(props) {
     const newGameData = { ...gameData, genres: genresChecked };
     setGameData(newGameData);
     //
-    setErrors({ ...errors, genres: validators.genres(newGameData) });
-    setIsValidate(validateGameForm(newGameData));
+    setErrors({
+      messages: {
+        ...errors.messages,
+        genres: validators.genres(newGameData.genres),
+      },
+      isValidate: validateGameForm(newGameData),
+    });
   };
 
   function handleImageChange(e) {
     const imageFile = e.target.files[0];
+    const newGameData = { ...gameData, image: imageFile };
     setGameData({ ...gameData, image: imageFile });
+    //
+    setErrors({
+      messages: {
+        ...errors.messages,
+        image: validators.image(newGameData.image),
+      },
+      isValidate: validateGameForm(newGameData),
+    });
   }
 
   // Render
@@ -141,7 +170,9 @@ export default function GameForm(props) {
           onChange={handleInputChange}
           className={styles.input}
         />
-        <p className={styles.error}>{errors.name && errors.name}</p>
+        <p className={styles.error}>
+          {errors.messages.name && errors.messages.name}
+        </p>
       </div>
       {/* description input */}
       <div className={`${styles.inputTextContainer}`}>
@@ -154,7 +185,7 @@ export default function GameForm(props) {
           className={styles.input}
         />
         <p className={styles.error}>
-          {errors.description && errors.description}
+          {errors.messages.description && errors.messages.description}
         </p>
       </div>
       {/* image input */}
@@ -166,7 +197,9 @@ export default function GameForm(props) {
           onChange={handleImageChange}
           className={styles.input}
         />
-        <p className={styles.error}>{errors.image && errors.image}</p>
+        <p className={styles.error}>
+          {errors.messages.image && errors.messages.image}
+        </p>
       </div>
       {/* rating input */}
       <div className={`${styles.inputTextContainer} ${styles.ic1}`}>
@@ -178,7 +211,9 @@ export default function GameForm(props) {
           onChange={handleInputChange}
           className={styles.input}
         />
-        <p className={styles.error}>{errors.rating && errors.rating}</p>
+        <p className={styles.error}>
+          {errors.messages.rating && errors.messages.rating}
+        </p>
       </div>
       {/* released input */}
       <div className={styles.dateInputContainer}>
@@ -188,10 +223,10 @@ export default function GameForm(props) {
           name="released"
           value={gameData.released}
           onChange={handleInputChange}
-          placeholder=" "
-          className={styles.input}
         />
-        <p className={styles.error}>{errors.released && errors.released}</p>
+        <p className={styles.error}>
+          {errors.messages.released && errors.messages.released}
+        </p>
       </div>
       {/* platforms input */}
       <div className={`${styles.inputContainerDropdown} ${styles.ic1}`}>
@@ -214,7 +249,9 @@ export default function GameForm(props) {
             </div>
           ))}
         </div>
-        <p className={styles.error}>{errors.platforms && errors.platforms}</p>
+        <p className={styles.error}>
+          {errors.messages.platforms && errors.messages.platforms}
+        </p>
       </div>
       {/* Genres input */}
       <div className={`${styles.inputContainerDropdown} ${styles.ic1}`}>
@@ -237,13 +274,14 @@ export default function GameForm(props) {
             </div>
           ))}
         </div>
-        <div className={`${styles.cut}`}></div>
-        <p className={styles.error}>{errors.genres && errors.genres}</p>
+        <p className={styles.error}>
+          {errors.messages.genres && errors.messages.genres}
+        </p>
       </div>
       <button
         type="submit"
         className={`btn ${styles.submit}`}
-        disabled={!isValidate}
+        disabled={!errors.isValidate}
       >
         Agregar Juego
       </button>
