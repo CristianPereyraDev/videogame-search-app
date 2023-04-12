@@ -41,7 +41,7 @@ export function changePage(pageUrl) {
         payload: response.data, // { prevPage:..., nextPage:..., results:... }
       });
     } catch (error) {
-      dispatch(getVideogamesFailed(error));
+      dispatch(getVideogamesFailed(error.response.data));
     }
   };
 }
@@ -60,7 +60,7 @@ export function searchByName(name) {
         payload: response.data, // { nextPage:..., results:... }
       });
     } catch (error) {
-      dispatch(getVideogamesFailed(error));
+      dispatch(getVideogamesFailed(error.response.data));
     }
   };
 }
@@ -83,7 +83,7 @@ export function filterAndSortVideogames(filter, order) {
         payload: { data: response.data, filter: filter, order: order },
       });
     } catch (error) {
-      dispatch(getVideogamesFailed(error));
+      dispatch(getVideogamesFailed(error.response.data));
     }
   };
 }

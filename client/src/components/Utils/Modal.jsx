@@ -1,6 +1,7 @@
 import styles from "./Modal.module.css";
 
 export default function Modal({
+  isError,
   handleClose,
   action1,
   action2,
@@ -13,7 +14,9 @@ export default function Modal({
       <div className={styles.centered}>
         <div className={styles.modal}>
           {/* Header */}
-          <div className={styles.modalHeader}>
+          <div
+            className={`${styles.modalHeader} ${isError ? styles.error : ""}`}
+          >
             <h5 className={styles.heading}>{title}</h5>
           </div>
           {/* Close button */}

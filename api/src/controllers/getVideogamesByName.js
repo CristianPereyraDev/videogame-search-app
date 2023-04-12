@@ -1,13 +1,17 @@
 const { Op } = require("sequelize");
 const { Videogame, Genre } = require("../db");
 const { getGamesFromApi } = require("../utils/api.util");
-const { GAMES_PAGE_SIZE } = require("../configs/api.configs");
+const { API_PAGE_SIZE } = require("../configs/api.configs");
 
 async function getVideogamesByName(req, res) {
   try {
     const { name, page, pageSize } = req.query;
+    if (!name)
+      return res
+        .status(400)
+        .json({ message: "La frase de busqueda no puede ser vacía." });
     // Traigo los primeros 100 juegos de la api
-    const gamesFromApi = await getGamesFromApi(GAMES_PAGE_SIZE, name);
+    const gamesFromApi = await getGamesFromApi(API_PAGE_SIZE, name);
     // Traigo todos los juegos de la base de datos que cumplan la condición
     const gamesFromDB = await Videogame.findAll({
       where: { name: { [Op.like]: `%${name}%` } },
@@ -49,7 +53,7 @@ async function getVideogamesByName(req, res) {
     } else
       res
         .status(400)
-        .json({ message: "No hay juegos que coincidan con esa palabra." });
+        .json({ message: "No hay juegos que coincidan con esa frase." });
   } catch (error) {
     res.status(404).json({ message: error.message });
   }
