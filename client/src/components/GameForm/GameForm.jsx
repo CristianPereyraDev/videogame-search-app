@@ -292,18 +292,16 @@ export default function GameForm(props) {
         {newGame ? (
           <Modal
             message={`El juego <strong>${newGame.name}</strong> se guardo correctamente.`}
-            actions={[
-              {
-                handler: () => {
-                  navigate(`/detail/${newGame.id}?fromDb=true`);
-                },
-                name: "Ver el nuevo juego",
+            action1={{
+              handler: () => {
+                navigate(`/detail/${newGame.id}?fromDb=true`);
               },
-              {
-                handler: () => setNewGame(null),
-                name: "Crear otro juego",
-              },
-            ]}
+              name: "Ver el nuevo juego",
+            }}
+            action2={{
+              handler: () => setNewGame(null),
+              name: "Crear otro juego",
+            }}
           />
         ) : null}
       </div>

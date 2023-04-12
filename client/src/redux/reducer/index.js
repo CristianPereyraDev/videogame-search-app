@@ -4,6 +4,7 @@ import {
   FILTER_AND_ORDER,
   GET_VIDEOGAMES_STARTED,
   GET_VIDEOGAMES_FAILED,
+  CLEAR_ERROR,
 } from "../actions/types";
 import { OrderMethod } from "../../utils/reducer.util";
 
@@ -26,6 +27,10 @@ function rootReducer(state = initialState, { type, payload }) {
 
     case GET_VIDEOGAMES_FAILED: {
       return { ...state, loading: false, error: payload };
+    }
+
+    case CLEAR_ERROR: {
+      return { ...state, error: null };
     }
 
     case SEARCH_BY_NAME: {

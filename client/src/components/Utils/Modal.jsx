@@ -1,6 +1,12 @@
 import styles from "./Modal.module.css";
 
-export default function Modal({ handleClose, actions, title, message }) {
+export default function Modal({
+  handleClose,
+  action1,
+  action2,
+  title,
+  message,
+}) {
   return (
     <>
       <div className={styles.darkBG} onClick={handleClose}></div>
@@ -24,11 +30,16 @@ export default function Modal({ handleClose, actions, title, message }) {
           {/* Actions */}
           <div className={styles.modalActions}>
             <div className={styles.actionsContainer}>
-              {actions.map((action) => (
-                <button className={styles.deleteBtn} onClick={action.handler}>
-                  {action.name}
+              {action1 ? (
+                <button className={styles.actionBtn} onClick={action1.handler}>
+                  {action1.name}
                 </button>
-              ))}
+              ) : null}
+              {action2 ? (
+                <button className={styles.actionBtn2} onClick={action2.handler}>
+                  {action2.name}
+                </button>
+              ) : null}
             </div>
           </div>
         </div>

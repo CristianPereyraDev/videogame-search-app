@@ -4,6 +4,7 @@ import {
   FILTER_AND_ORDER,
   GET_VIDEOGAMES_STARTED,
   GET_VIDEOGAMES_FAILED,
+  CLEAR_ERROR,
 } from "./types";
 import axios from "axios";
 import { MAX_SEARCH_COUNT } from "../../configs/pagination.config";
@@ -15,6 +16,10 @@ export function getVideogamesStarted() {
 
 export function getVideogamesFailed(error) {
   return { type: GET_VIDEOGAMES_FAILED, payload: error };
+}
+
+export function clearError() {
+  return { type: CLEAR_ERROR };
 }
 
 /**
