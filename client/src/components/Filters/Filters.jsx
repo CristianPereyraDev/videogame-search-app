@@ -24,13 +24,12 @@ export default function Filters(props) {
 
   function handleSourceFilterChange(e) {
     const source = e.target.value;
-
-    if (source) props.handlerChange({ prop: "source", value: source });
+    props.handlerChange({ prop: "source", value: source });
   }
 
   function handleGenreFilterChange(e) {
     const genre = e.target.value;
-    if (genre) props.handlerChange({ prop: "genres", value: genre });
+    props.handlerChange({ prop: "genres", value: genre });
   }
 
   return (
@@ -38,22 +37,22 @@ export default function Filters(props) {
       <div>
         <h4>Source</h4>
         <Select
-          titleOption={{ value: "none", name: "Elije una fuente:" }}
+          value={filter && filter.prop === "source" ? filter.value : ""}
           options={[
-            { id: 1, value: "api", name: "API" },
-            { id: 2, value: "db", name: "Database" },
+            { value: "api", label: "API" },
+            { value: "db", label: "Database" },
           ]}
-          changeHandler={handleSourceFilterChange}
+          onChange={handleSourceFilterChange}
         ></Select>
       </div>
       <div>
         <h4>Géneros</h4>
         <Select
-          titleOption={{ id: 1, value: "none", name: "Elije una género:" }}
+          value={filter && filter.prop === "genres" ? filter.value : ""}
           options={genres.map((genre) => {
-            return { id: genre.id, value: genre.id, name: genre.name };
+            return { value: genre.id, label: genre.name };
           })}
-          changeHandler={handleGenreFilterChange}
+          onChange={handleGenreFilterChange}
         />
       </div>
     </div>

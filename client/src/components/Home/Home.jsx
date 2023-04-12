@@ -11,6 +11,7 @@ import {
   changePage,
   clearError,
   filterAndSortVideogames,
+  searchByName,
 } from "../../redux/actions/actions";
 import Modal from "../Utils/Modal";
 
@@ -35,12 +36,16 @@ export default function Home(props) {
     dispatch(filterAndSortVideogames(filter, order));
   }
 
+  function handleSearch(search) {
+    dispatch(searchByName(search, filter, order));
+  }
+
   return (
     <div className={styles.homeContainer}>
       {/* Top navbar */}
       <div className={styles.topNavbar}>
         <div className={styles.searchBar}>
-          <SearchBar></SearchBar>
+          <SearchBar handlerSearch={handleSearch}></SearchBar>
         </div>
         <div className={styles.orderBar}>
           <Order handlerChange={handleOrderChange}></Order>

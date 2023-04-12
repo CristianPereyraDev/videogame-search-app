@@ -47,12 +47,20 @@ export function changePage(pageUrl) {
 }
 
 /** */
-export function searchByName(name) {
+export function searchByName(name, filter, order) {
   return async function (dispatch) {
     dispatch(getVideogamesStarted());
     try {
+      const filterQuery =
+        filter && filter.prop && filter.value
+          ? `&filterProp=${filter.prop}&filterValue=${filter.value}`
+          : "";
+      const orderQuery =
+        order && order.by && order.method
+          ? `&orderBy=${order.by}&orderMethod=${order.method}`
+          : "";
       const response = await axios.get(
-        `http://localhost:3001/videogames/name?name=${name}&page=1&pageSize=${MAX_SEARCH_COUNT}`
+        `http://localhost:3001/videogames/name?name=${name}&page=1&pageSize=${MAX_SEARCH_COUNT}${filterQuery}${orderQuery}`
       );
       // Dispath the action
       dispatch({
@@ -74,8 +82,18 @@ export function filterAndSortVideogames(filter, order) {
   return async function (dispatch) {
     dispatch(getVideogamesStarted());
     try {
+      console.log("filterAndSortVideogames", filter, order);
+      const filterQuery =
+        filter && filter.prop && filter.value
+          ? `&filterProp=${filter.prop}&filterValue=${filter.value}`
+          : "";
+      const orderQuery =
+        order && order.by && order.method
+          ? `&orderBy=${order.by}&orderMethod=${order.method}`
+          : "";
+
       const response = await axios.get(
-        `http://localhost:3001/videogames?page=1&pageSize=${MAX_SEARCH_COUNT}&filterProp=${filter.prop}&filterValue=${filter.value}&orderBy=${order.by}&orderMethod=${order.method}`
+        `http://localhost:3001/videogames?page=1&pageSize=${MAX_SEARCH_COUNT}${filterQuery}${orderQuery}`
       );
       // Dispath the action
       dispatch({

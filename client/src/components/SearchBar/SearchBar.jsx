@@ -17,7 +17,7 @@ export default function SearchBar(props) {
         onChange={(e) => setVideogameName(e.target.value)}
       />
       <button
-        onClick={() => dispatch(searchByName(videogameName))}
+        onClick={() => props.handlerSearch(videogameName)}
         className={styles.searchButton}
       >
         <SearchIcon />

@@ -2,42 +2,39 @@ import { useState } from "react";
 import { OrderMethod } from "../../utils/reducer.util";
 import styles from "./Order.module.css";
 import Select from "../Utils/Select";
+import { useSelector } from "react-redux";
 
 export default function Order(props) {
-  const [order, setOrder] = useState({
-    by: "",
-    method: OrderMethod.Ascendent,
-  });
+  // Sync with global state
+  const { order } = useSelector((state) => state);
 
   function handleOrderByChange(e) {
-    const newState = { ...order, by: e.target.value };
-    // La funcion setOrder actualiza el estado de manera asíncrona, por lo tanto,
-    // cuando hago el dispath tengo que pasarle la variable newState.
-    setOrder(newState);
-    props.handlerChange(newState);
+    const newGlobalState = { ...order, by: e.target.value };
+    props.handlerChange(newGlobalState);
   }
 
   function handleOrderChange(e) {
     const orderMethod = e.target.checked
       ? OrderMethod.Ascendent
       : OrderMethod.Descendent;
-    const newState = { ...order, method: orderMethod };
-    setOrder(newState);
-    props.handlerChange(newState);
+    const newGlobalState = { ...order, method: orderMethod };
+    props.handlerChange(newGlobalState);
   }
 
   return (
     <div className={styles.orderContainer}>
+      {/* Order by select */}
       <div className={styles.select}>
         <Select
-          titleOption={{ value: "none", name: "Order By:" }}
+          value={order.by}
           options={[
-            { id: 1, value: "name", name: "Nombre" },
-            { id: 2, value: "rating", name: "Rating" },
+            { value: "name", label: "Nombre" },
+            { value: "rating", label: "Rating" },
           ]}
-          changeHandler={handleOrderByChange}
+          onChange={handleOrderByChange}
         />
       </div>
+      {/* Order method */}
       <label className={styles.switch}>
         <input
           type="checkbox"

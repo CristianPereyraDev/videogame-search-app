@@ -1,15 +1,15 @@
 import styles from "./Select.module.css";
 
 export default function Select(props) {
-  const { options, titleOption, changeHandler } = props;
+  const { value, options, onChange } = props;
 
   return (
     <div className={styles.container}>
-      <select onChange={changeHandler}>
-        <option value={titleOption.value}>{titleOption.name}</option>
+      <select onChange={onChange} value={value}>
+        <option value=""></option>
         {options.map((option) => (
-          <option key={option.id} value={option.value}>
-            {option.name}
+          <option key={option.value} value={option.value}>
+            {option.label}
           </option>
         ))}
       </select>
