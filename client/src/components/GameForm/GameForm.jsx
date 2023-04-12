@@ -1,38 +1,25 @@
 import { useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import styles from "./GameForm.module.css";
 import { validateGameForm, validators } from "./validation";
-import { formatDate } from "../../utils/date.util";
 import {
   makeUncheckedPlatforms,
   makeUncheckedGenres,
+  DefaultGameData,
+  DefaultErrors,
 } from "../../utils/form.util";
+import Modal from "../Utils/Modal";
 
 export default function GameForm(props) {
   // States
   const [platforms, setPlatforms] = useState({});
   const [genres, setGenres] = useState({});
-  const [gameData, setGameData] = useState({
-    name: "",
-    description: "",
-    platforms: [], // array of names
-    image: null,
-    released: formatDate(new Date()),
-    rating: "1",
-    genres: [], // array of ids
-  });
-  const [errors, setErrors] = useState({
-    messages: {
-      name: "",
-      description: "",
-      platforms: "",
-      image: "",
-      released: "",
-      rating: "",
-      genres: "",
-    },
-    isValidate: false,
-  });
+  const [gameData, setGameData] = useState(DefaultGameData);
+  const [errors, setErrors] = useState(DefaultErrors);
+  const [newGame, setNewGame] = useState(null);
+
+  const navigate = useNavigate();
 
   // Use effets
   useEffect(() => {
@@ -60,6 +47,7 @@ export default function GameForm(props) {
           "http://localhost:3001/videogames",
           {
             ...gameData,
+            image: gameData.image.file,
           },
           {
             headers: {
@@ -67,19 +55,26 @@ export default function GameForm(props) {
             },
           }
         );
+        // Set newGame state
+        setNewGame(response.data.newGame);
+        // Clear form
+        setPlatforms(makeUncheckedPlatforms(Object.keys(platforms)));
+        setGenres(
+          makeUncheckedGenres(Object.entries(genres).map((e) => e[1].data))
+        );
+        setGameData(DefaultGameData);
+        setErrors(DefaultErrors);
       } catch (error) {
         window.alert(error.message);
       }
     } else {
-      console.log("No se puede enviar el formulando si hay errores");
+      window.alert("No se puede enviar el formulario si hay errores");
     }
   };
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     const newGameData = { ...gameData, [name]: value };
-
-    console.log("handleInputChange", name, value);
 
     setGameData(newGameData);
     // Validar solo el input que cambió
@@ -145,7 +140,10 @@ export default function GameForm(props) {
   function handleImageChange(e) {
     const imageFile = e.target.files[0];
     const newGameData = { ...gameData, image: imageFile };
-    setGameData({ ...gameData, image: imageFile });
+    setGameData({
+      ...gameData,
+      image: { file: imageFile, filename: e.target.value },
+    });
     //
     setErrors({
       messages: {
@@ -196,6 +194,7 @@ export default function GameForm(props) {
           name="image"
           onChange={handleImageChange}
           className={styles.input}
+          value={gameData.image.filename}
         />
         <p className={styles.error}>
           {errors.messages.image && errors.messages.image}
@@ -278,13 +277,36 @@ export default function GameForm(props) {
           {errors.messages.genres && errors.messages.genres}
         </p>
       </div>
-      <button
-        type="submit"
-        className={`btn ${styles.submit}`}
-        disabled={!errors.isValidate}
-      >
-        Agregar Juego
-      </button>
+      {/* Submit button */}
+      <div>
+        <button
+          type="submit"
+          className={`btn ${styles.submit}`}
+          disabled={!errors.isValidate}
+        >
+          Agregar Juego
+        </button>
+      </div>
+      {/* View new game button */}
+      <div>
+        {newGame ? (
+          <Modal
+            message={`El juego <strong>${newGame.name}</strong> se guardo correctamente.`}
+            actions={[
+              {
+                handler: () => {
+                  navigate(`/detail/${newGame.id}?fromDb=true`);
+                },
+                name: "Ver el nuevo juego",
+              },
+              {
+                handler: () => setNewGame(null),
+                name: "Crear otro juego",
+              },
+            ]}
+          />
+        ) : null}
+      </div>
     </form>
   );
 }

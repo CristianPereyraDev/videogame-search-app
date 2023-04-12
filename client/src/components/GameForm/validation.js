@@ -7,7 +7,6 @@ const regexDate =
 const regexRating = /^[0-5]$|^[0-4].[0-9]$|^[0-4].[0-9][0-9]$/;
 
 export function validateGameForm(gameData) {
-  console.log(gameData);
   for (const prop in gameData) {
     if (validators[prop](gameData[prop]) !== "") {
       return false;
@@ -39,7 +38,6 @@ function validateImage(image) {
 }
 function validateReleased(released) {
   if (!regexDate.test(released.trim())) {
-    console.log("released -> ", released);
     return "Formato de fecha no válido";
   }
   return "";

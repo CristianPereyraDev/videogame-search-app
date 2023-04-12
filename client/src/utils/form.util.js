@@ -1,3 +1,38 @@
+function padTo2Digits(num) {
+  return num.toString().padStart(2, "0");
+}
+
+export function formatDate(date) {
+  return [
+    date.getFullYear(),
+    padTo2Digits(date.getMonth() + 1),
+    padTo2Digits(date.getDate()),
+  ].join("-");
+}
+
+export const DefaultGameData = {
+  name: "",
+  description: "",
+  platforms: [], // array of names
+  image: { file: null, filename: "" },
+  released: formatDate(new Date()),
+  rating: "1",
+  genres: [], // array of ids
+};
+
+export const DefaultErrors = {
+  messages: {
+    name: "",
+    description: "",
+    platforms: "",
+    image: "",
+    released: "",
+    rating: "",
+    genres: "",
+  },
+  isValidate: false,
+};
+
 /**
  *
  * @param {*} arrayOfPlatforms

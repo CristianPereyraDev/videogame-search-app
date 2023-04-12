@@ -18,6 +18,7 @@ async function getVideogames(req, res) {
     let gamesFromDB = await Videogame.findAll({
       include: Genre,
     });
+    // Le doy formato
     gamesFromDB = gamesFromDB.map((gameInst) => {
       return {
         id: gameInst.id,

@@ -26,7 +26,10 @@ async function postVideogames(req, res) {
     // Asociar los generos con el videojuego recién creado
     videogameInst.addGenres(associatedGenres);
 
-    res.status(200).json({ message: "Videogame guardado en db." });
+    res.status(200).json({
+      message: "Videogame guardado!",
+      newGame: videogameInst,
+    });
   } catch (error) {
     res.status(400).json({ message: error.message });
   }
