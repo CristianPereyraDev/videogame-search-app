@@ -82,7 +82,12 @@ function filterAndSort(videogames, filter, order) {
   const filterCb = getFilterCb(filter.prop, filter.value);
   let result = videogames.filter(filterCb);
   // Apply Ordering
-  if (order.by && order.hasOwnProperty("method")) {
+  if (
+    order.by &&
+    !["null", "undefined"].includes(order.by) &&
+    order.hasOwnProperty("method")
+  ) {
+    console.log("Aplicando ordenamiento -> ", order.by, order.method);
     result =
       order.by === "name"
         ? orderVideogamesByName(result, order.method)

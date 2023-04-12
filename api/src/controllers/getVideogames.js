@@ -7,10 +7,12 @@ async function getVideogames(req, res) {
   try {
     // Queries
     const { filterProp, filterValue, orderBy, orderMethod } = req.query;
+    // Get pagination props
     const page = req.query.page ? req.query.page : 1;
     const pageSize = req.query.pageSize
       ? req.query.pageSize
       : DEFAULT_PAGE_SIZE;
+    // Base URL
     const baseUrl = `${req.protocol}://${req.get("host")}/`;
     // Traigo los primeros 100 juegos de la api
     const gamesFromApi = await getGamesFromApi(API_PAGE_SIZE);
