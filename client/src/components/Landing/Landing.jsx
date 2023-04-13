@@ -5,9 +5,11 @@ import AnimatedPacman from "./AnimatedPacman";
 export default function Landing(props) {
   return (
     <div className={styles.landingContainer}>
-      <AnimatedPacman />
+      <div className={styles.animContainer}>
+        <AnimatedPacman />
+      </div>
       <NavLink to="/home">
-        <button className="btn">Ingresar</button>
+        <button className={styles.homeBtn}>Ingresar</button>
       </NavLink>
     </div>
   );

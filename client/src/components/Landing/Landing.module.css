@@ -1,6 +1,20 @@
 .landingContainer {
   height: 100%;
-  background-image: url("/src/assets/img/landing_background.jpg");
+  background-image: url("/src/assets/img/landing_background_02.png");
   background-position: center;
   background-size: cover;
+}
+
+.homeBtn {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.animContainer {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  /*transform: translate(-50%, -50%);*/
 }

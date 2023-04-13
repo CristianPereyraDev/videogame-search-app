@@ -13,7 +13,7 @@ const initialState = {
   error: null,
   videogames: [],
   filter: null, // a filter is a object like { prop: "genres", value: 1 }
-  order: { by: "rating", method: OrderMethod.Ascendent },
+  order: { by: "", method: OrderMethod.Ascendent },
   nextPage: null,
   prevPage: null,
 };

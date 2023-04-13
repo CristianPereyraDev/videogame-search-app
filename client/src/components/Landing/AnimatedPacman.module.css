@@ -8,10 +8,10 @@
 }
 
 .pacman {
-  offset-path: path("M20,20 C20,100 200,0 200,100");
-  animation: traveling 3000ms infinite alternate ease-in-out;
-  width: 60px;
-  height: 60px;
+  offset-path: path("M -200 0 V -200 H 200 V 200 H -200 Z");
+  animation: traveling 10s infinite;
+  width: 50px;
+  height: 50px;
   background-image: url("./pacman.gif");
   background-repeat: no-repeat;
   background-size: cover;
