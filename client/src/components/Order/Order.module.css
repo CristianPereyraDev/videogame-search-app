@@ -2,18 +2,31 @@
   display: flex;
   justify-content: flex-end;
   align-items: center;
+  margin-right: 1vw;
 }
 
 .orderContainer .select {
-  margin-right: 8px;
+  display: flex;
+  align-items: center;
+  margin-right: 2vw;
 }
 
-/*  */
+.orderContainer .select label {
+  margin-right: 0.5vw;
+}
+
+.orderMethod {
+  display: flex;
+  align-items: center;
+}
+
+/* Switch */
 .switch {
   position: relative;
   display: inline-block;
   width: 60px;
   height: 34px;
+  margin: 0 0.8vw;
 }
 
 /* Hide default HTML checkbox */

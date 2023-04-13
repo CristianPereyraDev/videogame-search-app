@@ -8,9 +8,11 @@ export default function Landing(props) {
       <div className={styles.animContainer}>
         <AnimatedPacman />
       </div>
-      <NavLink to="/home">
-        <button className={styles.homeBtn}>Ingresar</button>
-      </NavLink>
+      <div className={styles.buttonContainer}>
+        <NavLink to="/home">
+          <button className={styles.btn}>Ingresar</button>
+        </NavLink>
+      </div>
     </div>
   );
 }

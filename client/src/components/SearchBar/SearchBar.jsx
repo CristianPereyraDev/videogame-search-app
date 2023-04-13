@@ -1,12 +1,9 @@
 import styles from "./SearchBar.module.css";
 import { useState } from "react";
-import { useDispatch } from "react-redux";
-import { searchByName } from "../../redux/actions/actions";
 import SearchIcon from "../Icons/SearchIcon";
 
 export default function SearchBar(props) {
   const [videogameName, setVideogameName] = useState("");
-  const dispatch = useDispatch();
 
   return (
     <div className={styles.search}>

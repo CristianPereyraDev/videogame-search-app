@@ -25,7 +25,9 @@ export default function Order(props) {
     <div className={styles.orderContainer}>
       {/* Order by select */}
       <div className={styles.select}>
+        <label>Order by:</label>
         <Select
+          title="Sin ordenar"
           value={order.by}
           options={[
             { value: "name", label: "Nombre" },
@@ -35,16 +37,20 @@ export default function Order(props) {
         />
       </div>
       {/* Order method */}
-      <label className={styles.switch}>
-        <input
-          type="checkbox"
-          name="order"
-          id="order"
-          checked={order.method === OrderMethod.Ascendent}
-          onChange={handleOrderChange}
-        />
-        <span className={`${styles.slider} ${styles.round}`}></span>
-      </label>
+      <div className={styles.orderMethod}>
+        <span>Des.</span>
+        <label className={styles.switch}>
+          <input
+            type="checkbox"
+            name="order"
+            id="order"
+            checked={order.method === OrderMethod.Ascendent}
+            onChange={handleOrderChange}
+          />
+          <span className={`${styles.slider} ${styles.round}`}></span>
+        </label>
+        <span>Asc.</span>
+      </div>
     </div>
   );
 }
