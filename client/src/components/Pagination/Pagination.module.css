@@ -20,14 +20,9 @@
 
 .pagination button:disabled {
   background-color: grey;
+  cursor: default;
 }
 
-.pagination button:hover {
+.pagination button:enabled:hover {
   color: aqua;
-}
-
-.pagination button.prevButton {
-}
-
-.pagination button.prevButton {
 }

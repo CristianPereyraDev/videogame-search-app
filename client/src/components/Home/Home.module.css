@@ -19,8 +19,10 @@
   align-items: center;
   background-color: rgb(59, 59, 59);
   padding: 10px;
-  border-bottom: 1px solid white;
-  border-top: 1px solid white;
+  border-radius: 16px;
+  margin: 0 1vw;
+  /* border-bottom: 1px solid white;
+  border-top: 1px solid white; */
   box-shadow: inset 0.1em 0.1em 0.5em black;
 }
 .topNavbar .searchBar {
@@ -32,6 +34,7 @@
 .content {
   display: flex;
   flex: 1 0 auto;
+  margin-top: 2vh;
 }
 .content .leftNavbar {
   flex: 1;
