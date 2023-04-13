@@ -10,7 +10,7 @@
   border: 3px solid #22c9df;
   border-right: none;
   padding: 5px;
-  border-radius: 5px 0 0 5px;
+  border-radius: 16px 0 0 16px;
   outline: none;
   background: none;
 }
@@ -25,7 +25,10 @@
   background-color: transparent;
   text-align: center;
   color: black;
-  border-radius: 0 5px 5px 0;
+  border-radius: 0 16px 16px 0;
   cursor: pointer;
   border: 3px solid #00b4cc;
+}
+.searchButton svg:hover {
+  fill: aqua;
 }

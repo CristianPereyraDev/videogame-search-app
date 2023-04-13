@@ -3,22 +3,31 @@
   justify-content: space-between;
   align-items: center;
   height: 50px;
-  padding: 10px;
+  padding: 10px 2vw;
+}
+
+.navbar .homeLinkContainer {
+  height: 100%;
+}
+.navbar .homeLinkContainer a:hover {
+  color: aqua;
 }
 
 a.navbarLink {
-  margin-right: 10px;
+  background-color: rgb(59, 59, 59);
+  padding: 0.5em 0.8em;
+  border-radius: 0.5em;
   text-decoration: none;
   color: coral;
   font-size: 16px;
 }
 
 a.navbarLink:hover {
-  color: burlywood;
+  color: aqua;
 }
 
 a.active {
-  color: aqua;
+  color: rgb(193, 72, 204);
 }
 
 a.navbarLink img {

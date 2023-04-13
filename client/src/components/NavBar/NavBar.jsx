@@ -1,37 +1,44 @@
 import styles from "./NavBar.module.css";
-import { NavLink } from "react-router-dom";
-import logo from "./icon_game_controller.png";
-import AddIcon from "../Icons/AddIcon";
+import { NavLink, useLocation } from "react-router-dom";
+import LogoIcon from "../Icons/LogoIcon";
 
 export default function NavBar(props) {
+  const location = useLocation();
   return (
     <div className={styles.navbar}>
       {/* Home link */}
-      <NavLink
-        to="/home"
-        className={({ isActive, isPending }) =>
-          isPending
-            ? "pending"
-            : isActive
-            ? `${styles.navbarLink} ${styles.active}`
-            : `${styles.navbarLink}`
-        }
-      >
-        <img src={logo}></img>
-      </NavLink>
+      <div className={styles.homeLinkContainer}>
+        <NavLink
+          onClick={
+            location.pathname === "/home"
+              ? () => {
+                  window.location.reload();
+                }
+              : null
+          }
+          to="/home"
+          className={({ isActive, isPending }) =>
+            isPending ? "pending" : isActive ? `${styles.active}` : ``
+          }
+        >
+          <LogoIcon />
+        </NavLink>
+      </div>
       {/* Add videogame link */}
-      <NavLink
-        to="/add"
-        className={({ isActive, isPending }) =>
-          isPending
-            ? "pending"
-            : isActive
-            ? `${styles.navbarLink} ${styles.active}`
-            : `${styles.navbarLink}`
-        }
-      >
-        <span>Agregar Juego</span>
-      </NavLink>
+      <div className={styles.addLink}>
+        <NavLink
+          to="/add"
+          className={({ isActive, isPending }) =>
+            isPending
+              ? "pending"
+              : isActive
+              ? `${styles.navbarLink} ${styles.active}`
+              : `${styles.navbarLink}`
+          }
+        >
+          <span>Agregar Juego</span>
+        </NavLink>
+      </div>
     </div>
   );
 }

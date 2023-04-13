@@ -1,8 +1,6 @@
 const axios = require("axios");
 // Obtengo el apyKey que esta en el archivo .env
 const { API_KEY } = process.env;
-// Configuraciones
-const { GAMES_PAGE_SIZE } = require("../configs/api.configs");
 
 /**
  *
@@ -30,7 +28,6 @@ async function getGamesFromApi(pageSize, search) {
     const searchQuery = search ? `&search=${search}` : "";
     let results = [];
     // Por defecto la api me devuelve 20 videogames por página, entonces hago un loop
-    console.log("Aquí estoy!!!", search);
     if (searchQuery) {
       const response = await axios.get(
         `https://api.rawg.io/api/games?key=${API_KEY}${searchQuery}`
@@ -54,14 +51,13 @@ async function getGamesFromApi(pageSize, search) {
       return {
         id: videogame.id,
         name: videogame.name,
-        description: videogame.description,
+        released: videogame.released,
+        rating: videogame.rating,
+        genres: videogame.genres,
         platforms: videogame.platforms.map(
           (platform) => platform.platform.name
         ),
         image: videogame.background_image,
-        released: videogame.released,
-        rating: videogame.rating,
-        genres: videogame.genres,
       };
     });
   } catch (error) {

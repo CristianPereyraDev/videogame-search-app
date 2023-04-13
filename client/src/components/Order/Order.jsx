@@ -10,6 +10,7 @@ export default function Order(props) {
 
   function handleOrderByChange(e) {
     const newGlobalState = { ...order, by: e.target.value };
+    // El manejador viene por props para que el componente padre mantenga sincronizado los filtros y ordenamientos.
     props.handlerChange(newGlobalState);
   }
 
@@ -44,7 +45,7 @@ export default function Order(props) {
             type="checkbox"
             name="order"
             id="order"
-            checked={order.method === OrderMethod.Ascendent}
+            //checked={order.method === OrderMethod.Ascendent}
             onChange={handleOrderChange}
           />
           <span className={`${styles.slider} ${styles.round}`}></span>
