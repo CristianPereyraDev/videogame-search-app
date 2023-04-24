@@ -27,13 +27,13 @@ async function getGamesFromApi(pageSize, search) {
   try {
     const searchQuery = search ? `&search=${search}` : "";
     let results = [];
-    // Por defecto la api me devuelve 20 videogames por página, entonces hago un loop
     if (searchQuery) {
       const response = await axios.get(
         `https://api.rawg.io/api/games?key=${API_KEY}${searchQuery}`
       );
       results = response.data.results;
     } else {
+      // Por defecto la api me devuelve 20 videogames por página, entonces hago un loop para obtener los 100
       for (
         let pageQuery = 1;
         pageQuery <= Math.ceil(pageSize / 20);

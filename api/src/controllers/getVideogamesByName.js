@@ -10,7 +10,7 @@ async function getVideogamesByName(req, res) {
       return res
         .status(400)
         .json({ message: "La frase de busqueda no puede ser vacía." });
-    // Traigo los primeros 100 juegos de la api
+    // Traigo los primeros 100 juegos de la api que cumplan la condicion de busqueda
     const gamesFromApi = await getGamesFromApi(API_PAGE_SIZE, name);
     // Traigo todos los juegos de la base de datos que cumplan la condición
     const gamesFromDB = await Videogame.findAll({
