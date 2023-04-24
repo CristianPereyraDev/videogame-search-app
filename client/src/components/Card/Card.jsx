@@ -15,6 +15,7 @@ export default function Card(props) {
           <Link to={`/detail/${props.id}?fromDb=${props.fromDb}`}>
             {props.name}
           </Link>
+          <span>{props.released}</span>
         </div>
         <div className={styles.cardGenres}>
           <label>Géneros:</label>

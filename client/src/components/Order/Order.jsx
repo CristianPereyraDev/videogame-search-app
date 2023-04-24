@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { OrderMethod } from "../../utils/reducer.util";
 import styles from "./Order.module.css";
 import Select from "../Utils/Select";

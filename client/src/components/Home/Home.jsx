@@ -60,9 +60,7 @@ export default function Home(props) {
           {/* Pagination */}
           {videogames.length > 0 ? <Pagination /> : null}
           {/* Cards component */}
-          {videogames.length > 0 ? (
-            <Cards videogames={videogames}></Cards>
-          ) : null}
+          <Cards videogames={videogames}></Cards>
           {/* Pagination */}
           {videogames.length > 0 ? <Pagination /> : null}
         </div>
