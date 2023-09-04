@@ -11,7 +11,7 @@ export default function Order({
   // Sync with global state
   const { order } = useSelector((state: RootState) => state.games);
 
-  function handleOrderByChange(e: React.ChangeEvent<HTMLInputElement>) {
+  function handleOrderByChange(e: React.ChangeEvent<HTMLSelectElement>) {
     const newGlobalState = { ...order, field: e.target.value };
     // El manejador viene por props para que el componente padre mantenga sincronizado los filtros y ordenamientos.
     handlerChange(newGlobalState);

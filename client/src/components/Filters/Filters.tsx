@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react';
-import axios from 'axios';
 import styles from './Filters.module.css';
 import { useSelector } from 'react-redux';
 import Select from '../Utils/Select';
