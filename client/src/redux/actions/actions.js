@@ -5,9 +5,9 @@ import {
   GET_VIDEOGAMES_STARTED,
   GET_VIDEOGAMES_FAILED,
   CLEAR_ERROR,
-} from "./types";
-import axios from "axios";
-import { MAX_SEARCH_COUNT } from "../../configs/pagination.config";
+} from './types';
+import axios from 'axios';
+import { MAX_SEARCH_COUNT } from '../../config/pagination.config';
 
 // Actions to manage loading state in async tasks
 export function getVideogamesStarted() {
@@ -54,11 +54,11 @@ export function searchByName(name, filter, order) {
       const filterQuery =
         filter && filter.prop && filter.value
           ? `&filterProp=${filter.prop}&filterValue=${filter.value}`
-          : "";
+          : '';
       const orderQuery =
         order && order.by && order.method
           ? `&orderBy=${order.by}&orderMethod=${order.method}`
-          : "";
+          : '';
       const response = await axios.get(
         `http://localhost:3001/videogames/name?name=${name}&page=1&pageSize=${MAX_SEARCH_COUNT}${filterQuery}${orderQuery}`
       );
@@ -82,15 +82,15 @@ export function filterAndSortVideogames(filter, order) {
   return async function (dispatch) {
     dispatch(getVideogamesStarted());
     try {
-      console.log("filterAndSortVideogames", filter, order);
+      console.log('filterAndSortVideogames', filter, order);
       const filterQuery =
         filter && filter.prop && filter.value
           ? `&filterProp=${filter.prop}&filterValue=${filter.value}`
-          : "";
+          : '';
       const orderQuery =
         order && order.by && order.method
           ? `&orderBy=${order.by}&orderMethod=${order.method}`
-          : "";
+          : '';
 
       const response = await axios.get(
         `http://localhost:3001/videogames?page=1&pageSize=${MAX_SEARCH_COUNT}${filterQuery}${orderQuery}`

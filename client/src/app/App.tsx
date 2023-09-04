@@ -1,10 +1,10 @@
 import './App.css';
 import { Routes, Route, useLocation } from 'react-router-dom';
-import NavBar from './components/NavBar/NavBar';
-import Landing from './components/Landing/Landing';
-import GameForm from './components/GameForm/GameForm';
-import Detail from './components/Detail/Detail';
-import Home from './components/Home/Home';
+import NavBar from '../components/NavBar/NavBar';
+import GameForm from '../components/GameForm/GameForm';
+import Landing from '../pages/Landing/Landing';
+import Detail from '../pages/Detail/Detail';
+import Home from '../pages/Home/Home';
 
 function App() {
   const location = useLocation();

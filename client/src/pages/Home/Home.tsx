@@ -1,43 +1,44 @@
-import styles from "./Home.module.css";
-import SearchBar from "../SearchBar/SearchBar";
-import Cards from "../Cards/Cards";
-import Pagination from "../Pagination/Pagination";
-import Order from "../Order/Order";
-import Filters from "../Filters/Filters";
-import Loading from "../Utils/Loading";
-import { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import styles from './Home.module.css';
+import SearchBar from '../../components/SearchBar/SearchBar';
+import Cards from '../../components/Cards/Cards';
+import Pagination from '../../components/Pagination/Pagination';
+import Order from '../../components/Order/Order';
+import Filters from '../../components/Filters/Filters';
+import Loading from '../../components/Utils/Loading';
+import { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import {
-  changePage,
+  fetchPage,
   clearError,
-  filterAndSortVideogames,
-  searchByName,
-} from "../../redux/actions/actions";
-import Modal from "../Utils/Modal";
+  //filterAndSortVideogames,
+  //searchByName,
+} from '../../features/games/gamesSlice';
+import Modal from '../../components/Utils/Modal';
+import { RootState, AppDispatch } from '../../app/store';
 
-export default function Home(props) {
+export default function Home() {
   // Sync with global state
-  const { loading, error, videogames, filter, order } = useSelector(
-    (state) => state
+  const { loading, error, videogames /*filter, order*/ } = useSelector(
+    (state: RootState) => state.games
   );
 
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
 
   // Cuando se monta el componente Home cargo la primer página de videojuegos sin filtros ni ordenamiento.
   useEffect(() => {
-    dispatch(changePage("http://localhost:3001/videogames?page=1&pageSize=15"));
-  }, []);
+    dispatch(fetchPage(1));
+  }, [dispatch]);
 
-  function handleFilterChange(filter) {
-    dispatch(filterAndSortVideogames(filter, order));
+  function handleFilterChange(/*filter: any*/) {
+    //dispatch(filterAndSortVideogames(filter, order));
   }
 
-  function handleOrderChange(order) {
-    dispatch(filterAndSortVideogames(filter, order));
+  function handleOrderChange(/*order: any*/) {
+    //dispatch(filterAndSortVideogames(filter, order));
   }
 
-  function handleSearch(search) {
-    dispatch(searchByName(search, filter, order));
+  function handleSearch(/*search: string*/) {
+    //dispatch(searchByName(search, filter, order));
   }
 
   return (
@@ -73,12 +74,14 @@ export default function Home(props) {
       {/* Modal for errors */}
       {error ? (
         <Modal
-          title="Ooops!"
+          title='Ooops!'
           isError={true}
           handleClose={() => {
             dispatch(clearError());
           }}
-          message={error.message}
+          message={error}
+          action1=''
+          action2=''
         />
       ) : null}
     </div>

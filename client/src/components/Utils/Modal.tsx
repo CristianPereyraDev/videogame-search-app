@@ -1,4 +1,4 @@
-import styles from "./Modal.module.css";
+import styles from './Modal.module.css';
 
 export default function Modal({
   isError,
@@ -7,6 +7,13 @@ export default function Modal({
   action2,
   title,
   message,
+}: {
+  isError: boolean;
+  handleClose: () => void;
+  action1: any;
+  action2: any;
+  title: string;
+  message: string;
 }) {
   return (
     <>
@@ -15,7 +22,7 @@ export default function Modal({
         <div className={styles.modal}>
           {/* Header */}
           <div
-            className={`${styles.modalHeader} ${isError ? styles.error : ""}`}
+            className={`${styles.modalHeader} ${isError ? styles.error : ''}`}
           >
             <h5 className={styles.heading}>{title}</h5>
           </div>

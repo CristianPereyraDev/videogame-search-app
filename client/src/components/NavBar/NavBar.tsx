@@ -1,8 +1,8 @@
-import styles from "./NavBar.module.css";
-import { NavLink, useLocation } from "react-router-dom";
-import LogoIcon from "../Icons/LogoIcon";
+import styles from './NavBar.module.css';
+import { NavLink, useLocation } from 'react-router-dom';
+import LogoIcon from '../Icons/LogoIcon';
 
-export default function NavBar(props) {
+export default function NavBar() {
   const location = useLocation();
   return (
     <div className={styles.navbar}>
@@ -10,15 +10,15 @@ export default function NavBar(props) {
       <div className={styles.homeLinkContainer}>
         <NavLink
           onClick={
-            location.pathname === "/home"
+            location.pathname === '/home'
               ? () => {
                   window.location.reload();
                 }
-              : null
+              : undefined
           }
-          to="/home"
+          to='/home'
           className={({ isActive, isPending }) =>
-            isPending ? "pending" : isActive ? `${styles.active}` : ``
+            isPending ? 'pending' : isActive ? `${styles.active}` : ``
           }
         >
           <LogoIcon />
@@ -27,10 +27,10 @@ export default function NavBar(props) {
       {/* Add videogame link */}
       <div className={styles.addLink}>
         <NavLink
-          to="/add"
+          to='/add'
           className={({ isActive, isPending }) =>
             isPending
-              ? "pending"
+              ? 'pending'
               : isActive
               ? `${styles.navbarLink} ${styles.active}`
               : `${styles.navbarLink}`

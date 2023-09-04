@@ -1,16 +1,18 @@
-import styles from "./SearchBar.module.css";
-import { useState } from "react";
-import SearchIcon from "../Icons/SearchIcon";
+import styles from './SearchBar.module.css';
+import { useState } from 'react';
+import SearchIcon from '../Icons/SearchIcon';
 
-export default function SearchBar(props) {
-  const [videogameName, setVideogameName] = useState("");
+export default function SearchBar(props: {
+  handlerSearch: (search: string) => void;
+}) {
+  const [videogameName, setVideogameName] = useState('');
 
   return (
     <div className={styles.search}>
       <input
-        type="search"
+        type='search'
         className={styles.searchTerm}
-        placeholder="Buscar juego..."
+        placeholder='Buscar juego...'
         onChange={(e) => setVideogameName(e.target.value)}
       />
       <button

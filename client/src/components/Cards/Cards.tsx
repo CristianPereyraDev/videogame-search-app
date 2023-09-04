@@ -1,7 +1,7 @@
-import Card from "../Card/Card";
-import styles from "./Cards.module.css";
+import Card, { IGame } from '../Card/Card';
+import styles from './Cards.module.css';
 
-export default function Cards({ videogames }) {
+export default function Cards({ videogames }: { videogames: Array<IGame> }) {
   return (
     <div className={styles.container}>
       <div className={styles.cardsContainer}>
@@ -13,8 +13,11 @@ export default function Cards({ videogames }) {
               name={videogame.name}
               image={videogame.image}
               genres={videogame.genres}
-              fromDb={!!videogame.fromDb}
+              //fromDb={!!videogame.fromDb}
               released={videogame.released}
+              platforms={[]}
+              description={null}
+              rating={null}
             />
           ))
         ) : (
