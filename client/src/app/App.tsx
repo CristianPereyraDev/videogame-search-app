@@ -1,26 +1,35 @@
-import './App.css';
-import { Routes, Route, useLocation } from 'react-router-dom';
-import NavBar from '../components/NavBar/NavBar';
-import GameForm from '../components/GameForm/GameForm';
-import Landing from '../pages/Landing/Landing';
-import Detail from '../pages/Detail/Detail';
-import Home from '../pages/Home/Home';
+import styles from './App.module.css';
+import { Outlet } from 'react-router-dom';
+import Filters from '../components/Filters/Filters';
+import SearchBar from '../components/SearchBar/SearchBar';
 
 function App() {
-  const location = useLocation();
+  const handleFilterChange = (/*filter: any*/) => {
+    //dispatch(filterAndSortVideogames(filter, order));
+  };
+
+  const handleSearch = (/*search: string*/) => {
+    //dispatch(searchByName(search, filter, order));
+  };
+
   return (
-    <div className='App'>
-      {location.pathname !== '/' ? (
-        <div className='navbarContainer'>
-          <NavBar />
+    <div className={styles.app}>
+      <header className={styles.header}>
+        <div className={styles.searchBar}>
+          <SearchBar handlerSearch={handleSearch}></SearchBar>
         </div>
-      ) : null}
-      <Routes>
-        <Route path='/' element={<Landing />} />
-        <Route path='/home' element={<Home />}></Route>
-        <Route path='/detail/:gameId' element={<Detail />} />
-        <Route path='/add' element={<GameForm />} />
-      </Routes>
+        {/* <NavBar /> */}
+      </header>
+      <aside className={styles.sidebar}>
+        <nav>
+          <div className={styles.leftNavbar}>
+            <Filters handlerChange={handleFilterChange}></Filters>
+          </div>
+        </nav>
+      </aside>
+      <main className={styles.content}>
+        <Outlet />
+      </main>
     </div>
   );
 }

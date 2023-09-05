@@ -1,0 +1,25 @@
+.app {
+  width: 100vw;
+  height: 100vh;
+  display: grid;
+  grid-template-columns: 1fr 4fr;
+  grid-template-rows: auto 1fr;
+  grid-template-areas:
+    'header header'
+    'sidebar content';
+}
+
+.header {
+  height: 60px;
+  grid-area: header;
+}
+
+.sidebar {
+  grid-area: sidebar;
+  background-color: cadetblue;
+}
+
+.content {
+  grid-area: content;
+  overflow-y: scroll;
+}

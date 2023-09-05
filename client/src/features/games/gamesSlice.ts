@@ -3,8 +3,11 @@ import { ApiFilter } from '../../utils/filters.util';
 import { IGame } from '../../components/Card/Card';
 
 const API_KEY = import.meta.env.VITE_RAWG_API_KEY;
+const PAGE_SIZE = import.meta.env.VITE_PAGE_SIZE;
 
 interface GamesState {
+  count: number;
+  page: number;
   search: string;
   loading: boolean;
   error: string | null;
@@ -16,6 +19,8 @@ interface GamesState {
 }
 
 const initialState: GamesState = {
+  count: 0,
+  page: 0,
   search: '',
   loading: false,
   error: null,
@@ -31,12 +36,16 @@ export const fetchPage = createAsyncThunk(
   async (page: number, thunkAPI) => {
     const { games: gamesState } = thunkAPI.getState() as { games: GamesState };
 
+    const search = gamesState.search ? `&search=${gamesState.search}` : '';
+
     const response = await fetch(
-      `https://api.rawg.io/api/games?key=${API_KEY}&search=${gamesState.search}page=${page}`
+      `https://api.rawg.io/api/games?key=${API_KEY}${search}&page=${page}&page_size=${PAGE_SIZE}`
     );
     const jsonResponse = await response.json();
 
     return {
+      count: jsonResponse.count,
+      page,
       results: jsonResponse.results.map((game: any) => {
         return {
           ...game,
@@ -46,6 +55,8 @@ export const fetchPage = createAsyncThunk(
       prevPage: jsonResponse.previous,
       nextPage: jsonResponse.next,
     } as {
+      count: number;
+      page: number;
       results: IGame[];
       prevPage: string | null;
       nextPage: string | null;
@@ -70,6 +81,8 @@ export const gamesSlice = createSlice({
       state.loading = false;
 
       if (action.payload) {
+        state.count = action.payload.count;
+        state.page = action.payload.page;
         state.videogames = action.payload.results;
         state.prevPage = action.payload.prevPage;
         state.nextPage = action.payload.nextPage;
