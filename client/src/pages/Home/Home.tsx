@@ -35,6 +35,8 @@ export default function Home() {
     <div className={styles.homeContainer}>
       {/* Top navbar */}
       <div className={styles.topNavbar}>
+        {/* Pagination */}
+        {videogames.length > 0 ? <PaginationWrapper /> : null}
         <div className={styles.orderBar}>
           <Order handlerChange={handleOrderChange}></Order>
         </div>
@@ -42,12 +44,8 @@ export default function Home() {
       {/* Cards */}
       <div className={styles.content}>
         <div className={styles.cards}>
-          {/* Pagination */}
-          {videogames.length > 0 ? <PaginationWrapper /> : null}
           {/* Cards component */}
           <Cards videogames={videogames}></Cards>
-          {/* Pagination */}
-          {videogames.length > 0 ? <PaginationWrapper /> : null}
         </div>
       </div>
       <div className={styles.homeFooter}></div>

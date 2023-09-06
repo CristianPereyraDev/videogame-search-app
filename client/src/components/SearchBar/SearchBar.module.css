@@ -1,6 +1,6 @@
 .search {
-  width: 100;
-  display: flex;
+  width: 100%;
+  position: relative;
 }
 
 .searchTerm {
@@ -8,9 +8,8 @@
   font-family: inherit;
   color: #22c9df;
   border: 3px solid #22c9df;
-  border-right: none;
   padding: 5px;
-  border-radius: 16px 0 0 16px;
+  border-radius: 16px;
   outline: none;
   background: none;
 }
@@ -29,6 +28,20 @@
   cursor: pointer;
   border: 3px solid #00b4cc;
 }
+
 .searchButton svg:hover {
   fill: aqua;
+}
+
+.searchResultWrapper {
+  position: relative;
+  width: 100%;
+}
+
+.searchResultWrapper div {
+  position: absolute;
+  overflow-y: auto;
+  z-index: 100;
+  width: 100%;
+  background-color: black;
 }

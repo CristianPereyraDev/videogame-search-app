@@ -12,6 +12,7 @@ export default function PaginationWrapper() {
   const dispatch = useDispatch<AppDispatch>();
 
   const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {
+    event.preventDefault();
     dispatch(fetchPage(value));
   };
 

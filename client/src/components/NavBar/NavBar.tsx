@@ -24,21 +24,6 @@ export default function NavBar() {
           <LogoIcon />
         </NavLink>
       </div>
-      {/* Add videogame link */}
-      <div className={styles.addLink}>
-        <NavLink
-          to='/add'
-          className={({ isActive, isPending }) =>
-            isPending
-              ? 'pending'
-              : isActive
-              ? `${styles.navbarLink} ${styles.active}`
-              : `${styles.navbarLink}`
-          }
-        >
-          <span>Agregar Juego</span>
-        </NavLink>
-      </div>
     </div>
   );
 }

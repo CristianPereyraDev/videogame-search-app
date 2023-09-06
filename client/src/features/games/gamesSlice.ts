@@ -1,5 +1,5 @@
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { ApiFilter } from '../../utils/filters.util';
+import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
+import { ApiFilter, filterQueryParams } from '../../utils/filters.util';
 import { IGame } from '../../components/Card/Card';
 
 const API_KEY = import.meta.env.VITE_RAWG_API_KEY;
@@ -12,7 +12,7 @@ interface GamesState {
   loading: boolean;
   error: string | null;
   videogames: Array<IGame>;
-  filter: Array<ApiFilter> | null;
+  filter: Array<ApiFilter>;
   order: { field: string; isReversed: boolean };
   nextPage: string | null;
   prevPage: string | null;
@@ -25,7 +25,7 @@ const initialState: GamesState = {
   loading: false,
   error: null,
   videogames: [],
-  filter: null,
+  filter: [],
   order: { field: 'name', isReversed: false },
   nextPage: null,
   prevPage: null,
@@ -37,9 +37,10 @@ export const fetchPage = createAsyncThunk(
     const { games: gamesState } = thunkAPI.getState() as { games: GamesState };
 
     const search = gamesState.search ? `&search=${gamesState.search}` : '';
+    const combinedFilters = filterQueryParams(gamesState.filter);
 
     const response = await fetch(
-      `https://api.rawg.io/api/games?key=${API_KEY}${search}&page=${page}&page_size=${PAGE_SIZE}`
+      `https://api.rawg.io/api/games?key=${API_KEY}${search}&page=${page}&page_size=${PAGE_SIZE}${combinedFilters}`
     );
     const jsonResponse = await response.json();
 
@@ -68,8 +69,29 @@ export const gamesSlice = createSlice({
   name: 'games',
   initialState,
   reducers: {
+    setFindedGames: (
+      state,
+      action: PayloadAction<{ search: string; videogames: IGame[] }>
+    ) => {
+      state.search = action.payload.search;
+      state.videogames = action.payload.videogames;
+    },
     clearError: (state) => {
       state.error = null;
+    },
+    updateFilter: (state, action: PayloadAction<ApiFilter>) => {
+      const filterToUpdate = state.filter.find(
+        (filter) => filter.name === action.payload.name
+      );
+
+      if (filterToUpdate) {
+        filterToUpdate.values = action.payload.values;
+      } else {
+        state.filter.push(action.payload);
+      }
+    },
+    clearFilters: (state) => {
+      state.filter = [];
     },
   },
   extraReducers: (builder) => {
@@ -97,7 +119,8 @@ export const gamesSlice = createSlice({
 });
 
 /** Action creators for slice's reducer */
-export const { clearError } = gamesSlice.actions;
+export const { clearError, updateFilter, clearFilters, setFindedGames } =
+  gamesSlice.actions;
 
 /** Slice's reducer */
 export default gamesSlice.reducer;
