@@ -1,12 +1,10 @@
 import styles from './Home.module.css';
 import Cards from '../../components/Cards/Cards';
-import PaginationWrapper from '../../components/Pagination/PaginationWrapper';
+//import PaginationWrapper from '../../components/Pagination/PaginationWrapper';
 import Order from '../../components/Order/Order';
 import Loading from '../../components/Utils/Loading';
-import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
-  fetchPage,
   clearError,
   //filterAndSortVideogames,
   //searchByName,
@@ -22,23 +20,14 @@ export default function Home() {
 
   const dispatch = useDispatch<AppDispatch>();
 
-  // Cuando se monta el componente Home cargo la primer página de videojuegos sin filtros ni ordenamiento.
-  useEffect(() => {
-    dispatch(fetchPage(1));
-  }, [dispatch]);
-
-  function handleOrderChange(/*order: any*/) {
-    //dispatch(filterAndSortVideogames(filter, order));
-  }
-
   return (
     <div className={styles.homeContainer}>
       {/* Top navbar */}
       <div className={styles.topNavbar}>
         {/* Pagination */}
-        {videogames.length > 0 ? <PaginationWrapper /> : null}
+        {/* {videogames.length > 0 ? <PaginationWrapper /> : null} */}
         <div className={styles.orderBar}>
-          <Order handlerChange={handleOrderChange}></Order>
+          <Order></Order>
         </div>
       </div>
 

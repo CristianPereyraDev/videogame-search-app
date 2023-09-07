@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import styles from './Filters.module.css';
 import { useDispatch } from 'react-redux';
 import { AppDispatch } from '../../app/store';
-import Filter from './Filter';
+import CheckboxesFilter from './CheckboxesFilter';
 import { updateFilter } from '../../features/games/gamesSlice';
 import {
   Accordion,
@@ -52,8 +52,8 @@ export default function Filters() {
     fetchPlattforms();
   }, []);
 
-  function handleFilterChange(filter: string, checked: string[]) {
-    dispatch(updateFilter({ name: filter, values: checked }));
+  function handleFilterChange(filterName: string, checked: string[]) {
+    dispatch(updateFilter({ name: filterName, values: checked }));
   }
 
   return (
@@ -68,9 +68,11 @@ export default function Filters() {
           <Typography>Géneros</Typography>
         </AccordionSummary>
         <AccordionDetails>
-          <Filter
+          <CheckboxesFilter
             name='genres'
-            options={genres.map((genre) => genre.name)}
+            options={genres.map((genre) => {
+              return { label: genre.name, value: genre.id.toString() };
+            })}
             handleFilterChange={handleFilterChange}
           />
         </AccordionDetails>
@@ -85,9 +87,11 @@ export default function Filters() {
           <Typography>Plattforms</Typography>
         </AccordionSummary>
         <AccordionDetails>
-          <Filter
+          <CheckboxesFilter
             name='platforms'
-            options={platforms.map((platform) => platform.name)}
+            options={platforms.map((platform) => {
+              return { label: platform.name, value: platform.id.toString() };
+            })}
             handleFilterChange={handleFilterChange}
           />
         </AccordionDetails>

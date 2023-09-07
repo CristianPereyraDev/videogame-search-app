@@ -65,7 +65,7 @@ export function genresToCheckboxMap(arrayOfGenres: IGameGenre[]) {
   const result: GenreCkeckboxMap = new Map();
   arrayOfGenres.forEach((genre) => {
     if (!Object.prototype.hasOwnProperty.call(result, genre.id)) {
-      result.set(genre.id, { checked: false, data: genre });
+      result.set(genre.id.toString(), { checked: false, data: genre });
     }
   });
   //console.log("makeUncheckedGenres", result);

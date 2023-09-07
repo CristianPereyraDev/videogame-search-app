@@ -1,26 +1,37 @@
-import React, { useEffect, useState } from 'react';
-import { useDispatch } from 'react-redux';
+import React, { useEffect, useRef, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 
 import SearchResultList from './SearchResultList';
 import useDebounce from '../../hooks/use-debounce';
-import { AppDispatch } from '../../app/store';
-import { setFindedGames } from '../../features/games/gamesSlice';
+import { AppDispatch, RootState } from '../../app/store';
+import {
+  fetchGamesThunk,
+  setError,
+  setFindedGames,
+} from '../../features/games/gamesSlice';
 
 import styles from './SearchBar.module.css';
 import { Box } from '@mui/material';
 import { IGame } from '../../features/games/types';
+import { filterQueryParams } from '../../utils/filters.util';
 
 const API_KEY = import.meta.env.VITE_RAWG_API_KEY;
 
 export default function SearchBar() {
   const [videogames, setVideogames] = useState<Array<IGame>>([]);
+  const [count, setCount] = useState(0);
   const [search, setSearch] = useState<string>('');
+  const [searchURL, setSearchURL] = useState('');
   const [loading, setLoading] = useState(false);
   const [showResult, setShowResult] = useState(false);
+
+  const searchBarRef = useRef(null);
 
   // Custom hook to implement the search bar deboucing.
   const debouncedSearch = useDebounce(search, 500);
 
+  // Get necessary state from Redux store
+  const { filter, order } = useSelector((state: RootState) => state.games);
   const dispatch = useDispatch<AppDispatch>();
 
   const handleSearchChanged = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -35,36 +46,57 @@ export default function SearchBar() {
     if (e.key === 'Enter') {
       setShowResult(false);
 
-      const result = [...videogames];
-      if (result.length > 0) {
-        dispatch({ type: 'updateAll', payload: result });
-        dispatch(setFindedGames({ search, videogames }));
+      if (videogames.length > 0) {
+        dispatch(setFindedGames({ count, videogames, apiURL: searchURL }));
       }
     }
   };
 
   useEffect(() => {
-    // Fetching the games
+    //dispatch(fetchPage(1));
+  }, [dispatch]);
+
+  useEffect(() => {
+    // Fetching the games that match search and filters
     async function fetchGames() {
       setLoading(true);
 
-      const data = await fetch(
-        `https://api.rawg.io/api/games?key=${API_KEY}&search=${debouncedSearch}`
-      ).then((res) => res.json());
+      const filtersQuery = filterQueryParams(filter);
+      const URL = `https://api.rawg.io/api/games?key=${API_KEY}&search=${debouncedSearch}${filtersQuery}`;
 
-      const results: Array<any> = data.results;
+      const response = await fetch(URL);
+
+      if (!response.ok) {
+        return dispatch(setError(`Api request error!`));
+      }
+
+      const jsonResponse = await response.json();
+
+      const results: Array<{
+        id: number;
+        name: string;
+        released: string;
+        background_image: string;
+        description: string;
+        rating: number;
+        genres: [];
+        platforms: [];
+      }> = jsonResponse.results;
+
+      setCount(jsonResponse.count);
+      setSearchURL(URL);
 
       setVideogames(
-        results.map<IGame>((game) => {
+        results.map<IGame>((apiGame) => {
           const ret: IGame = {
-            id: game.id.toString(),
-            name: game.name,
-            released: game.released,
-            image: game.background_image,
+            id: apiGame.id,
+            name: apiGame.name,
+            released: apiGame.released,
+            image: apiGame.background_image,
             genres: [],
             platforms: [],
-            description: '',
-            rating: 1,
+            description: apiGame.description,
+            rating: apiGame.rating,
           };
           return ret;
         })
@@ -73,12 +105,17 @@ export default function SearchBar() {
       setLoading(false);
     }
 
-    fetchGames();
-  }, [debouncedSearch]);
+    if (document.activeElement === searchBarRef.current) {
+      fetchGames();
+    } else {
+      dispatch(fetchGamesThunk());
+    }
+  }, [debouncedSearch, filter, order, dispatch]);
 
   return (
     <section className={styles.search}>
       <input
+        ref={searchBarRef}
         type='search'
         placeholder='Mario, GTA, ...'
         onChange={handleSearchChanged}

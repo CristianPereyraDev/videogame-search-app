@@ -1,5 +1,3 @@
-import { IGame } from '../features/games/types';
-
 export type ApiFilter = {
   name: string;
   values: string[];
@@ -10,8 +8,6 @@ export type Order = {
   method: null;
 };
 
-export declare function gameOrder(gameA: IGame, gameB: IGame): number;
-
 export function filterQueryParams(filters: ApiFilter[]) {
   let totalQuery: string = '';
 
@@ -21,7 +17,7 @@ export function filterQueryParams(filters: ApiFilter[]) {
     const query =
       filter.values.length > 0
         ? `&${filter.name}=${filter.values.reduce(
-            (prev, current) => prev + ',' + current,
+            (prev, current) => (prev ? prev + ',' + current : current),
             ''
           )}`
         : '';
@@ -29,4 +25,19 @@ export function filterQueryParams(filters: ApiFilter[]) {
   });
 
   return totalQuery;
+}
+
+export function findAndUpdateFilter(
+  filtersList: ApiFilter[],
+  newFilter: ApiFilter
+) {
+  const filterToUpdate = filtersList.find(
+    (filter) => filter.name === newFilter.name
+  );
+
+  if (filterToUpdate) {
+    filterToUpdate.values = newFilter.values;
+  } else {
+    filtersList.push(newFilter);
+  }
 }

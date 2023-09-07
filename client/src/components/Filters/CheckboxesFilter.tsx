@@ -3,13 +3,13 @@ import Checkbox from '@mui/material/Checkbox';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import { useEffect, useState } from 'react';
 
-export default function Filter({
+export default function CheckboxesFilter({
   name,
   options,
   handleFilterChange,
 }: {
   name: string;
-  options: string[];
+  options: { label: string; value: string }[];
   handleFilterChange: (filter: string, checked: string[]) => void;
 }) {
   const [checkedList, setCheckedList] = useState<string[]>([]);
@@ -21,7 +21,7 @@ export default function Filter({
     if (checked) {
       nextCheckedList = [...checkedList, value];
     } else {
-      nextCheckedList = checkedList.filter((item) => item != value);
+      nextCheckedList = checkedList.filter((item) => item !== value);
     }
     setCheckedList(nextCheckedList);
   };
@@ -33,18 +33,18 @@ export default function Filter({
   return (
     <>
       <FormGroup>
-        {options.map((value, index) => (
+        {options.map((option, index) => (
           <FormControlLabel
             key={index}
             control={
               <Checkbox
-                checked={checkedList.includes(value)}
-                value={value}
+                checked={checkedList.includes(option.value)}
+                value={option.value}
                 onChange={handleChange}
                 size='small'
               />
             }
-            label={value}
+            label={option.label}
           />
         ))}
       </FormGroup>

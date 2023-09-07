@@ -1,26 +1,26 @@
 import styles from './Order.module.css';
 import Select from '../Utils/Select';
-import { useSelector } from 'react-redux';
-import { RootState } from '../../app/store';
+import { useDispatch, useSelector } from 'react-redux';
+import { AppDispatch, RootState } from '../../app/store';
+import { updateOrder } from '../../features/games/gamesSlice';
 
-export default function Order({
-  handlerChange,
-}: {
-  handlerChange: (order: { field: string; isReversed: boolean }) => void;
-}) {
+export default function Order() {
   // Sync with global state
   const { order } = useSelector((state: RootState) => state.games);
 
+  const dispatch = useDispatch<AppDispatch>();
+
   function handleOrderByChange(e: React.ChangeEvent<HTMLSelectElement>) {
-    const newGlobalState = { ...order, field: e.target.value };
-    // El manejador viene por props para que el componente padre mantenga sincronizado los filtros y ordenamientos.
-    handlerChange(newGlobalState);
+    const newOrderState = { field: e.target.value, isReversed: true };
+
+    dispatch(updateOrder(newOrderState));
   }
 
   function handleOrderChange(e: React.ChangeEvent<HTMLInputElement>) {
     const isReversed = e.target.checked ? false : true;
-    const newGlobalState = { ...order, isReversed };
-    handlerChange(newGlobalState);
+    const newOrderState = { field: 'order', isReversed };
+
+    dispatch(updateOrder(newOrderState));
   }
 
   return (
@@ -30,10 +30,15 @@ export default function Order({
         <label>Order by:</label>
         <Select
           title='Sin ordenar'
-          value={order.field}
+          value={order ? order.field : 'name'}
           options={[
             { value: 'name', label: 'Nombre' },
+            { value: 'released', label: 'Released' },
+            { value: 'added', label: 'Added' },
+            { value: 'created', label: 'Created' },
+            { value: 'updated', label: 'Updated' },
             { value: 'rating', label: 'Rating' },
+            { value: 'metacritic', label: 'Metacritic' },
           ]}
           onChange={handleOrderByChange}
         />
