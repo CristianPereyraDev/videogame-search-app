@@ -1,35 +1,20 @@
 import { useParams, useSearchParams } from 'react-router-dom';
 import styles from './Detail.module.css';
 import { useEffect, useState } from 'react';
-import axios from 'axios';
-import { IGame } from '../../components/Card/Card';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../app/store';
+import { IGame } from '../../features/games/types';
 
 export default function Detail() {
   const { gameId } = useParams();
   const [searchParams /*, setSearchParams*/] = useSearchParams();
-  const [videogame, setVideogame] = useState<IGame | null>(null);
+  const [videogame, setVideogame] = useState<IGame | null | undefined>(null);
+
+  const { videogames } = useSelector((state: RootState) => state.games);
 
   useEffect(() => {
-    console.log('useEfect from detail');
-    async function getVideogameDetail() {
-      try {
-        const response = await axios.get(
-          `http://localhost:3001/videogames/${gameId}?fromDb=${searchParams.get(
-            'fromDb'
-          )}`
-        );
-        if (response.data.name) {
-          setVideogame(response.data);
-        } else {
-          window.alert('No existe el videogame');
-        }
-      } catch (error: any) {
-        //setVideogame({ platforms: [], genres: [] });
-        window.alert(error.message);
-      }
-    }
-    getVideogameDetail();
-  }, [gameId, searchParams]);
+    setVideogame(videogames.find((game) => game.id === Number(gameId)));
+  }, [gameId, searchParams, videogames]);
 
   return (
     <div>

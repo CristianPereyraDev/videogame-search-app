@@ -1,4 +1,4 @@
-import { IGame } from '../components/Card/Card';
+import { IGame } from '../features/games/types';
 
 export type ApiFilter = {
   name: string;

@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
 import { ApiFilter, filterQueryParams } from '../../utils/filters.util';
-import { IGame } from '../../components/Card/Card';
+import { IGame, IGamePlatform } from './types';
 
 const API_KEY = import.meta.env.VITE_RAWG_API_KEY;
 const PAGE_SIZE = import.meta.env.VITE_PAGE_SIZE;
@@ -47,12 +47,20 @@ export const fetchPage = createAsyncThunk(
     return {
       count: jsonResponse.count,
       page,
-      results: jsonResponse.results.map((game: any) => {
-        return {
-          ...game,
-          image: game.background_image,
-        };
-      }),
+      results: jsonResponse.results.map(
+        (game: { background_image: string; platforms: [] }) => {
+          return {
+            ...game,
+            image: game.background_image,
+            platforms: game.platforms.map<IGamePlatform>(
+              (p: { platform: IGamePlatform }) => {
+                const platform: IGamePlatform = p.platform;
+                return platform;
+              }
+            ),
+          };
+        }
+      ),
       prevPage: jsonResponse.previous,
       nextPage: jsonResponse.next,
     } as {

@@ -7,7 +7,7 @@
   width: 100%;
   font-family: inherit;
   color: #22c9df;
-  border: 3px solid #22c9df;
+  border: 1px solid #22c9df;
   padding: 5px;
   border-radius: 16px;
   outline: none;
@@ -38,10 +38,9 @@
   width: 100%;
 }
 
-.searchResultWrapper div {
+.searchResultWrapper:first-child {
   position: absolute;
   overflow-y: auto;
   z-index: 100;
   width: 100%;
-  background-color: black;
 }

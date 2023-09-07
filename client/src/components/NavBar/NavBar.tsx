@@ -10,13 +10,13 @@ export default function NavBar() {
       <div className={styles.homeLinkContainer}>
         <NavLink
           onClick={
-            location.pathname === '/home'
+            location.pathname === '/'
               ? () => {
                   window.location.reload();
                 }
               : undefined
           }
-          to='/home'
+          to='/'
           className={({ isActive, isPending }) =>
             isPending ? 'pending' : isActive ? `${styles.active}` : ``
           }

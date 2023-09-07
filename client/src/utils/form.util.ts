@@ -1,4 +1,4 @@
-import { IGameGenre, IGamePlatform } from '../components/Card/Card';
+import { IGameGenre, IGamePlatform } from '../features/games/types';
 
 function padTo2Digits(num: number) {
   return num.toString().padStart(2, '0');

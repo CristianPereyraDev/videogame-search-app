@@ -1,8 +1,6 @@
 .homeContainer {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
   height: 100%;
+  width: 100%;
   overflow-y: scroll;
 }
 
@@ -26,23 +24,4 @@
   position: sticky;
   top: 0;
   z-index: 10;
-}
-.content {
-  display: flex;
-  flex: 1 0 auto;
-  margin-top: 2vh;
-}
-.content .leftNavbar {
-  flex: 1;
-  text-align: right;
-}
-.content .cards {
-  flex: 3;
-}
-.homeFooter {
-  background-color: brown;
-  flex-shrink: 0;
-  position: fixed;
-  width: 100%;
-  bottom: 0;
 }

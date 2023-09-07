@@ -41,14 +41,10 @@ export default function Home() {
           <Order handlerChange={handleOrderChange}></Order>
         </div>
       </div>
+
       {/* Cards */}
-      <div className={styles.content}>
-        <div className={styles.cards}>
-          {/* Cards component */}
-          <Cards videogames={videogames}></Cards>
-        </div>
-      </div>
-      <div className={styles.homeFooter}></div>
+      <Cards videogames={videogames}></Cards>
+
       {/* Loading */}
       <div className={styles.loading}>
         {loading ? <Loading></Loading> : null}

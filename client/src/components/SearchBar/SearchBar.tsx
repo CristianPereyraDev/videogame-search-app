@@ -1,13 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 
-import { IGame } from '../Card/Card';
 import SearchResultList from './SearchResultList';
 import useDebounce from '../../hooks/use-debounce';
 import { AppDispatch } from '../../app/store';
 import { setFindedGames } from '../../features/games/gamesSlice';
 
 import styles from './SearchBar.module.css';
+import { Box } from '@mui/material';
+import { IGame } from '../../features/games/types';
 
 const API_KEY = import.meta.env.VITE_RAWG_API_KEY;
 
@@ -86,15 +87,28 @@ export default function SearchBar() {
         value={search}
       />
       {debouncedSearch && showResult ? (
-        <section className={styles.searchResultWrapper}>
-          <div>
+        <Box sx={{ position: 'relative' }}>
+          <Box
+            sx={{
+              position: 'absolute',
+              top: '5px',
+              boxSizing: 'border-box',
+              width: '100%',
+              maxHeight: '60vh',
+              borderRadius: '16px',
+              backgroundColor: 'background.paper',
+              p: '10px',
+              zIndex: '100',
+              overflowY: 'auto',
+            }}
+          >
             {loading ? (
               <p>Loading...</p>
             ) : (
               <SearchResultList result={videogames} />
             )}
-          </div>
-        </section>
+          </Box>
+        </Box>
       ) : null}
     </section>
   );
