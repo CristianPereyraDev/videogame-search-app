@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { shallowEqual, useDispatch, useSelector } from 'react-redux';
 
 import SearchResultList from './SearchResultList';
 import useDebounce from '../../hooks/use-debounce';
@@ -30,8 +30,16 @@ export default function SearchBar() {
   // Custom hook to implement the search bar deboucing.
   const debouncedSearch = useDebounce(search, 500);
 
-  // Get necessary state from Redux store
-  const { filter, order } = useSelector((state: RootState) => state.games);
+  // Get state changes from Redux store by passing a equalityFn to determinate state variation.
+  const filter = useSelector(
+    (state: RootState) => state.games.filter,
+    (a, b) => JSON.stringify(a) === JSON.stringify(b)
+  );
+  const order = useSelector(
+    (state: RootState) => state.games.order,
+    shallowEqual
+  );
+
   const dispatch = useDispatch<AppDispatch>();
 
   const handleSearchChanged = (e: React.ChangeEvent<HTMLInputElement>) => {

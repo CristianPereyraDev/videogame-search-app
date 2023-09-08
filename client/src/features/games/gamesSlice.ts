@@ -30,8 +30,11 @@ const initialState: GamesState = {
   loading: false,
   error: null,
   videogames: [],
-  filter: [],
-  order: { field: 'name', isReversed: false },
+  filter: [
+    { name: 'genres', values: [] },
+    { name: 'platforms', values: [] },
+  ],
+  order: { field: '', isReversed: false },
   currentPage: null,
   nextPage: null,
   prevPage: null,

@@ -53,49 +53,54 @@ export default function Filters() {
   }, []);
 
   function handleFilterChange(filterName: string, checked: string[]) {
+    console.log('handleChange - Filters');
     dispatch(updateFilter({ name: filterName, values: checked }));
   }
 
   return (
     <div className={styles.filters}>
       {/* Genres */}
-      <Accordion>
-        <AccordionSummary
-          expandIcon={<ExpandMoreIcon />}
-          aria-controls='panel1a-content'
-          id='panel1a-header'
-        >
-          <Typography>Géneros</Typography>
-        </AccordionSummary>
-        <AccordionDetails>
-          <CheckboxesFilter
-            name='genres'
-            options={genres.map((genre) => {
-              return { label: genre.name, value: genre.id.toString() };
-            })}
-            handleFilterChange={handleFilterChange}
-          />
-        </AccordionDetails>
-      </Accordion>
+      {genres.length > 0 ? (
+        <Accordion>
+          <AccordionSummary
+            expandIcon={<ExpandMoreIcon />}
+            aria-controls='panel1a-content'
+            id='panel1a-header'
+          >
+            <Typography>Géneros</Typography>
+          </AccordionSummary>
+          <AccordionDetails>
+            <CheckboxesFilter
+              name='genres'
+              options={genres.map((genre) => {
+                return { label: genre.name, value: genre.id.toString() };
+              })}
+              handleFilterChange={handleFilterChange}
+            />
+          </AccordionDetails>
+        </Accordion>
+      ) : null}
       {/* Plattforms */}
-      <Accordion>
-        <AccordionSummary
-          expandIcon={<ExpandMoreIcon />}
-          aria-controls='panel1a-content'
-          id='panel1a-header'
-        >
-          <Typography>Plattforms</Typography>
-        </AccordionSummary>
-        <AccordionDetails>
-          <CheckboxesFilter
-            name='platforms'
-            options={platforms.map((platform) => {
-              return { label: platform.name, value: platform.id.toString() };
-            })}
-            handleFilterChange={handleFilterChange}
-          />
-        </AccordionDetails>
-      </Accordion>
+      {platforms.length > 0 ? (
+        <Accordion>
+          <AccordionSummary
+            expandIcon={<ExpandMoreIcon />}
+            aria-controls='panel1a-content'
+            id='panel1a-header'
+          >
+            <Typography>Plattforms</Typography>
+          </AccordionSummary>
+          <AccordionDetails>
+            <CheckboxesFilter
+              name='platforms'
+              options={platforms.map((platform) => {
+                return { label: platform.name, value: platform.id.toString() };
+              })}
+              handleFilterChange={handleFilterChange}
+            />
+          </AccordionDetails>
+        </Accordion>
+      ) : null}
     </div>
   );
 }
