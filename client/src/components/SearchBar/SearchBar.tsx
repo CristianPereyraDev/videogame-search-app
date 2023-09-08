@@ -16,12 +16,15 @@ import { IGame } from '../../features/games/types';
 import { filterQueryParams } from '../../utils/filters.util';
 
 const API_KEY = import.meta.env.VITE_RAWG_API_KEY;
+const PAGE_SIZE = import.meta.env.VITE_PAGE_SIZE;
 
 export default function SearchBar() {
   const [videogames, setVideogames] = useState<Array<IGame>>([]);
   const [count, setCount] = useState(0);
   const [search, setSearch] = useState<string>('');
   const [searchURL, setSearchURL] = useState('');
+  const [nextPage, setNextPage] = useState<string | null>(null);
+  const [prevPage, setPrevPage] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const [showResult, setShowResult] = useState(false);
 
@@ -42,35 +45,13 @@ export default function SearchBar() {
 
   const dispatch = useDispatch<AppDispatch>();
 
-  const handleSearchChanged = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (!showResult) {
-      setShowResult(true);
-    }
-
-    setSearch(e.target.value);
-  };
-
-  const handleSearchKeyUp = (e: React.KeyboardEvent) => {
-    if (e.key === 'Enter') {
-      setShowResult(false);
-
-      if (videogames.length > 0) {
-        dispatch(setFindedGames({ count, videogames, apiURL: searchURL }));
-      }
-    }
-  };
-
-  useEffect(() => {
-    //dispatch(fetchPage(1));
-  }, [dispatch]);
-
   useEffect(() => {
     // Fetching the games that match search and filters
     async function fetchGames() {
       setLoading(true);
 
       const filtersQuery = filterQueryParams(filter);
-      const URL = `https://api.rawg.io/api/games?key=${API_KEY}&search=${debouncedSearch}${filtersQuery}`;
+      const URL = `https://api.rawg.io/api/games?key=${API_KEY}&page_size=${PAGE_SIZE}&search=${debouncedSearch}${filtersQuery}`;
 
       const response = await fetch(URL);
 
@@ -93,6 +74,8 @@ export default function SearchBar() {
 
       setCount(jsonResponse.count);
       setSearchURL(URL);
+      setNextPage(jsonResponse.next);
+      setPrevPage(jsonResponse.previous);
 
       setVideogames(
         results.map<IGame>((apiGame) => {
@@ -119,6 +102,33 @@ export default function SearchBar() {
       dispatch(fetchGamesThunk());
     }
   }, [debouncedSearch, filter, order, dispatch]);
+
+  const handleSearchChanged = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (!showResult) {
+      setShowResult(true);
+    }
+
+    setSearch(e.target.value);
+  };
+
+  const handleSearchKeyUp = (e: React.KeyboardEvent) => {
+    if (e.key === 'Enter') {
+      setShowResult(false);
+
+      if (videogames.length > 0) {
+        dispatch(
+          setFindedGames({
+            count,
+            videogames,
+            apiURL: searchURL,
+            nextPage,
+            prevPage,
+            search: debouncedSearch,
+          })
+        );
+      }
+    }
+  };
 
   return (
     <section className={styles.search}>

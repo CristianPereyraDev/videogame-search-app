@@ -23,7 +23,7 @@ export interface IGame {
   description: string | null;
   released: string;
   image: string;
-  rating: number | null;
+  rating: number;
   genres: Array<IGameGenre>;
   platforms: Array<IGamePlatform>;
 }

@@ -1,10 +1,16 @@
-import styles from './Order.module.css';
 import { useDispatch } from 'react-redux';
 import { AppDispatch } from '../../app/store';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
 
 import { updateOrder } from '../../features/games/gamesSlice';
-import { FormControl, InputLabel, MenuItem, Stack } from '@mui/material';
+import {
+  FormControl,
+  FormControlLabel,
+  InputLabel,
+  MenuItem,
+  Stack,
+  Switch,
+} from '@mui/material';
 import { useEffect, useState } from 'react';
 
 export default function Order() {
@@ -17,16 +23,21 @@ export default function Order() {
     setField(e.target.value);
   }
 
-  function handleOrderChange(e: React.ChangeEvent<HTMLInputElement>) {
+  function handleReverseChange(e: React.ChangeEvent<HTMLInputElement>) {
+    console.log(e.target.checked);
     setIsReversed(e.target.checked);
   }
 
   useEffect(() => {
-    dispatch(updateOrder({ field, isReversed: isReversed }));
+    if (field) {
+      dispatch(updateOrder({ field, isReversed: isReversed }));
+    } else {
+      dispatch(updateOrder(null));
+    }
   }, [field, isReversed, dispatch]);
 
   return (
-    <Stack direction='row'>
+    <Stack direction='row' alignItems='center'>
       {/* Order by select */}
       <FormControl sx={{ m: 1, minWidth: 120 }} size='small'>
         <InputLabel id='ordering-select-label'>Order by</InputLabel>
@@ -51,20 +62,19 @@ export default function Order() {
       </FormControl>
 
       {/* Order method */}
-      <div className={styles.orderMethod}>
-        <span>Des.</span>
-        <label className={styles.switch}>
-          <input
-            type='checkbox'
-            name='order'
-            id='order'
-            //checked={order.method === OrderMethod.Ascendent}
-            onChange={handleOrderChange}
+      <FormControlLabel
+        value='reverse'
+        label='Reverse'
+        control={
+          <Switch
+            checked={isReversed}
+            onChange={handleReverseChange}
+            inputProps={{ 'aria-label': 'controlled' }}
+            size='small'
           />
-          <span className={`${styles.slider} ${styles.round}`}></span>
-        </label>
-        <span>Asc.</span>
-      </div>
+        }
+        labelPlacement='top'
+      />
     </Stack>
   );
 }

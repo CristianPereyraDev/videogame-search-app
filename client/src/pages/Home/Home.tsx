@@ -4,12 +4,14 @@ import Loading from '../../components/Utils/Loading';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   clearError,
+  fetchNextPage,
   //filterAndSortVideogames,
   //searchByName,
 } from '../../features/games/gamesSlice';
 import Modal from '../../components/Utils/Modal';
 import { RootState, AppDispatch } from '../../app/store';
 import { Stack, Typography } from '@mui/material';
+import React from 'react';
 
 export default function Home() {
   // Sync with global state
@@ -19,8 +21,21 @@ export default function Home() {
 
   const dispatch = useDispatch<AppDispatch>();
 
+  const handleScroll = (event: React.UIEvent<HTMLDivElement>) => {
+    const containerHeight = event.currentTarget.clientHeight;
+    const scrollHeight = event.currentTarget.scrollHeight;
+    const scrollTop = event.currentTarget.scrollTop;
+    const scrollPercent = (scrollTop + containerHeight) / scrollHeight;
+
+    console.log('scrollPercent: ', scrollPercent);
+
+    if (scrollPercent === 1) {
+      dispatch(fetchNextPage());
+    }
+  };
+
   return (
-    <div className={styles.homeContainer}>
+    <div className={styles.homeContainer} onScroll={handleScroll}>
       {/* Top navbar */}
       <div className={styles.topNavbar}>
         <Stack direction='row' spacing={1} alignItems='center'>

@@ -11,7 +11,6 @@ const PAGE_SIZE = import.meta.env.VITE_PAGE_SIZE;
 
 interface GamesState {
   count: number;
-  page: number;
   search: string;
   loading: boolean;
   error: string | null;
@@ -25,7 +24,6 @@ interface GamesState {
 
 const initialState: GamesState = {
   count: 0,
-  page: 0,
   search: '',
   loading: false,
   error: null,
@@ -34,25 +32,20 @@ const initialState: GamesState = {
     { name: 'genres', values: [] },
     { name: 'platforms', values: [] },
   ],
-  order: { field: '', isReversed: false },
+  order: null,
   currentPage: null,
   nextPage: null,
   prevPage: null,
 };
 
-export const fetchPage = createAsyncThunk(
-  'games/fetchPage',
-  async (page: number, thunkAPI) => {
+export const fetchNextPage = createAsyncThunk(
+  'games/fetchNextPage',
+  async (_, thunkAPI) => {
     const { games: gamesState } = thunkAPI.getState() as { games: GamesState };
 
-    let URL = '';
-    if (gamesState.currentPage) {
-      URL = gamesState.currentPage.replace(/&page=[0-9]*/, `&page=${page}`);
-    } else {
-      URL = `https://api.rawg.io/api/games?key=${API_KEY}&page=${page}&page_size=${PAGE_SIZE}`;
-    }
+    if (!gamesState.nextPage) return thunkAPI.fulfillWithValue(null);
 
-    const response = await fetch(URL);
+    const response = await fetch(gamesState.nextPage);
     // Check error response from api
     if (!response.ok) {
       throw new Error(`API error! status: ${response.status}`);
@@ -62,8 +55,7 @@ export const fetchPage = createAsyncThunk(
 
     return {
       count: jsonResponse.count,
-      page,
-      currentPage: URL,
+      currentPage: gamesState.nextPage,
       prevPage: jsonResponse.previous,
       nextPage: jsonResponse.next,
       results: jsonResponse.results
@@ -72,19 +64,20 @@ export const fetchPage = createAsyncThunk(
               return {
                 ...game,
                 image: game.background_image,
-                platforms: game.platforms.map<IGamePlatform>(
-                  (p: { platform: IGamePlatform }) => {
-                    const platform: IGamePlatform = p.platform;
-                    return platform;
-                  }
-                ),
+                platforms: game.platforms
+                  ? game.platforms.map<IGamePlatform>(
+                      (p: { platform: IGamePlatform }) => {
+                        const platform: IGamePlatform = p.platform;
+                        return platform;
+                      }
+                    )
+                  : [],
               };
             }
           )
         : [],
     } as {
       count: number;
-      page: number;
       results: IGame[];
       currentPage: string | null;
       prevPage: string | null;
@@ -104,8 +97,9 @@ export const fetchGamesThunk = createAsyncThunk(
           gamesState.order.field
         }`
       : '';
+    const searchParam = gamesState.search ? `&search=${gamesState.search}` : '';
 
-    const URL = `https://api.rawg.io/api/games?key=${API_KEY}&page_size=${PAGE_SIZE}${filterParams}${orderingParam}`;
+    const URL = `https://api.rawg.io/api/games?key=${API_KEY}&page_size=${PAGE_SIZE}${searchParam}${filterParams}${orderingParam}`;
 
     const response = await fetch(URL);
 
@@ -142,10 +136,16 @@ export const gamesSlice = createSlice({
         count: number;
         videogames: IGame[];
         apiURL: string;
+        nextPage: string | null;
+        prevPage: string | null;
+        search: string;
       }>
     ) => {
+      state.search = action.payload.search;
       state.count = action.payload.count;
       state.currentPage = action.payload.apiURL;
+      state.nextPage = action.payload.nextPage;
+      state.prevPage = action.payload.prevPage;
       state.videogames = action.payload.videogames;
     },
     setError: (state, action: PayloadAction<string>) => {
@@ -162,31 +162,30 @@ export const gamesSlice = createSlice({
     },
     updateOrder: (
       state,
-      action: PayloadAction<{ field: string; isReversed: boolean }>
+      action: PayloadAction<{ field: string; isReversed: boolean } | null>
     ) => {
       state.order = action.payload;
     },
   },
   extraReducers: (builder) => {
     //---
-    builder.addCase(fetchPage.pending, (state) => {
+    builder.addCase(fetchNextPage.pending, (state) => {
       state.loading = true;
     });
 
-    builder.addCase(fetchPage.fulfilled, (state, action) => {
+    builder.addCase(fetchNextPage.fulfilled, (state, action) => {
       state.loading = false;
 
       if (action.payload) {
         state.count = action.payload.count;
-        state.page = action.payload.page;
         state.currentPage = action.payload.currentPage;
         state.prevPage = action.payload.prevPage;
         state.nextPage = action.payload.nextPage;
-        state.videogames = action.payload.results;
+        state.videogames.push(...action.payload.results);
       }
     });
 
-    builder.addCase(fetchPage.rejected, (state, action) => {
+    builder.addCase(fetchNextPage.rejected, (state, action) => {
       state.loading = false;
       state.error = action.error.message ?? 'Default error message';
     });

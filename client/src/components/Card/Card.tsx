@@ -26,7 +26,7 @@ export default function GameCard({ game }: { game: IGame }) {
         >
           <Typography variant='subtitle1'>{game.name}</Typography>
           <Typography variant='body2'>
-            Rating: {game.rating ? game.rating.toString() : '-'}
+            Rating: {game.rating.toString()}
           </Typography>
         </Stack>
         <Typography variant='body2'>{game.released}</Typography>
