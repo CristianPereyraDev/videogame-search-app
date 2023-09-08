@@ -1,7 +1,5 @@
 import styles from './Home.module.css';
 import Cards from '../../components/Cards/Cards';
-//import PaginationWrapper from '../../components/Pagination/PaginationWrapper';
-import Order from '../../components/Order/Order';
 import Loading from '../../components/Utils/Loading';
 import { useDispatch, useSelector } from 'react-redux';
 import {
@@ -11,10 +9,11 @@ import {
 } from '../../features/games/gamesSlice';
 import Modal from '../../components/Utils/Modal';
 import { RootState, AppDispatch } from '../../app/store';
+import { Stack, Typography } from '@mui/material';
 
 export default function Home() {
   // Sync with global state
-  const { loading, error, videogames /*filter, order*/ } = useSelector(
+  const { loading, error, videogames, count } = useSelector(
     (state: RootState) => state.games
   );
 
@@ -24,11 +23,9 @@ export default function Home() {
     <div className={styles.homeContainer}>
       {/* Top navbar */}
       <div className={styles.topNavbar}>
-        {/* Pagination */}
-        {/* {videogames.length > 0 ? <PaginationWrapper /> : null} */}
-        <div className={styles.orderBar}>
-          <Order></Order>
-        </div>
+        <Stack direction='row' spacing={1} alignItems='center'>
+          <Typography variant='body2'>Games count: {count}</Typography>
+        </Stack>
       </div>
 
       {/* Cards */}

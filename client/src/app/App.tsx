@@ -3,9 +3,8 @@ import { Outlet } from 'react-router-dom';
 import Filters from '../components/Filters/Filters';
 import SearchBar from '../components/SearchBar/SearchBar';
 import NavBar from '../components/NavBar/NavBar';
-import { Button, Stack, Switch, Typography } from '@mui/material';
-
-const label = { inputProps: { 'aria-label': 'Filter' } };
+import { Button, Divider, Stack } from '@mui/material';
+import Order from '../components/Order/Order';
 
 function App() {
   return (
@@ -13,17 +12,33 @@ function App() {
       <header className={styles.header}>
         <NavBar />
         <SearchBar />
-        <Stack direction='row' alignItems='center'>
-          <Button>Fiters</Button>
-          <Stack direction='row'>
-            <Typography>OFF</Typography>
-            <Switch {...label} size='small' />
-            <Typography>ON</Typography>
-          </Stack>
-        </Stack>
       </header>
       <aside className={styles.sidebar}>
-        <Filters></Filters>
+        <Stack spacing={2} divider={<Divider />}>
+          <Stack>
+            <Stack direction='row' alignItems='center'>
+              <Button>Ordering</Button>
+              <Stack direction='row'>
+                {/* <Typography>OFF</Typography>
+                <Switch {...label} size='small' />
+                <Typography>ON</Typography> */}
+              </Stack>
+            </Stack>
+            <Order></Order>
+          </Stack>
+
+          <Stack>
+            <Stack direction='row' alignItems='center'>
+              <Button>Fiters</Button>
+              <Stack direction='row'>
+                {/* <Typography>OFF</Typography>
+                <Switch {...label} size='small' />
+                <Typography>ON</Typography> */}
+              </Stack>
+            </Stack>
+            <Filters></Filters>
+          </Stack>
+        </Stack>
       </aside>
       <main className={styles.content}>
         <Outlet />

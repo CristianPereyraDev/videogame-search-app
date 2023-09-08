@@ -115,28 +115,13 @@ export const fetchGamesThunk = createAsyncThunk(
 
     return {
       count: jsonResponse.count,
+      results: jsonResponse.results ?? [],
       currentPage: URL,
       prevPage: jsonResponse.previous,
       nextPage: jsonResponse.next,
-      results: jsonResponse.results
-        ? jsonResponse.results.map(
-            (game: { background_image: string; platforms: [] }) => {
-              return {
-                ...game,
-                image: game.background_image,
-                platforms: game.platforms.map<IGamePlatform>(
-                  (p: { platform: IGamePlatform }) => {
-                    const platform: IGamePlatform = p.platform;
-                    return platform;
-                  }
-                ),
-              };
-            }
-          )
-        : [],
     } as {
       count: number;
-      results: IGame[];
+      results: [];
       currentPage: string | null;
       prevPage: string | null;
       nextPage: string | null;
@@ -215,7 +200,19 @@ export const gamesSlice = createSlice({
         state.currentPage = action.payload.currentPage;
         state.prevPage = action.payload.prevPage;
         state.nextPage = action.payload.nextPage;
-        state.videogames = action.payload.results;
+        // Map games from api to IGame type
+        state.videogames = action.payload.results.map<IGame>((apiGame: any) => {
+          return {
+            id: apiGame.id,
+            name: apiGame.name,
+            description: apiGame.description,
+            released: apiGame.released,
+            image: apiGame.background_image,
+            rating: apiGame.rating,
+            genres: apiGame.genres,
+            platforms: apiGame.platforms.map((item: any) => item.platform),
+          };
+        });
       }
     });
 

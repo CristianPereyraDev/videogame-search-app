@@ -1,48 +1,55 @@
 import styles from './Order.module.css';
-import Select from '../Utils/Select';
-import { useDispatch, useSelector } from 'react-redux';
-import { AppDispatch, RootState } from '../../app/store';
+import { useDispatch } from 'react-redux';
+import { AppDispatch } from '../../app/store';
+import Select, { SelectChangeEvent } from '@mui/material/Select';
+
 import { updateOrder } from '../../features/games/gamesSlice';
+import { FormControl, InputLabel, MenuItem, Stack } from '@mui/material';
+import { useEffect, useState } from 'react';
 
 export default function Order() {
-  // Sync with global state
-  const { order } = useSelector((state: RootState) => state.games);
+  const [field, setField] = useState('');
+  const [isReversed, setIsReversed] = useState(false);
 
   const dispatch = useDispatch<AppDispatch>();
 
-  function handleOrderByChange(e: React.ChangeEvent<HTMLSelectElement>) {
-    const newOrderState = { field: e.target.value, isReversed: true };
-
-    dispatch(updateOrder(newOrderState));
+  function handleOrderByChange(e: SelectChangeEvent) {
+    setField(e.target.value);
   }
 
   function handleOrderChange(e: React.ChangeEvent<HTMLInputElement>) {
-    const isReversed = e.target.checked ? false : true;
-    const newOrderState = { field: 'order', isReversed };
-
-    dispatch(updateOrder(newOrderState));
+    setIsReversed(e.target.checked);
   }
 
+  useEffect(() => {
+    dispatch(updateOrder({ field, isReversed: isReversed }));
+  }, [field, isReversed, dispatch]);
+
   return (
-    <div className={styles.orderContainer}>
+    <Stack direction='row'>
       {/* Order by select */}
-      <div className={styles.select}>
-        <label>Order by:</label>
+      <FormControl sx={{ m: 1, minWidth: 120 }} size='small'>
+        <InputLabel id='ordering-select-label'>Order by</InputLabel>
         <Select
-          title='Sin ordenar'
-          value={order ? order.field : 'name'}
-          options={[
-            { value: 'name', label: 'Nombre' },
-            { value: 'released', label: 'Released' },
-            { value: 'added', label: 'Added' },
-            { value: 'created', label: 'Created' },
-            { value: 'updated', label: 'Updated' },
-            { value: 'rating', label: 'Rating' },
-            { value: 'metacritic', label: 'Metacritic' },
-          ]}
+          labelId='ordering-select-label'
+          id='ordering-select'
+          label='Order by'
+          value={field}
           onChange={handleOrderByChange}
-        />
-      </div>
+        >
+          <MenuItem value=''>
+            <em>None</em>
+          </MenuItem>
+          <MenuItem value='name'>Name</MenuItem>
+          <MenuItem value='released'>Released</MenuItem>
+          <MenuItem value='added'>Added</MenuItem>
+          <MenuItem value='created'>Created</MenuItem>
+          <MenuItem value='updated'>Updated</MenuItem>
+          <MenuItem value='rating'>Rating</MenuItem>
+          <MenuItem value='metacritic'>Metacritic</MenuItem>
+        </Select>
+      </FormControl>
+
       {/* Order method */}
       <div className={styles.orderMethod}>
         <span>Des.</span>
@@ -58,6 +65,6 @@ export default function Order() {
         </label>
         <span>Asc.</span>
       </div>
-    </div>
+    </Stack>
   );
 }

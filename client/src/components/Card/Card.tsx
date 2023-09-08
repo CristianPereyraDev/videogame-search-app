@@ -4,19 +4,34 @@ import {
   CardActions,
   CardContent,
   CardMedia,
+  Stack,
   Typography,
 } from '@mui/material';
 import { IGame } from '../../features/games/types';
 
-export default function GameCard({ id, name, released, image, genres }: IGame) {
+export default function GameCard({ game }: { game: IGame }) {
   return (
-    <Card sx={{ maxWidth: 300 }}>
-      <CardMedia component='img' height={194} image={image} alt={name} />
+    <Card sx={{ maxWidth: 340 }}>
+      <CardMedia
+        component='img'
+        height={194}
+        image={game.image}
+        alt={game.name}
+      />
       <CardContent>
-        <Typography variant='subtitle1'>{name}</Typography>
-        <Typography variant='body2'>{released}</Typography>
+        <Stack
+          direction={'row'}
+          justifyContent='space-between'
+          alignItems='center'
+        >
+          <Typography variant='subtitle1'>{game.name}</Typography>
+          <Typography variant='body2'>
+            Rating: {game.rating ? game.rating.toString() : '-'}
+          </Typography>
+        </Stack>
+        <Typography variant='body2'>{game.released}</Typography>
         <Typography variant='body2'>
-          {genres.map((genre, i) => (
+          {game.genres.map((genre, i) => (
             <span key={genre.id}>
               {i !== 0 ? ', ' : ''}
               {genre.name}
@@ -25,7 +40,7 @@ export default function GameCard({ id, name, released, image, genres }: IGame) {
         </Typography>
       </CardContent>
       <CardActions>
-        <Button href={`/details/${id}`} variant='contained'>
+        <Button href={`/details/${game.id}`} variant='contained'>
           Details
         </Button>
       </CardActions>

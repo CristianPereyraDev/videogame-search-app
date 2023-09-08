@@ -2,8 +2,8 @@ export interface IGameGenre {
   id: number;
   name: string;
   slug: string;
-  image: string;
   games_count: number;
+  image_background: string;
 }
 
 export interface IGamePlatform {

@@ -7,17 +7,7 @@ export default function Cards({ videogames }: { videogames: Array<IGame> }) {
     <div className={styles.cardsContainer}>
       {videogames.length > 0 ? (
         videogames.map((videogame) => (
-          <GameCard
-            key={videogame.id}
-            id={videogame.id}
-            name={videogame.name}
-            image={videogame.image}
-            genres={videogame.genres}
-            released={videogame.released}
-            platforms={[]}
-            description={null}
-            rating={null}
-          />
+          <GameCard key={videogame.id} game={videogame} />
         ))
       ) : (
         <div className={styles.emptyMessage}>Aquí no hay nada!</div>
