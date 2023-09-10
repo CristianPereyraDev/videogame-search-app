@@ -1,7 +1,7 @@
 import FormGroup from '@mui/material/FormGroup';
 import Checkbox from '@mui/material/Checkbox';
 import FormControlLabel from '@mui/material/FormControlLabel';
-import { useEffect, useState } from 'react';
+import useCallbackState from '../../hooks/useCallbackState';
 
 export default function CheckboxesFilter({
   name,
@@ -12,23 +12,23 @@ export default function CheckboxesFilter({
   options: { label: string; value: string }[];
   handleFilterChange: (filter: string, checked: string[]) => void;
 }) {
-  const [checkedList, setCheckedList] = useState<string[]>([]);
+  // Custom hook that implement callback call after update state.
+  const [checkedList, setCheckedList] = useCallbackState<string[]>([]);
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { value, checked } = event.target;
-    let nextCheckedList: string[] = [];
 
     if (checked) {
-      nextCheckedList = [...checkedList, value];
+      setCheckedList([...checkedList, value], (state) =>
+        handleFilterChange(name, state)
+      );
     } else {
-      nextCheckedList = checkedList.filter((item) => item !== value);
+      setCheckedList(
+        checkedList.filter((item) => item !== value),
+        (state) => handleFilterChange(name, state)
+      );
     }
-    setCheckedList(nextCheckedList);
   };
-
-  useEffect(() => {
-    handleFilterChange(name, checkedList);
-  }, [name, handleFilterChange, checkedList]);
 
   return (
     <>

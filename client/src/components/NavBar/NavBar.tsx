@@ -9,6 +9,7 @@ export default function NavBar() {
       {/* Home link */}
       <div className={styles.homeLinkContainer}>
         <NavLink
+          style={{ height: '100%' }}
           onClick={
             location.pathname === '/'
               ? () => {

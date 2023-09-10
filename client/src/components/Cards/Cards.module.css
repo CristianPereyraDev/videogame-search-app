@@ -8,12 +8,6 @@
   margin: 10px 0;
 }
 
-.loading {
-  position: absolute;
-  top: 0;
-  z-index: 2;
-}
-
 .emptyMessage {
   position: absolute;
   left: 50%;

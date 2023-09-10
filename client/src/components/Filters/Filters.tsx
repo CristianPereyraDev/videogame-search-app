@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import styles from './Filters.module.css';
 import { useDispatch } from 'react-redux';
 import { AppDispatch } from '../../app/store';
@@ -52,10 +52,12 @@ export default function Filters() {
     fetchPlattforms();
   }, []);
 
-  function handleFilterChange(filterName: string, checked: string[]) {
-    console.log('handleChange - Filters');
-    dispatch(updateFilter({ name: filterName, values: checked }));
-  }
+  const handleFilterChange = useCallback(
+    (filterName: string, checked: string[]) => {
+      dispatch(updateFilter({ name: filterName, values: checked }));
+    },
+    [dispatch]
+  );
 
   return (
     <div className={styles.filters}>
