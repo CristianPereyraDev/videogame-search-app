@@ -1,21 +1,26 @@
-import styles from './App.module.css';
+import { useState } from 'react';
 import { Outlet } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+
 import SearchBar from '../components/SearchBar/SearchBar';
 import NavBar from '../components/NavBar/NavBar';
-import Loading from '../components/Utils/Loading';
-import { useSelector } from 'react-redux';
-import { RootState } from './store';
+import { AppDispatch, RootState } from './store';
+import { clearError } from '../features/games/gamesSlice';
+
+import Sidebar from '../components/Sidebar/Sidebar';
 
 import Box from '@mui/material/Box';
 import Drawer from '@mui/material/Drawer';
-import Sidebar from '../components/Sidebar/Sidebar';
-import { useState } from 'react';
 import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
+import Dialog from '@mui/material/Dialog';
+import CircularProgress from '@mui/material/CircularProgress';
 
 function App() {
-  const { loading } = useSelector((state: RootState) => state.games);
+  const { loading, error } = useSelector((state: RootState) => state.games);
   const [openDrawer, setOpenDrawer] = useState(false);
+
+  const dispatch = useDispatch<AppDispatch>();
 
   const handleDrawerToggle = () => {
     setOpenDrawer(!openDrawer);
@@ -57,7 +62,6 @@ function App() {
         <SearchBar />
       </Box>
       {/* SIDEBAR - CONTENT */}
-
       <Box
         component='aside'
         gridArea='sidebar'
@@ -65,14 +69,25 @@ function App() {
       >
         <Sidebar />
       </Box>
-      <Box component='main' gridArea='content' sx={{ overflow: 'auto' }}>
+      <Box
+        component='main'
+        gridArea='content'
+        sx={{ position: 'relative', overflow: 'auto' }}
+      >
         {loading ? (
-          <div className={styles.loading}>
-            <Loading></Loading>
-          </div>
-        ) : (
-          <Outlet />
-        )}
+          <Box
+            sx={{
+              position: 'absolute',
+              width: '100%',
+              height: '100%',
+              display: 'grid',
+              zIndex: 10,
+            }}
+          >
+            <CircularProgress size={50} sx={{ placeSelf: 'center' }} />
+          </Box>
+        ) : null}
+        <Outlet />
       </Box>
 
       <Drawer
@@ -83,6 +98,15 @@ function App() {
       >
         <Sidebar />
       </Drawer>
+
+      {/* Modal for errors */}
+      <Dialog
+        open={error ? true : false}
+        title={error ?? undefined}
+        onClose={() => {
+          dispatch(clearError());
+        }}
+      />
     </Box>
   );
 }

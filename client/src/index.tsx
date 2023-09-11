@@ -5,6 +5,7 @@ import { Provider } from 'react-redux';
 import App from './app/App';
 import { store } from './app/store';
 
+import ScopedCssBaseline from '@mui/material/ScopedCssBaseline';
 import '@fontsource/roboto/300.css';
 import '@fontsource/roboto/400.css';
 import '@fontsource/roboto/500.css';
@@ -69,7 +70,9 @@ if (!rootElement) throw new Error('Failed to find the root element');
 ReactDOM.createRoot(rootElement).render(
   <ThemeProvider theme={darkTheme}>
     <Provider store={store}>
-      <RouterProvider router={router} />
+      <ScopedCssBaseline enableColorScheme>
+        <RouterProvider router={router} />
+      </ScopedCssBaseline>
     </Provider>
   </ThemeProvider>
 );
