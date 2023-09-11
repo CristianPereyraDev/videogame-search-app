@@ -29,7 +29,9 @@ export default function Home() {
       <div className={styles.topNavbar}>
         <Stack direction='row' spacing={1} alignItems='center'>
           <Typography variant='body2'>Games count:</Typography>
-          <Typography variant='body2'>{count}</Typography>
+          <Typography variant='body2' color='text.secondary'>
+            {count}
+          </Typography>
         </Stack>
       </div>
 
